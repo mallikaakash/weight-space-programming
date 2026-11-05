@@ -38,11 +38,79 @@ Orchestrator flow: Cursor agent runs `scripts/claude-build.sh` (Claude Code subp
 
 **Acceptance**
 
-- Full eval (`n=60`) run with tag `base` on CPU or CUDA.
+- Full eval run with tag `base` on CPU or CUDA.
 - Primary metric `strict_ok` reported (parseable JSON + correct tool + args).
 - README documents setup and how to re-run.
 
-**Verification hint:** `experiments/tool_schema/results/base_latest.summary.json` has `"n": 60` and `"tag": "base"`.
+**Verification hint:** `experiments/tool_schema/results/base_latest.summary.json` exists with `"tag": "base"`.
+
+---
+
+### REQ-005: Reject hallucinated argument keys
+
+**Acceptance**
+
+- `score.py` adds `no_hallucinated_keys`: true iff `arguments` contains no keys beyond the gold expected argument set.
+- `strict_ok` requires `no_hallucinated_keys` in addition to existing checks.
+- `summarize()` reports `no_hallucinated_keys` rate.
+- `test_score.py` covers: (1) extra key fails `no_hallucinated_keys` / `strict_ok`; (2) exact args still pass.
+- Re-run `python3 experiments/tool_schema/test_score.py` successfully.
+
+**Verification hint:** Grep `no_hallucinated_keys` in `score.py` / `test_score.py`; tests pass.
+
+---
+
+### REQ-006: Frozen train/test holdout split
+
+**Acceptance**
+
+- Rebuild eval via `build_eval.py` so every example has `"split": "train"` or `"split": "test"`.
+- Target ~40 train / ~20 test, **stratified by tier** (easy/medium/hard each contribute to both splits). Deterministic assignment (no RNG, or fixed seed documented in code).
+- Also write `experiments/tool_schema/eval/splits.json` listing train/test ids.
+- `benchmark.py` accepts `--split {all,train,test}` (default `all`) and filters examples; summary includes `"split"`.
+- README documents the split and that **reported headline metrics use `--split test`**.
+
+**Verification hint:** `dataset.jsonl` lines include `"split"`; `splits.json` exists; `benchmark.py --help` shows `--split`.
+
+---
+
+### REQ-007: Stability re-runs on the test split
+
+**Acceptance**
+
+- Add `experiments/tool_schema/stability.py` (or equivalent) that runs the benchmark **3 times** on `--split test` with greedy decoding (`temperature=0`), tags like `stability-r1`…`r3`.
+- Writes `experiments/tool_schema/results/stability.json` with per-run `strict_ok` / `parse_ok` / `tool_ok` and `strict_ok_range` (max−min).
+- If model weights are missing under `models/SmolLM2-360M-Instruct`, run `download_model.py` first.
+- Prefer reusing one loaded model across runs if practical; otherwise three `benchmark.py` invocations are fine.
+- Check in `results/stability.json` (summaries only; full generations may stay under gitignored `artifacts/`).
+
+**Verification hint:** `results/stability.json` has 3 runs and `strict_ok_range`.
+
+---
+
+### REQ-008: Failure spot-check report
+
+**Acceptance**
+
+- Add `experiments/tool_schema/spotcheck.py` that reads a benchmark JSON artifact (default: latest test-split run under `artifacts/baselines/`) and writes `experiments/tool_schema/results/spotcheck.md`.
+- Include **10–15 failures** (prefer diverse failure modes: parse fail, wrong tool, missing keys, bad values, hallucinated keys).
+- For each: id, tier, user (short), expected tool, completion snippet, which score flags failed.
+- Short “notes” section grouping dominant failure patterns.
+- Check in `results/spotcheck.md`.
+
+**Verification hint:** `results/spotcheck.md` exists with ≥10 failure entries.
+
+---
+
+### REQ-009: Refresh checked-in baseline on test split
+
+**Acceptance**
+
+- After scoring changes, run `benchmark.py --split test --tag base-test` (model already downloaded if possible).
+- Update `experiments/tool_schema/results/base_latest.summary.json` from that test-split run (include `split: test`, `no_hallucinated_keys`, `n` ≈ 20).
+- Update `experiments/tool_schema/README.md` for new flags, split, stability, spotcheck commands.
+
+**Verification hint:** `base_latest.summary.json` has `"split": "test"` and `no_hallucinated_keys` field.
 
 ---
 
@@ -51,6 +119,11 @@ Orchestrator flow: Cursor agent runs `scripts/claude-build.sh` (Claude Code subp
 - [ ] **REQ-001:** Spec-driven workflow exists — orchestrator scripts, hooks, and docs in place.
 - [ ] **REQ-003:** SmolLM2-360M tool-schema eval harness — download, eval, score, benchmark scripts.
 - [ ] **REQ-004:** Baseline benchmark recorded for SmolLM2-360M-Instruct — checked-in summary.
+- [ ] **REQ-005:** Reject hallucinated argument keys — scorer + tests.
+- [ ] **REQ-006:** Frozen train/test holdout split — dataset + `--split` filter.
+- [ ] **REQ-007:** Stability re-runs on the test split — `results/stability.json`.
+- [ ] **REQ-008:** Failure spot-check report — `results/spotcheck.md`.
+- [ ] **REQ-009:** Refresh checked-in baseline on test split — summary + README.
 
 ---
 
