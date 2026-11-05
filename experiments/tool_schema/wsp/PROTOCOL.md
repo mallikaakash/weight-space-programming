@@ -54,6 +54,24 @@ Local caps: practice size 40 (not 512/1024). Prefer full-train batches when meas
 - Prefer mechanism-level edits (routing / format / value failures), not global knobs.
 - Explain each step in plain English before the next edit/forward.
 
+## Official benchmark probe (BFCL)
+
+Post-run only (editor never sees it):
+
+```bash
+# BFCL v4 simple_python AST via official bfcl-eval checker (subset, not full leaderboard)
+python3 experiments/tool_schema/bfcl_simple_eval.py --limit 100 --tag bfcl-base
+python3 experiments/tool_schema/bfcl_simple_eval.py --limit 100 \
+  --edited-state artifacts/wsp_sessions/<id>/export/edited_state.pt \
+  --tag bfcl-edited
+```
+
+Larger wrapper (budget 100 + BFCL before/after):
+
+```bash
+WSP_BUDGET=100 BFCL_LIMIT=100 bash experiments/tool_schema/wsp/run_editor_p100_bfcl.sh
+```
+
 ## Commands
 
 ```bash
