@@ -1,0 +1,12 @@
+{
+  "name": "weight-space-orchestrator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node run.mjs",
+    "start:local": "node run-local.mjs"
+  },
+  "dependencies": {
+    "@cursor/sdk": "^1.2.0"
+  }
+}

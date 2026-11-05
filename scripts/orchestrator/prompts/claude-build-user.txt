@@ -1,0 +1,7 @@
+Read and fully implement the product spec at: {{SPEC_PATH}}
+
+Work in the repository root. Satisfy every requirement and every rubric checklist item in that file. If something is ambiguous, choose the smallest change that meets the acceptance criteria.
+
+When finished:
+1. Commit all implementation changes on the current branch with a clear message (never commit secrets).
+2. Give a concise completion report listing requirement IDs (REQ-xxx) and the main files you touched.
