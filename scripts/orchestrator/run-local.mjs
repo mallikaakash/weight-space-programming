@@ -27,7 +27,8 @@ const agent = await Agent.create({
   apiKey,
   model: { id: modelId },
   local: { cwd: root },
-  disallowedTools: ["edit", "write", "notebookEdit", "ApplyPatch"],
+  // SDK rejects unknown names; keep edit/delete blocked so the orchestrator cannot patch source.
+  disallowedTools: ["edit", "delete"],
 });
 
 try {
