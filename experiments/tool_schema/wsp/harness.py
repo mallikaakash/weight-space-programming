@@ -118,6 +118,26 @@ class WSPHarness:
             json.dumps({"summary": result["summary"], "budget": result["budget"]}, indent=2),
             encoding="utf-8",
         )
+        failures = []
+        for row in result.get("examples") or []:
+            scores = row.get("scores") or {}
+            if scores.get("strict_ok"):
+                continue
+            failed = [k for k, v in scores.items() if v is False]
+            failures.append(
+                {
+                    "id": row.get("id"),
+                    "tier": row.get("tier"),
+                    "user": row.get("user"),
+                    "expected": row.get("expected"),
+                    "completion": (row.get("completion") or "")[:400],
+                    "failed_flags": failed,
+                }
+            )
+        (self.session_dir / "last_forward_failures.json").write_text(
+            json.dumps({"n_fail": len(failures), "failures": failures[:30]}, indent=2),
+            encoding="utf-8",
+        )
         return result
 
     def export(self) -> dict[str, Any]:

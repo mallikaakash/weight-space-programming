@@ -1,62 +1,52 @@
-# WSP run — SmolLM2-360M tool-schema specialization
+# WSP run2 — SmolLM2-360M tool-schema (hypothesis-driven)
 
-Work in the repo root: `/workspace`.
+Work in `/workspace`.
 
 ## Environment
 
-- Model weights: `models/SmolLM2-360M-Instruct` (already downloaded).
-- Harness package: `experiments/tool_schema/wsp/`
-- Train practice: 40 examples (harness loads automatically).
-- Forward budget for this run: **{{BUDGET}}** (set by runner).
-- Session id: **{{SESSION_ID}}**
+- Weights: `models/SmolLM2-360M-Instruct`
+- Harness: `experiments/tool_schema/wsp/`
+- Train practice: 40 examples (auto-loaded)
+- Forward budget: **{{BUDGET}}**
+- Session id: **{{SESSION_ID}}**  ← always reuse this exact id
 
-## How to drive the harness
+## Drive the harness (resume-safe)
 
 ```python
 import sys
-from pathlib import Path
 sys.path.insert(0, "experiments/tool_schema")
 from wsp.harness import WSPHarness
 
 h = WSPHarness(forward_budget={{BUDGET}}, session_id="{{SESSION_ID}}")
-print(h.status())
+print(h.status())  # should show resumed budget/edits if re-entering
 
-# one metered practice batch (costs 1 budget)
-out = h.forward_pass(max_examples=8, which="edited")  # or which="base"
+out = h.forward_pass(max_examples=16, which="base")
 print(out["summary"], out["budget"])
+# inspect out["examples"] failures → log taxonomy
 
-# edit example
-param = "model.layers.15.mlp.down_proj.weight"  # choose after inspection
+# hypothesis edit...
 t = h.get_tensor(param)
-# ... surgical modification ...
-h.save_edit("desc", param, t_new, note="why")
+h.save_edit("run2_hypA", param, t_new, note="...")
+out2 = h.forward_pass(max_examples=16, which="edited")
 
 h.export()
 ```
 
-CLI alternatives:
-
-```bash
-python3 experiments/tool_schema/wsp/cli.py --budget {{BUDGET}} --session-id {{SESSION_ID}} status
-python3 experiments/tool_schema/wsp/cli.py --budget {{BUDGET}} --session-id {{SESSION_ID}} forward --max-examples 8
-```
-
-After export, score **test** holdout with the edited weights:
+Final test eval:
 
 ```bash
 python3 experiments/tool_schema/wsp/eval_edited.py \
   --session-dir artifacts/wsp_sessions/{{SESSION_ID}} \
-  --tag wsp-edited
+  --tag wsp-run2
 ```
 
-Copy the summary into `experiments/tool_schema/wsp/results/` as `edited_test_latest.summary.json`.
+Ensure `experiments/tool_schema/wsp/results/edited_test_latest.summary.json` is updated.
 
-## Deliverables before you stop
+## Deliverables
 
-1. Meaningful edit attempts under the budget (not just smoke epsilon).
-2. Updated `experiments/tool_schema/wsp/results/RUNNING_LOG.md`.
-3. Exported session under `artifacts/wsp_sessions/{{SESSION_ID}}/`.
-4. Test-split summary for the edited model vs the known 20% baseline.
-5. Short final note: what worked / what did not (expect possible failure to *add* skill — still a result).
+1. Failure taxonomy in `experiments/tool_schema/wsp/results/RUNNING_LOG.md`
+2. ≥2 distinct hypotheses attempted with measured train forwards
+3. Export + test summary vs 20% baseline
+4. Explicit note: what moved (`tool_ok` / `values_ok` / `strict_ok`) and what did not
 
-Start now: create the harness session, inspect base failures with one forward pass, then edit.
+Start now with session `{{SESSION_ID}}`.
