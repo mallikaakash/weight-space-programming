@@ -189,13 +189,14 @@ Before pivoting to BFCL we used a homemade JSON tool-schema set (40 train / 20 t
 
 | Path | Role |
 |------|------|
-| `experiments/tool_schema/` | Eval, scorers, BFCL + legacy benches |
-| `experiments/tool_schema/wsp/` | Harness, BFCL runners, editor prompts |
-| `experiments/tool_schema/wsp/pack_edited_delta.py` | Pack/apply weight deltas |
-| `experiments/tool_schema/results/bfcl/` | Holdout scores + `edits.json` |
-| `models/` | Base weights (**gitignored**) |
+| `experiments/tool_schema/` | Eval, scorers, BFCL + legacy tool-schema benches |
+| `experiments/tool_schema/wsp/` | WSP harness, BFCL runners, editor prompts |
+| `experiments/tool_schema/wsp/pack_edited_delta.py` | Pack/apply compact edited-weight deltas for hosting |
+| `experiments/tool_schema/results/bfcl/` | Holdout scores, generations, + `edits.json` |
+| `models/` | Local base weights (**gitignored**) |
 | `artifacts/` | Sessions + full `edited_state.pt` (**gitignored**) |
-| `docs/SPEC.md` / `docs/ORCHESTRATION.md` | Optional Claude↔Cursor orchestration |
+| `docs/SPEC.md` | Spec for Claude Code / orchestrator builds |
+| `docs/ORCHESTRATION.md` | Claude Code ↔ Cursor orchestrator |
 
 ---
 
@@ -208,13 +209,33 @@ python3 experiments/tool_schema/download_model.py   # ~700MB → models/
 python3 experiments/tool_schema/wsp/build_bfcl_split.py   # 300/100 split
 ```
 
-```bash
-# harness smoke
-python3 experiments/tool_schema/wsp/test_harness.py
+### WSP harness smoke
 
-# BFCL-native editor (needs Claude auth)
+```bash
+python3 experiments/tool_schema/wsp/test_harness.py
+```
+
+### Start BFCL-native weight-space editor (Claude Code)
+
+```bash
 bash experiments/tool_schema/wsp/run_editor_bfcl_native.sh
+# resume after interrupt:
 # bash experiments/tool_schema/wsp/run_editor_bfcl_resume.sh
+# logs: experiments/tool_schema/wsp/results/RUNNING_LOG.md
+#      artifacts/wsp_sessions/<id>/
 ```
 
 Requires `CLAUDE_CODE_OAUTH_TOKEN` (or local `claude` auth). See `experiments/tool_schema/wsp/editor/`.
+
+---
+
+## Scoring
+
+- **BFCL (headline):** official AST via `bfcl_eval.ast_checker` (`bfcl_simple_eval.py`, `wsp/bfcl_score.py`).
+- **Legacy tool-schema:** `strict_ok` = parse ∧ tool ∧ args ∧ required keys ∧ types ∧ values ∧ no hallucinated keys — see [experiments/tool_schema/README.md](experiments/tool_schema/README.md).
+
+---
+
+## Orchestrator (optional)
+
+Spec-driven Claude implementer + Cursor monitor: [docs/ORCHESTRATION.md](docs/ORCHESTRATION.md).
