@@ -132,6 +132,21 @@ Orchestrator flow: Cursor agent runs `scripts/claude-build.sh` (Claude Code subp
 
 ---
 
+### REQ-011: Claude Code WSP editor run
+
+**Acceptance**
+
+- `experiments/tool_schema/wsp/editor/SYSTEM.md` and `USER.md` instruct Claude Code as the weight editor.
+- `run_editor.sh` launches `claude -p` with budget/session substitution and appends to `results/RUNNING_LOG.md`.
+- `eval_edited.py` scores an exported `edited_state.pt` on the **test** split and writes `results/edited_test_latest.summary.json`.
+- Root `README.md` documents current baselines and how to start the editor.
+- An editor run is started (or attempted) with a non-empty running log; if the model/auth is available, at least one forward_pass and one real edit attempt occur.
+- Do not leak secrets into the log.
+
+**Verification hint:** editor prompts + `run_editor.sh` exist; `RUNNING_LOG.md` has a started/finished section; optional `edited_test_latest.summary.json`.
+
+---
+
 ## Rubric checklist (orchestrator)
 
 - [ ] **REQ-001:** Spec-driven workflow exists — orchestrator scripts, hooks, and docs in place.
@@ -143,6 +158,7 @@ Orchestrator flow: Cursor agent runs `scripts/claude-build.sh` (Claude Code subp
 - [ ] **REQ-008:** Failure spot-check report — `results/spotcheck.md`.
 - [ ] **REQ-009:** Refresh checked-in baseline on test split — summary + README.
 - [ ] **REQ-010:** WSP harness package (prep only — no editor agent run).
+- [ ] **REQ-011:** Claude Code WSP editor run — prompts, runner, log, test eval of export.
 
 ---
 
