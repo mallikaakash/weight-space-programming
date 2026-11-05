@@ -1,0 +1,260 @@
+{
+  "n": 100,
+  "ast_accuracy": 0.33,
+  "n_correct": 33,
+  "category": "simple_python",
+  "scorer": "bfcl_eval.ast_checker",
+  "rows_head_failures": [
+    {
+      "id": "simple_python_300",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'first_note_frequency'."
+      ],
+      "completion": "[music.calculate_note_duration(440, 880, tempo=120)]",
+      "extracted": "[music.calculate_note_duration(440, 880, tempo=120)]",
+      "decoded": [
+        {
+          "music.calculate_note_duration": {
+            "tempo": 120
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_301",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'key'."
+      ],
+      "completion": "[get_third_chord('C', 'major')]",
+      "extracted": "[get_third_chord('C', 'major')]",
+      "decoded": [
+        {
+          "get_third_chord": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_302",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_batting_average' not found in model output."
+      ],
+      "completion": "[batting_average(hits=180, at_bats=600)]",
+      "extracted": "[batting_average(hits=180, at_bats=600)]",
+      "decoded": [
+        {
+          "batting_average": {
+            "hits": 180,
+            "at_bats": 600
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_304",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'NBA'. Expected one of ['Los Angeles Lakers', 'LAL', 'Lakers']. Case insensitive."
+      ],
+      "completion": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]",
+      "extracted": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]",
+      "decoded": [
+        {
+          "player_stats.getLastGame": {
+            "player_name": "LeBron James",
+            "team": "NBA"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_305",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'tournament': 'La Liga 2020-2021'. Expected one of ['La Liga']. Case insensitive."
+      ],
+      "completion": "[sports_stats.get_performance(player_name='Messi', tournament='La Liga 2020-2021', season='2020-2021')]",
+      "extracted": "[sports_stats.get_performance(player_name='Messi', tournament='La Liga 2020-2021', season='2020-2021')]",
+      "decoded": [
+        {
+          "sports_stats.get_performance": {
+            "player_name": "Messi",
+            "tournament": "La Liga 2020-2021",
+            "season": "2020-2021"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_307",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'venue': 'home'. Expected one of ['', True]."
+      ],
+      "completion": "[game_result.get_winner(teams=['Lakers', 'Clippers'], date='2021-01-28', venue='home')]",
+      "extracted": "[game_result.get_winner(teams=['Lakers', 'Clippers'], date='2021-01-28', venue='home')]",
+      "decoded": [
+        {
+          "game_result.get_winner": {
+            "teams": [
+              "Lakers",
+              "Clippers"
+            ],
+            "date": "2021-01-28",
+            "venue": "home"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_309",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'All Stats'. Expected one of ['', 'Tampa Bay Buccaneers']. Case insensitive."
+      ],
+      "completion": "[nfl_data.player_record(player_name='Tom Brady', season_year=2020, team='All Stats')]",
+      "extracted": "[nfl_data.player_record(player_name='Tom Brady', season_year=2020, team='All Stats')]",
+      "decoded": [
+        {
+          "nfl_data.player_record": {
+            "player_name": "Tom Brady",
+            "season_year": 2020,
+            "team": "All Stats"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_310",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'All-Star Game'. Expected one of ['']. Case insensitive."
+      ],
+      "completion": "[get_career_stats(player_name='LeBron James', team='All-Star Game')]",
+      "extracted": "[get_career_stats(player_name='LeBron James', team='All-Star Game')]",
+      "decoded": [
+        {
+          "get_career_stats": {
+            "player_name": "LeBron James",
+            "team": "All-Star Game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_311",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'NBA'. Expected one of ['']. Case insensitive."
+      ],
+      "completion": "[sports_db.find_athlete(name='Lebron James', team='NBA', sport='basketball')]",
+      "extracted": "[sports_db.find_athlete(name='Lebron James', team='NBA', sport='basketball')]",
+      "decoded": [
+        {
+          "sports_db.find_athlete": {
+            "name": "Lebron James",
+            "team": "NBA",
+            "sport": "basketball"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_312",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team_name': 'Atletico Madrid'. Expected one of ['']. Case insensitive."
+      ],
+      "completion": "[player_statistic(player_name='Ronaldo', year=2021, team_name='Atletico Madrid')]",
+      "extracted": "[player_statistic(player_name='Ronaldo', year=2021, team_name='Atletico Madrid')]",
+      "decoded": [
+        {
+          "player_statistic": {
+            "player_name": "Ronaldo",
+            "year": 2021,
+            "team_name": "Atletico Madrid"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_316",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'sport'."
+      ],
+      "completion": "[get_sport_ranking('tennis', 'Williams', 'female')]",
+      "extracted": "[get_sport_ranking('tennis', 'Williams', 'female')]",
+      "decoded": [
+        {
+          "get_sport_ranking": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_318",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'team_name'."
+      ],
+      "completion": "[get_team_ranking('Germany', 2021, 'men')]",
+      "extracted": "[get_team_ranking('Germany', 2021, 'men')]",
+      "decoded": [
+        {
+          "get_team_ranking": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_319",
+      "valid": false,
+      "error": [
+        ""
+      ],
+      "completion": "[manchester_united_pierce_league_2023]",
+      "extracted": "[manchester_united_pierce_league_2023]",
+      "decoded": null
+    },
+    {
+      "id": "simple_python_320",
+      "valid": false,
+      "error": [
+        "Optional parameter 'detailed' not provided and not marked as optional."
+      ],
+      "completion": "[sports_ranking.get_team_position(team='Golden State Warriors', season='2022-2023')]",
+      "extracted": "[sports_ranking.get_team_position(team='Golden State Warriors', season='2022-2023')]",
+      "decoded": [
+        {
+          "sports_ranking.get_team_position": {
+            "team": "Golden State Warriors",
+            "season": "2022-2023"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_321",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'team'."
+      ],
+      "completion": "[sports_ranking('Barcelona', 'Lega Catalana', '2021')]",
+      "extracted": "[sports_ranking('Barcelona', 'Lega Catalana', '2021')]",
+      "decoded": [
+        {
+          "sports_ranking": {}
+        }
+      ]
+    }
+  ],
+  "tag": "bfcl-holdout-base-pre-wsp-bfcl-p100-20261105T143615Z",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 300,
+  "limit": 100,
+  "device": "cpu",
+  "timestamp": "2026-11-05T14:38:57.414865+00:00",
+  "note": "Official BFCL v4 simple_python AST category via bfcl-eval checker. Not full BFCL (no multiple/parallel/live/multi-turn)."
+}

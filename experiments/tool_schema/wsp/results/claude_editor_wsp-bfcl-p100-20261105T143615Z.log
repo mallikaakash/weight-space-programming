@@ -1,0 +1,23 @@
+=== WSP BFCL editor start session=wsp-bfcl-p100-20261105T143615Z budget=100 model=claude-opus-5-5 effort=high ===
+Waiting for the base pass to finish. The monitor will notify me.
+
+p06 is still running. I'll wait for the monitor.
+
+Sweep results vs the current edit (85/150 on DEV):
+- **β=2 reflection:** 73, net −12. It overshoots.
+- **β=1, L8–31:** 85, a 5/5 swap. Mid layers add nothing.
+
+L16–31 β=1 is so far the best. p08 (L24–31) is still running.
+
+That speeds things up: `store.save_edit` still applies the protected-param and scalar-rescale refusals. I'll wait for the scan.
+
+Both directions are clean. d̂ separates true-like from false-like tokens, b̂ is a pure "boolean token" detector, and the two are nearly orthogonal (cos −0.02). I'll wait for the scan before using the next pass.
+
+KV group 1 ×1.3: net −1 vs current, a swap. Still waiting on groups 2–4.
+
+Still waiting on the second monitor for groups 2–4.
+
+So far all KV groups are swaps (g0 −2, g1 −1, g2 −1 vs current). Groups 3–4 are still running.
+
+The scan is running; results will stream in one configuration at a time.
+Background tasks still running 10m after the last turn (monitor "head-group ablation scan results"); stopping them. Set CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 to wait indefinitely.

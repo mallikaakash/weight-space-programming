@@ -1,0 +1,276 @@
+{
+  "n": 100,
+  "ast_accuracy": 0.5,
+  "n_correct": 50,
+  "category": "simple_python",
+  "scorer": "bfcl_eval.ast_checker",
+  "rows_head_failures": [
+    {
+      "id": "simple_python_302",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_batting_average' not found in model output."
+      ],
+      "completion": "[batting_average(hits=180, at_bats=600)]",
+      "extracted": "[batting_average(hits=180, at_bats=600)]",
+      "decoded": [
+        {
+          "batting_average": {
+            "hits": 180,
+            "at_bats": 600
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_304",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'NBA'. Expected one of ['Los Angeles Lakers', 'LAL', 'Lakers']. Case insensitive."
+      ],
+      "completion": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]",
+      "extracted": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]",
+      "decoded": [
+        {
+          "player_stats.getLastGame": {
+            "player_name": "LeBron James",
+            "team": "NBA"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_305",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'tournament': 'La Liga 2020-2021'. Expected one of ['La Liga']. Case insensitive."
+      ],
+      "completion": "[sports_stats.get_performance(player_name='Messi', tournament='La Liga 2020-2021', season='2020-2021')]",
+      "extracted": "[sports_stats.get_performance(player_name='Messi', tournament='La Liga 2020-2021', season='2020-2021')]",
+      "decoded": [
+        {
+          "sports_stats.get_performance": {
+            "player_name": "Messi",
+            "tournament": "La Liga 2020-2021",
+            "season": "2020-2021"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_307",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'venue': 'home'. Expected one of ['', True]."
+      ],
+      "completion": "[game_result.get_winner(teams=['Lakers', 'Clippers'], date='2021-01-28', venue='home')]",
+      "extracted": "[game_result.get_winner(teams=['Lakers', 'Clippers'], date='2021-01-28', venue='home')]",
+      "decoded": [
+        {
+          "game_result.get_winner": {
+            "teams": [
+              "Lakers",
+              "Clippers"
+            ],
+            "date": "2021-01-28",
+            "venue": "home"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_309",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'All Stats'. Expected one of ['', 'Tampa Bay Buccaneers']. Case insensitive."
+      ],
+      "completion": "[nfl_data.player_record(player_name='Tom Brady', season_year=2020, team='All Stats')]",
+      "extracted": "[nfl_data.player_record(player_name='Tom Brady', season_year=2020, team='All Stats')]",
+      "decoded": [
+        {
+          "nfl_data.player_record": {
+            "player_name": "Tom Brady",
+            "season_year": 2020,
+            "team": "All Stats"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_310",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'All-Star Game'. Expected one of ['']. Case insensitive."
+      ],
+      "completion": "[get_career_stats(player_name='LeBron James', team='All-Star Game')]",
+      "extracted": "[get_career_stats(player_name='LeBron James', team='All-Star Game')]",
+      "decoded": [
+        {
+          "get_career_stats": {
+            "player_name": "LeBron James",
+            "team": "All-Star Game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_311",
+      "valid": false,
+      "error": [
+        "closing parenthesis ']' does not match opening parenthesis '(' (<unknown>, line 1)"
+      ],
+      "completion": "[sports_db.find_athlete(name='Lebron James', team='All-Star']",
+      "extracted": "[sports_db.find_athlete(name='Lebron James', team='All-Star']",
+      "decoded": null
+    },
+    {
+      "id": "simple_python_312",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team_name': 'Atletico Madrid'. Expected one of ['']. Case insensitive."
+      ],
+      "completion": "[player_statistic(player_name='Ronaldo', year=2021, team_name='Atletico Madrid')]",
+      "extracted": "[player_statistic(player_name='Ronaldo', year=2021, team_name='Atletico Madrid')]",
+      "decoded": [
+        {
+          "player_statistic": {
+            "player_name": "Ronaldo",
+            "year": 2021,
+            "team_name": "Atletico Madrid"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_319",
+      "valid": false,
+      "error": [
+        "Function name 'sports_ranking' not found in model output."
+      ],
+      "completion": "[manchester_united_pilots_rankings(team='Manchester United', league='Premier League', season='2023')]",
+      "extracted": "[manchester_united_pilots_rankings(team='Manchester United', league='Premier League', season='2023')]",
+      "decoded": [
+        {
+          "manchester_united_pilots_rankings": {
+            "team": "Manchester United",
+            "league": "Premier League",
+            "season": "2023"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_320",
+      "valid": false,
+      "error": [
+        "Optional parameter 'detailed' not provided and not marked as optional."
+      ],
+      "completion": "[sports_ranking.get_team_position(team='Golden State Warriors', season='2022-2023')]",
+      "extracted": "[sports_ranking.get_team_position(team='Golden State Warriors', season='2022-2023')]",
+      "decoded": [
+        {
+          "sports_ranking.get_team_position": {
+            "team": "Golden State Warriors",
+            "season": "2022-2023"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_321",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'league': 'Liga'. Expected one of ['La Liga']. Case insensitive."
+      ],
+      "completion": "[sports_ranking(team='Barcelona', league='Liga', season='2021')]",
+      "extracted": "[sports_ranking(team='Barcelona', league='Liga', season='2021')]",
+      "decoded": [
+        {
+          "sports_ranking": {
+            "team": "Barcelona",
+            "league": "Liga",
+            "season": "2021"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_323",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'sport': 'women tennis'. Expected one of ['tennis']. Case insensitive."
+      ],
+      "completion": "[sports_ranking.get_top_player(sport='women tennis', gender='female')]",
+      "extracted": "[sports_ranking.get_top_player(sport='women tennis', gender='female')]",
+      "decoded": [
+        {
+          "sports_ranking.get_top_player": {
+            "sport": "women tennis",
+            "gender": "female"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_324",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team': 'LA Lakers'. Expected one of ['Los Angeles Lakers', 'Lakers']. Case insensitive."
+      ],
+      "completion": "[team_score.get_latest(team=\"LA Lakers\", include_opponent=True)]",
+      "extracted": "[team_score.get_latest(team=\"LA Lakers\", include_opponent=True)]",
+      "decoded": [
+        {
+          "team_score.get_latest": {
+            "team": "LA Lakers",
+            "include_opponent": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_325",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'season': '2023'. Expected one of ['']. Case insensitive."
+      ],
+      "completion": "[sports.match_results(team1='Chicago Bulls', team2='Los Angeles Lakers', season='2023')]",
+      "extracted": "[sports.match_results(team1='Chicago Bulls', team2='Los Angeles Lakers', season='2023')]",
+      "decoded": [
+        {
+          "sports.match_results": {
+            "team1": "Chicago Bulls",
+            "team2": "Los Angeles Lakers",
+            "season": "2023"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_326",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'team_name': 'LA Lakers'. Expected one of ['Los Angeles Lakers', 'Lakers']. Case insensitive."
+      ],
+      "completion": "[get_team_score(team_name='LA Lakers', league='NBA', include_player_stats=True)]",
+      "extracted": "[get_team_score(team_name='LA Lakers', league='NBA', include_player_stats=True)]",
+      "decoded": [
+        {
+          "get_team_score": {
+            "team_name": "LA Lakers",
+            "league": "NBA",
+            "include_player_stats": true
+          }
+        }
+      ]
+    }
+  ],
+  "tag": "bfcl-holdout-edited-wsp-bfcl-p100-20261105T143615Z",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": "/workspace/artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/edited_state.pt",
+  "offset": 300,
+  "limit": 100,
+  "device": "cpu",
+  "timestamp": "2026-11-05T23:58:17.121783+00:00",
+  "note": "Official BFCL v4 simple_python AST category via bfcl-eval checker. Not full BFCL (no multiple/parallel/live/multi-turn)."
+}
