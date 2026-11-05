@@ -18,6 +18,17 @@ This repo is the harness + the first real BFCL run of that loop.
 
 **Result:** practice **41% → 62%**. Sealed holdout **33% → 50%**.
 
+### What the gains actually were
+
+The dump, short version: gains were **primarily from fixing formatting bottlenecks** — learning a better **policy for how to write a call** (named args, don’t fuse `('…`, don’t parrot the prompt’s `math` demo, prefer `True` on flags).
+
+That is **not**:
+- new knowledge infused into the small model, or
+- an emergent ability the base never had, or
+- a clear cleanup of the **semantic leftover** (wrong values, wrong/mangled names, bad optional-arg choices) that was already failing before any edits.
+
+So WSP here worked as **expression surgery** on errors the model was already close to getting right — not as a way to pour BFCL facts or broader tool skill into SmolLM2.
+
 That is the whole story. Details below.
 
 ---
