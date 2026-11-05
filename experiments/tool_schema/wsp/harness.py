@@ -13,11 +13,11 @@ import torch
 from .forward import ForwardBudget, ForwardService
 from .paths_wsp import MODEL_DIR, SESSIONS_DIR
 from .practice import load_practice
-from .weights import WeightStore
+from .weights import EditRecord, WeightStore
 
 
 class WSPHarness:
-    """Preparation API for weight-space programming (no editor agent loop yet)."""
+    """API for weight-space programming sessions (persists across process restarts)."""
 
     def __init__(
         self,
@@ -35,14 +35,44 @@ class WSPHarness:
 
         self.store = WeightStore.load(model_dir or MODEL_DIR)
         self.practice = load_practice("train")
+
+        budget_path = self.session_dir / "budget.json"
+        working_path = self.session_dir / "working_state.pt"
+        resumed = False
+
+        used = 0
+        log: list[dict[str, Any]] = []
+        total = forward_budget
+        if budget_path.exists():
+            saved = json.loads(budget_path.read_text(encoding="utf-8"))
+            total = int(saved.get("total", forward_budget))
+            used = int(saved.get("used", 0))
+            log = list(saved.get("log") or [])
+            resumed = True
+
+        if working_path.exists():
+            state = torch.load(working_path, map_location="cpu", weights_only=True)
+            self.store.working_state = state
+            with torch.no_grad():
+                self.store.model.load_state_dict(self.store.working_state, strict=True)
+                self.store.model.to(self.store.device)
+            resumed = True
+
+        state_path = self.session_dir / "state.json"
+        if state_path.exists():
+            prev = json.loads(state_path.read_text(encoding="utf-8"))
+            edits = []
+            for e in prev.get("edits") or []:
+                edits.append(EditRecord(**e))
+            self.store.edits = edits
+            resumed = True
+
         self.forward = ForwardService(
             store=self.store,
             practice=self.practice,
-            budget=ForwardBudget(total=forward_budget),
+            budget=ForwardBudget(total=total, used=used, log=log),
         )
-        self._persist_state(event="init")
-
-    # --- inspector API (for future editor) ---
+        self._persist_state(event="resume" if resumed else "init")
 
     def status(self) -> dict[str, Any]:
         return {
@@ -84,7 +114,6 @@ class WSPHarness:
     def forward_pass(self, **kwargs: Any) -> dict[str, Any]:
         result = self.forward.forward_pass(**kwargs)
         self._persist_state(event="forward_pass")
-        # keep last forward summary on disk for inspection
         (self.session_dir / "last_forward.json").write_text(
             json.dumps({"summary": result["summary"], "budget": result["budget"]}, indent=2),
             encoding="utf-8",
@@ -97,6 +126,19 @@ class WSPHarness:
         return {"edited_state": str(path), "session_dir": str(self.session_dir)}
 
     def _persist_state(self, event: str) -> None:
+        # Persist tensors + budget so a new Python process can resume the same session.
+        torch.save(self.store.working_state, self.session_dir / "working_state.pt")
+        (self.session_dir / "budget.json").write_text(
+            json.dumps(
+                {
+                    "total": self.forward.budget.total,
+                    "used": self.forward.budget.used,
+                    "log": self.forward.budget.log,
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
         payload = {
             "event": event,
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -105,6 +147,5 @@ class WSPHarness:
             "forward_log": self.forward.budget.log,
         }
         (self.session_dir / "state.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-        log_path = self.session_dir / "events.jsonl"
-        with log_path.open("a", encoding="utf-8") as f:
+        with (self.session_dir / "events.jsonl").open("a", encoding="utf-8") as f:
             f.write(json.dumps({"event": event, "timestamp": payload["timestamp"]}) + "\n")

@@ -38,14 +38,29 @@ python3 experiments/tool_schema/wsp/cli.py --session-id demo status
 
 Session state lands in `artifacts/wsp_sessions/` (gitignored via `artifacts/*`).
 
-## Editor API (next run)
+## Claude Code editor run
+
+```bash
+# default budget 15
+bash experiments/tool_schema/wsp/run_editor.sh
+
+WSP_BUDGET=10 WSP_SESSION_ID=wsp-manual bash experiments/tool_schema/wsp/run_editor.sh
+```
+
+Prompts: `editor/SYSTEM.md`, `editor/USER.md`.  
+Live log: `results/RUNNING_LOG.md`.  
+After export: `python3 experiments/tool_schema/wsp/eval_edited.py --session-dir artifacts/wsp_sessions/<id>`.
+
+## Editor API
 
 ```python
+import sys
+sys.path.insert(0, "experiments/tool_schema")
 from wsp.harness import WSPHarness
-h = WSPHarness(forward_budget=25)
+h = WSPHarness(forward_budget=25, session_id="demo")
 h.list_params("mlp")
 t = h.get_tensor("model.layers.0.mlp.down_proj.weight")
-h.save_edit("try1", "model.layers.0.mlp.down_proj.weight", t * 0 + t)  # example
-out = h.forward_pass(max_examples=16)   # spends 1 budget
+h.save_edit("try1", "model.layers.0.mlp.down_proj.weight", t.clone())
+out = h.forward_pass(max_examples=8)   # spends 1 budget
 h.export()
 ```
