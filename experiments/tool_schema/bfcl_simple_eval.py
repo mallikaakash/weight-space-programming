@@ -187,6 +187,8 @@ def score_with_official_ast(
 
 
 def main() -> int:
+    import os
+
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--model-dir", type=Path, default=MODEL_DIR)
     p.add_argument(
@@ -200,7 +202,22 @@ def main() -> int:
     p.add_argument("--max-new-tokens", type=int, default=128)
     p.add_argument("--tag", default="bfcl-simple-python")
     p.add_argument("--out-dir", type=Path, default=EXPERIMENT_ROOT / "results" / "bfcl")
+    p.add_argument(
+        "--force",
+        action="store_true",
+        help="Allow running while WSP_LOCK_TEST=1 (orchestrator only).",
+    )
     args = p.parse_args()
+
+    # Holdout lives in bfcl-eval package data; refuse mid-run so the editor cannot
+    # score sealed BFCL items via this script.
+    if os.environ.get("WSP_LOCK_TEST", "0") == "1" and not args.force:
+        print(
+            "Refused: WSP_LOCK_TEST=1. BFCL eval is sealed until the editor run ends "
+            "(orchestrator may pass --force).",
+            file=sys.stderr,
+        )
+        return 3
 
     q_path, a_path = bfcl_data_paths()
     prompts = load_jsonl(q_path)

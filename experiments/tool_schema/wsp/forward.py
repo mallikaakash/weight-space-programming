@@ -15,6 +15,7 @@ from typing import Any
 import torch
 import torch.nn.functional as F
 
+from .bfcl_score import is_bfcl_example, score_bfcl_example
 from .practice import tools_by_name
 from .weights import WeightStore
 
@@ -85,8 +86,9 @@ def inspect_one(
     model = store.model
     messages = build_messages(ex)
     prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    # Expected tool call as the assistant continuation (teacher-forced target).
-    expected = ex.get("expected")
+    # Expected call as the assistant continuation (teacher-forced target).
+    # BFCL rows use expected_call ([fn(...)]); tool-schema rows use expected JSON.
+    expected = ex.get("expected_call", ex.get("expected"))
     if isinstance(expected, dict):
         import json as _json
 
@@ -223,16 +225,21 @@ class ForwardService:
                 max_new_tokens=max_new_tokens,
                 temperature=temperature,
             )
-            scores = score_example(ex["expected"], completion, self.tools)
+            if is_bfcl_example(ex):
+                scores = score_bfcl_example(ex, completion)
+                expected_out = ex.get("expected_call")
+            else:
+                scores = score_example(ex["expected"], completion, self.tools)
+                expected_out = ex["expected"]
             rows.append(
                 {
                     "id": ex["id"],
-                    "tier": ex.get("tier"),
+                    "tier": ex.get("tier") or ex.get("task"),
                     "split": ex.get("split"),
-                    "user": ex["user"],
-                    "expected": ex["expected"],
+                    "user": ex["user"][:400],
+                    "expected": expected_out,
                     "completion": completion,
-                    "scores": {k: v for k, v in scores.items() if k != "parsed"},
+                    "scores": {k: v for k, v in scores.items() if k not in ("parsed",)},
                     "parsed": scores.get("parsed"),
                 }
             )

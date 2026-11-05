@@ -54,10 +54,21 @@ def seal(seal_dir: Path) -> dict:
         raise SystemExit(f"missing {PRACTICE_TRAIN_PATH}")
     train = _load_jsonl(PRACTICE_TRAIN_PATH)
 
-    # Move sealed eval artifacts out of the repo
-    for src in (SEALED_TEST_PATH, SEALED_FULL_PATH, SEALED_DIR / "splits.json"):
+    # Move sealed eval artifacts out of the repo (tool-schema + BFCL-native).
+    for src in (
+        SEALED_TEST_PATH,
+        SEALED_FULL_PATH,
+        SEALED_DIR / "splits.json",
+        SEALED_DIR / "bfcl_splits.json",
+        SEALED_DIR / "bfcl_test.jsonl",
+    ):
         if src.exists():
             dst = seal_dir / src.name
+            if dst.exists():
+                if dst.is_dir():
+                    shutil.rmtree(dst)
+                else:
+                    dst.unlink()
             shutil.move(str(src), str(dst))
             manifest["moved"].append({"from": str(src), "to": str(dst)})
 

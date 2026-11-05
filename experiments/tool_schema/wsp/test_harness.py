@@ -101,13 +101,21 @@ def test_sandbox_forbids_import():
 def test_practice_train_only():
     assert PRACTICE_TRAIN_PATH.exists(), PRACTICE_TRAIN_PATH
     rows = load_practice("train")
-    assert len(rows) == 40
+    assert len(rows) > 0
     assert all(r.get("split") in (None, "train") for r in rows)
+    # BFCL-native practice is 300/100; legacy tool-schema was 40/20.
+    task = rows[0].get("task")
+    if task == "bfcl_simple_python":
+        assert len(rows) == 300
+        expect_test_n = 100
+    else:
+        assert len(rows) == 40
+        expect_test_n = 20
     report = audit_seal()
     assert report["ok"], report["issues"]
     assert report["overlap"] == []
-    assert report["train_n"] == 40
-    assert report["test_n"] == 20
+    assert report["train_n"] == len(rows)
+    assert report["test_n"] == expect_test_n
 
 
 def test_forward_budget_aliases():
