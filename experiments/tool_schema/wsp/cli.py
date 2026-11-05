@@ -93,9 +93,31 @@ def cmd_smoke_edit(args: argparse.Namespace) -> int:
 def cmd_forward(args: argparse.Namespace) -> int:
     h = _harness(args)
     ids = args.ids.split(",") if args.ids else None
-    out = h.forward_pass(example_ids=ids, max_examples=args.max_examples, which=args.which)
-    _print({"summary": out["summary"], "budget": out["budget"]})
+    layers = [int(x) for x in args.layers.split(",")] if args.layers else None
+    out = h.forward_pass(
+        example_ids=ids,
+        max_examples=args.max_examples,
+        which=args.which,
+        mode=args.mode,
+        layers=layers,
+    )
+    payload: dict = {"summary": out["summary"], "budget": out["budget"]}
+    if "paired" in out:
+        payload["paired_head"] = out["paired"][:5]
+    _print(payload)
     return 0
+
+
+def cmd_audit(args: argparse.Namespace) -> int:
+    from wsp.leakage_guard import assert_forward_log_train_only, audit_seal
+
+    report = audit_seal()
+    if args.session_id:
+        h = _harness(args)
+        report["session_forward"] = assert_forward_log_train_only(h.session_dir)
+        report["session_status"] = h.status()["forward"]
+    _print(report)
+    return 0 if report.get("ok") else 1
 
 
 def cmd_sandbox(args: argparse.Namespace) -> int:
@@ -137,7 +159,23 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("forward")
     s.add_argument("--ids", default=None)
     s.add_argument("--max-examples", type=int, default=8)
-    s.add_argument("--which", choices=["edited", "base"], default="edited")
+    s.add_argument(
+        "--which",
+        choices=["edited", "base", "both", "original"],
+        default="edited",
+        help="exp8: original/base | edited | both (paired)",
+    )
+    s.add_argument(
+        "--mode",
+        choices=["generate", "inspect", "teacher_forced"],
+        default="generate",
+        help="exp8: generate | teacher_forced/inspect",
+    )
+    s.add_argument(
+        "--layers",
+        default=None,
+        help="Comma-separated layer indices for inspect hidden-state norms",
+    )
     s.set_defaults(func=cmd_forward)
 
     s = sub.add_parser("sandbox")
@@ -145,6 +183,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.set_defaults(func=cmd_sandbox)
 
     sub.add_parser("export").set_defaults(func=cmd_export)
+
+    s = sub.add_parser("audit")
+    s.set_defaults(func=cmd_audit)
     return p
 
 

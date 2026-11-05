@@ -1,0 +1,182 @@
+=== Sealing holdout test material → /tmp/wsp_seal ===
+{
+  "seal_dir": "/tmp/wsp_seal",
+  "moved": [
+    {
+      "from": "/workspace/experiments/tool_schema/eval/sealed/test.jsonl",
+      "to": "/tmp/wsp_seal/test.jsonl"
+    },
+    {
+      "from": "/workspace/experiments/tool_schema/eval/sealed/dataset_full.jsonl",
+      "to": "/tmp/wsp_seal/dataset_full.jsonl"
+    },
+    {
+      "from": "/workspace/experiments/tool_schema/eval/sealed/splits.json",
+      "to": "/tmp/wsp_seal/splits.json"
+    },
+    {
+      "from": "/workspace/experiments/tool_schema/results",
+      "to": "/tmp/wsp_seal/hidden/results"
+    },
+    {
+      "from": "/workspace/artifacts/baselines",
+      "to": "/tmp/wsp_seal/hidden/baselines"
+    }
+  ],
+  "stubbed": [
+    "/workspace/experiments/tool_schema/eval/dataset.jsonl"
+  ]
+}
+=== Leakage audit ===
+{
+  "ok": true,
+  "issues": [],
+  "train_n": 40,
+  "test_n": 20,
+  "overlap": [],
+  "live_dataset_exists": true,
+  "live_test_ids_exposed": [],
+  "WSP_LOCK_TEST": true,
+  "practice_path": "/workspace/experiments/tool_schema/wsp/practice/train.jsonl",
+  "sealed_test_path": "/tmp/wsp_seal/test.jsonl",
+  "sealed_full_exists": true
+}
+=== WSP long editor start session=wsp-p50-20261105T083800Z budget=50 ===
+Edit 1 is still running its paired generate, so I have no result yet. I've used 2 of the 50 forward passes on diagnostics, and the edit pass will make 3.
+
+What I know so far:
+- **Baseline `strict_ok`:** 0.40 on practice.
+- **Failure types:**
+  - Prose or echoed-prompt output instead of JSON.
+  - Wrong tool.
+  - Argument type or unit drift.
+  - Repetition loops.
+- **NLL signal:** teacher-forced NLL is 0.10 on passing items and 0.29 on failing ones.
+
+The next step is to read the paired result. I'll keep Edit 1 only if the gain is clear, otherwise I'll revert it and try a different family. I'll also write the taxonomy and hypotheses into `RUNNING_LOG.md` once I have that result.
+
+The batch is still running: 4 candidate generate passes, one pass each, so 31 of 50 remain once it finishes. I'll read the results when the monitor reports. Then I'll keep any variant that clearly beats the 0.400 baseline and spend the remaining passes on a final paired confirmation.
+
+Waiting on the remaining three candidates (×1.45, layers 16–17, layers 14–15).
+
+Waiting on the last two candidates (layers 16–17 and layers 14–15).
+
+Waiting on the final candidate (layers 14–15).
+
+Waiting for the original brace-neuron run to finish. I'll check that `working_state.pt` loads cleanly before launching anything else, so I don't repeat the collision.
+
+Prose-neuron damping is running its generate pass (21 of 50 once it finishes). I'm waiting on the result, and I won't start another harness process until this one exits.
+
+Batch 2 is running: three generate passes, taking passes 22–24 of 50. I'm not touching the session until it finishes. Results will arrive one candidate at a time.
+
+Waiting for B and C to finish. After that I'll have 26 passes left and need to decide whether any family is worth a deeper dose sweep.
+
+Waiting on C (`o_proj`, heads 3–5, layers 14–19, ×1.2).
+
+Candidate C is still running. When it finishes, the script reverts all edits and prints `DONE`. I'll log batch 2 and plan the remaining 26 passes from that.
+
+Batch 3 is running (D layernorm, E `o_proj` damping, F `v_proj` damping), taking passes 25–27. I'll report the results together once it finishes.
+
+Still waiting on batch 3. No results yet, and 26 passes remain until it reports.
+
+Batch 4 is running (three dose and range variants of the `v_proj` head-1 damping), taking passes 28–30. 23 passes remain before it reports.
+
+The F06 re-run is going (pass 31). When it finishes I'll read the completions for easy-14, easy-19 and hard-06 against the base completions, to see whether the breakage is a clean, fixable mode or random.
+
+Batch 5 is running (layer windows 14–16, 17–19 and 16–17, each at ×0.6), using passes 32–34. A good outcome is a window that keeps easy-13/hard-15/hard-09 fixed without breaking easy-19 or hard-06. I'll read the results when it finishes.
+
+Batch 6 is running the robustness checks (layer 16 alone, layer 17 alone, and ×0.75 on 16–17), using passes 35–37. The batch script reverts to base at the end, so I'll have to reapply the best edit before the final export.
+
+Batch 7 is running (×0.5 and ×0.4 on layers 16–17, ×0.6 on layers 15–17), using passes 38–40. After it, 10 passes remain. I'll pick the best setting, apply it to the session, confirm it with a paired `both` run, and export.
+
+The paired run of the chosen edit (v_proj kv-head 1 ×0.55 on layers 16–17) is going. It will use pass 41 of 50. This edit stays applied in the session, since the script doesn't revert at the end.
+
+Stacked-edit batch 8 is running (S1, S2, S3), using passes 42–44. The script re-applies the confirmed edit at the end, so the session ends in the right state.
+
+Batch 9 is running (S4 `k_proj`, S5 `o_proj`, S6 `v_proj` heads 3–4, all stacked on the confirmed edit), using passes 45–47. The script ends by restoring the confirmed edit.
+
+The last three passes (48–50) are running. When they finish, the budget is fully spent and I'll call `export()`. I'll also check that the edited parameters are only `v_proj` in layers 16 and 17.
+
+I used all 50 forward passes and exported one small edit. It lifted practice `strict_ok` from 0.400 to 0.475, but I picked that edit on the same 40 practice items it was scored on. I did not touch the test split or run `eval_edited.py`.
+
+**What changed:** in layers 16 and 17, `self_attn.v_proj.weight` rows 64:128 (KV head 1) are multiplied by 0.55. No other tensor differs from the base model. The export is at `artifacts/wsp_sessions/wsp-p50-20261105T083800Z/export/edited_state.pt`.
+
+**Evidence on practice (n=40):**
+- **`strict_ok`:** 0.400 → 0.475, with 3 items fixed (easy-13, medium-19, hard-09) and none broken. Two paired runs agreed.
+- **Other metrics:** `parse_ok` rose from 0.725 to 0.825 and `tool_ok` from 0.575 to 0.625.
+- **Dose:** the effect grew as I damped harder: ×0.75 fixed 1 item, ×0.6 and ×0.5 fixed the same 3. ×0.4 fixed those 3 but broke easy-19. Both layers contribute. The neighbouring layer windows (14–16, 17–19, 15–17) did not help.
+
+**Why I expect it to help:** the base model often ends its JSON with one `}` instead of `}}` (easy-13 and hard-15 did, for example), or writes `"kilometers"` for `"km"`. Damping this one value head gave the closing `}}` and the right unit token in the fixed items. I only read this off a handful of completions, so it's a plausible mechanism, not a proven one.
+
+**Caveats:**
+- I tried about 25 variants on these 40 items and kept the best, so +3 items is probably optimistic. It could easily shrink on the holdout.
+- Teacher-forced NLL got slightly worse (0.2100 → 0.2189). This changes how generation finishes, not how likely the answers are overall.
+- Most other families were null or harmful: query/key sharpening, `o_proj`, MLP column scaling, `{`-writing and prose-writing neurons, and layernorm.
+- Stacking a second small edit on top never beat 0.475, so I kept the minimal one.
+
+The failure taxonomy and every attempt with its numbers are in `experiments/tool_schema/wsp/results/RUNNING_LOG.md`.
+=== Unsealing holdout ===
+{
+  "restored": [
+    "/workspace/artifacts/baselines",
+    "/workspace/experiments/tool_schema/results",
+    "/workspace/experiments/tool_schema/eval/sealed/splits.json",
+    "/workspace/experiments/tool_schema/eval/sealed/dataset_full.jsonl",
+    "/workspace/experiments/tool_schema/eval/sealed/test.jsonl"
+  ]
+}
+=== Post-run sealed test eval ===
+Loading base /workspace/models/SmolLM2-360M-Instruct + /workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z/export/edited_state.pt on cpu
+benchmark[wsp-p50-wsp-p50-20261105T083800Z]:   0%|          | 0/20 [00:00<?, ?it/s]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:   5%|▌         | 1/20 [00:01<00:20,  1.06s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  10%|█         | 2/20 [00:02<00:22,  1.23s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  15%|█▌        | 3/20 [00:03<00:18,  1.10s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  20%|██        | 4/20 [00:05<00:25,  1.58s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  25%|██▌       | 5/20 [00:07<00:23,  1.56s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  30%|███       | 6/20 [00:08<00:21,  1.52s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  35%|███▌      | 7/20 [00:10<00:19,  1.50s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  40%|████      | 8/20 [00:11<00:19,  1.59s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  45%|████▌     | 9/20 [00:12<00:15,  1.42s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  50%|█████     | 10/20 [00:14<00:13,  1.32s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  55%|█████▌    | 11/20 [00:15<00:11,  1.30s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  60%|██████    | 12/20 [00:16<00:09,  1.20s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  65%|██████▌   | 13/20 [00:17<00:08,  1.28s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  70%|███████   | 14/20 [00:19<00:09,  1.51s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  75%|███████▌  | 15/20 [00:21<00:07,  1.51s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  80%|████████  | 16/20 [00:22<00:05,  1.34s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  85%|████████▌ | 17/20 [00:23<00:03,  1.25s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  90%|█████████ | 18/20 [00:24<00:02,  1.25s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]:  95%|█████████▌| 19/20 [00:26<00:01,  1.42s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]: 100%|██████████| 20/20 [00:27<00:00,  1.38s/it]benchmark[wsp-p50-wsp-p50-20261105T083800Z]: 100%|██████████| 20/20 [00:27<00:00,  1.38s/it]
+Wrote /workspace/artifacts/baselines/tool_schema_wsp-p50-wsp-p50-20261105T083800Z_20261105T100038Z.json
+{
+  "n": 20,
+  "parse_ok": 0.9,
+  "tool_ok": 0.3,
+  "required_keys": 0.35,
+  "no_hallucinated_keys": 0.45,
+  "types_ok": 0.35,
+  "values_ok": 0.25,
+  "strict_ok": 0.25,
+  "by_tier": {
+    "easy": {
+      "n": 6,
+      "strict_ok": 0.16666666666666666,
+      "parse_ok": 0.8333333333333334,
+      "tool_ok": 0.16666666666666666
+    },
+    "medium": {
+      "n": 7,
+      "strict_ok": 0.2857142857142857,
+      "parse_ok": 1.0,
+      "tool_ok": 0.2857142857142857
+    },
+    "hard": {
+      "n": 7,
+      "strict_ok": 0.2857142857142857,
+      "parse_ok": 0.8571428571428571,
+      "tool_ok": 0.42857142857142855
+    }
+  },
+  "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "tag": "wsp-p50-wsp-p50-20261105T083800Z",
+  "split": "test",
+  "device": "cpu",
+  "temperature": 0.0,
+  "max_new_tokens": 128,
+  "elapsed_sec": 27.62,
+  "timestamp": "2026-11-05T10:00:38.923461+00:00",
+  "session_dir": "/workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z",
+  "edited_state": "/workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z/export/edited_state.pt",
+  "baseline_test_strict_ok": 0.2,
+  "sealed_test_path": "/workspace/experiments/tool_schema/eval/sealed/test.jsonl",
+  "leakage_check": {
+    "ok": true,
+    "n_forward_ids": 2000,
+    "leaked_ids": [],
+    "forward_used": 50,
+    "forward_total": 50
+  }
+}
+=== WSP long editor finished exit=0 ===

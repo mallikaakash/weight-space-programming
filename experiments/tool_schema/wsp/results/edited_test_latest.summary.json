@@ -1,12 +1,12 @@
 {
   "n": 20,
-  "parse_ok": 0.8,
-  "tool_ok": 0.25,
-  "required_keys": 0.3,
-  "no_hallucinated_keys": 0.4,
-  "types_ok": 0.3,
-  "values_ok": 0.2,
-  "strict_ok": 0.2,
+  "parse_ok": 0.9,
+  "tool_ok": 0.3,
+  "required_keys": 0.35,
+  "no_hallucinated_keys": 0.45,
+  "types_ok": 0.35,
+  "values_ok": 0.25,
+  "strict_ok": 0.25,
   "by_tier": {
     "easy": {
       "n": 6,
@@ -16,9 +16,9 @@
     },
     "medium": {
       "n": 7,
-      "strict_ok": 0.14285714285714285,
-      "parse_ok": 0.7142857142857143,
-      "tool_ok": 0.14285714285714285
+      "strict_ok": 0.2857142857142857,
+      "parse_ok": 1.0,
+      "tool_ok": 0.2857142857142857
     },
     "hard": {
       "n": 7,
@@ -29,11 +29,22 @@
   },
   "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
   "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
-  "tag": "wsp-edited",
+  "tag": "wsp-p50-wsp-p50-20261105T083800Z",
   "split": "test",
   "device": "cpu",
   "temperature": 0.0,
   "max_new_tokens": 128,
-  "elapsed_sec": 32.0,
-  "timestamp": "2026-11-05T08:25:42.560907+00:00"
+  "elapsed_sec": 27.62,
+  "timestamp": "2026-11-05T10:00:38.923461+00:00",
+  "session_dir": "/workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z",
+  "edited_state": "/workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z/export/edited_state.pt",
+  "baseline_test_strict_ok": 0.2,
+  "sealed_test_path": "/workspace/experiments/tool_schema/eval/sealed/test.jsonl",
+  "leakage_check": {
+    "ok": true,
+    "n_forward_ids": 2000,
+    "leaked_ids": [],
+    "forward_used": 50,
+    "forward_total": 50
+  }
 }

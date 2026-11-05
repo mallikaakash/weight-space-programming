@@ -1,14 +1,15 @@
-# WSP run2 — SmolLM2-360M tool-schema (hypothesis-driven)
+# WSP long run (exp8 / p50c-style) — SmolLM2-360M tool-schema
 
-Work in `/workspace`.
+Work in `/workspace`. Read `experiments/tool_schema/wsp/PROTOCOL.md` if you need the mapping.
 
 ## Environment
 
-- Weights: `models/SmolLM2-360M-Instruct`
+- Weights: `models/SmolLM2-360M-Instruct` (read via harness)
 - Harness: `experiments/tool_schema/wsp/`
-- Train practice: 40 examples (auto-loaded)
-- Forward budget: **{{BUDGET}}**
-- Session id: **{{SESSION_ID}}**  ← always reuse this exact id
+- Practice (only): `experiments/tool_schema/wsp/practice/train.jsonl` — **40 train examples with answers**
+- Forward budget: **{{BUDGET}}** — use **all** of them
+- Session id: **{{SESSION_ID}}** ← always reuse this exact id
+- Test split: **sealed**. Do not open eval datasets, sealed folders, or run `eval_edited.py`.
 
 ## Drive the harness (resume-safe)
 
@@ -18,35 +19,32 @@ sys.path.insert(0, "experiments/tool_schema")
 from wsp.harness import WSPHarness
 
 h = WSPHarness(forward_budget={{BUDGET}}, session_id="{{SESSION_ID}}")
-print(h.status())  # should show resumed budget/edits if re-entering
+print(h.status())  # resumed budget/edits if re-entering
 
-out = h.forward_pass(max_examples=16, which="base")
+# Diagnostic generation (1 pass)
+out = h.forward_pass(mode="generate", which="base", max_examples=40)
 print(out["summary"], out["budget"])
-# inspect out["examples"] failures → log taxonomy
 
-# hypothesis edit...
+# Optional inspect (1 pass)
+ins = h.forward_pass(mode="inspect", which="base", max_examples=40, layers=[8, 16, 24])
+print(ins["summary"])
+
+# After an edit — paired comparison (1 pass)
 t = h.get_tensor(param)
-h.save_edit("run2_hypA", param, t_new, note="...")
-out2 = h.forward_pass(max_examples=16, which="edited")
+h.save_edit("hypA", param, t_new, note="...")
+both = h.forward_pass(mode="generate", which="both", max_examples=40)
+print(both["summary"])
 
+# When budget remaining hits 0:
 h.export()
 ```
 
-Final test eval:
+## Deliverables (before you stop)
 
-```bash
-python3 experiments/tool_schema/wsp/eval_edited.py \
-  --session-dir artifacts/wsp_sessions/{{SESSION_ID}} \
-  --tag wsp-run2
-```
+1. Failure taxonomy + every hypothesis in `experiments/tool_schema/wsp/results/RUNNING_LOG.md`
+2. Full budget consumed (`forward_used == {{BUDGET}}`)
+3. `export()` written under `artifacts/wsp_sessions/{{SESSION_ID}}/export/`
+4. Final plain-English summary: what changed, evidence, why you expect it to help
+5. **Do not** score the test split yourself
 
-Ensure `experiments/tool_schema/wsp/results/edited_test_latest.summary.json` is updated.
-
-## Deliverables
-
-1. Failure taxonomy in `experiments/tool_schema/wsp/results/RUNNING_LOG.md`
-2. ≥2 distinct hypotheses attempted with measured train forwards
-3. Export + test summary vs 20% baseline
-4. Explicit note: what moved (`tool_ok` / `values_ok` / `strict_ok`) and what did not
-
-Start now with session `{{SESSION_ID}}`.
+Start now with session `{{SESSION_ID}}`. Continue until every forward pass is used.

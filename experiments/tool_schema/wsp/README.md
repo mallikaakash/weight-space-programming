@@ -1,55 +1,56 @@
-# WSP harness (preparation)
+# WSP harness (exp8-aligned)
 
 Weight-space programming harness for **SmolLM2-360M-Instruct** on the tool-schema skill.
 
-This is the **prep layer only**: weight store, guarded `save_edit`, train-split practice, metered `forward_pass`, restricted sandbox. The editor-agent loop (Opus) starts in a later run.
+**Editor:** Claude Code (via `run_editor_long.sh`), matching Takehi Experiment 8 / `p50c` protocol.  
+See [`PROTOCOL.md`](PROTOCOL.md) for the exact mapping and leakage audit.
 
 ## Layout
 
 | Module | Role |
 |--------|------|
 | `weights.py` | Base + working `state_dict`, protected params, `save_edit` / revert / diff / export |
-| `practice.py` | Loads **train** split only |
-| `forward.py` | Budgeted generate+score on practice |
+| `practice/` | Sealed **train-only** `train.jsonl` (editor-visible) |
+| `practice.py` | Loads practice train only |
+| `forward.py` | Budgeted `generate` / `inspect`; `which=base\|edited\|both` |
 | `harness.py` | Session API + `artifacts/wsp_sessions/<id>/` |
-| `sandbox.py` | Restricted `exec` for future editor scripts |
-| `cli.py` | Smoke / ops CLI |
+| `sandbox.py` | Restricted `exec` for editor scripts |
+| `leakage_guard.py` / `seal_for_run.py` | Train/test seal + quarantine |
+| `eval_edited.py` | Post-run test score (budget gate) |
+| `cli.py` | Ops CLI |
+| `PROTOCOL.md` | exp8 mapping |
 
-## Guards (blog-style)
+## Guards (exp8 / blog)
 
 - No gradients / training
 - Refuse edits to `embed_tokens`, `lm_head`, final `model.norm`
 - Refuse whole-tensor scalar rescale
-- Practice = **train** only; test stays holdout
+- Practice = **train** only; test quarantined during long runs
+- Failed forward requests do not consume budget
+- `eval_edited` refuses until budget exhausted (unless operator `--force`)
 
 ## Quick start
 
 ```bash
-# unit tests (no model download required for guards)
 python3 experiments/tool_schema/wsp/test_harness.py
+python3 experiments/tool_schema/wsp/cli.py audit
 
-# live smoke against local models/SmolLM2-360M-Instruct
-# (global flags before the subcommand)
 python3 experiments/tool_schema/wsp/cli.py --budget 10 --session-id demo init
-python3 experiments/tool_schema/wsp/cli.py --session-id demo list-params --substr mlp --limit 10
-python3 experiments/tool_schema/wsp/cli.py --budget 5 --session-id demo smoke-edit --forward-n 3
-python3 experiments/tool_schema/wsp/cli.py --session-id demo status
+python3 experiments/tool_schema/wsp/cli.py --session-id demo forward \
+  --mode generate --which base --max-examples 8
 ```
 
-Session state lands in `artifacts/wsp_sessions/` (gitignored via `artifacts/*`).
-
-## Claude Code editor run
+## Long Claude Code run (p50c-style, budget 50)
 
 ```bash
-# default budget 15
-bash experiments/tool_schema/wsp/run_editor.sh
-
-WSP_BUDGET=10 WSP_SESSION_ID=wsp-manual bash experiments/tool_schema/wsp/run_editor.sh
+WSP_BUDGET=50 bash experiments/tool_schema/wsp/run_editor_long.sh
 ```
 
+This seals holdout test material under `/tmp/wsp_seal`, sets `WSP_LOCK_TEST=1`,
+launches Claude Code, then unseals and runs `eval_edited.py --force`.
+
 Prompts: `editor/SYSTEM.md`, `editor/USER.md`.  
-Live log: `results/RUNNING_LOG.md`.  
-After export: `python3 experiments/tool_schema/wsp/eval_edited.py --session-dir artifacts/wsp_sessions/<id>`.
+Live log: `results/RUNNING_LOG.md`.
 
 ## Editor API
 
@@ -57,10 +58,9 @@ After export: `python3 experiments/tool_schema/wsp/eval_edited.py --session-dir 
 import sys
 sys.path.insert(0, "experiments/tool_schema")
 from wsp.harness import WSPHarness
-h = WSPHarness(forward_budget=25, session_id="demo")
-h.list_params("mlp")
-t = h.get_tensor("model.layers.0.mlp.down_proj.weight")
-h.save_edit("try1", "model.layers.0.mlp.down_proj.weight", t.clone())
-out = h.forward_pass(max_examples=8)   # spends 1 budget
+h = WSPHarness(forward_budget=50, session_id="wsp-p50-demo")
+h.forward_pass(mode="generate", which="base", max_examples=40)   # 1 pass
+h.forward_pass(mode="inspect", which="edited", max_examples=40, layers=[16, 24])
+h.forward_pass(mode="generate", which="both", max_examples=40)   # paired
 h.export()
 ```

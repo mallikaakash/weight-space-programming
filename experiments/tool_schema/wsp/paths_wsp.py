@@ -11,12 +11,21 @@ MODEL_ID = "HuggingFaceTB/SmolLM2-360M-Instruct"
 MODELS_DIR = REPO_ROOT / "models"
 MODEL_DIR = MODELS_DIR / "SmolLM2-360M-Instruct"
 HF_HOME = MODELS_DIR / "hf_home"
+
+# Sealed practice (editor-visible) and sealed holdout (post-run only).
+PRACTICE_DIR = WSP_ROOT / "practice"
+PRACTICE_TRAIN_PATH = PRACTICE_DIR / "train.jsonl"
+SEALED_DIR = EXPERIMENT_ROOT / "eval" / "sealed"
+SEALED_TEST_PATH = SEALED_DIR / "test.jsonl"
+SEALED_FULL_PATH = SEALED_DIR / "dataset_full.jsonl"
+
+# Legacy full dataset path (may be quarantined / train-stubbed during a long run).
 EVAL_PATH = EXPERIMENT_ROOT / "eval" / "dataset.jsonl"
 TOOLS_PATH = EXPERIMENT_ROOT / "tools.json"
 BASELINES_DIR = REPO_ROOT / "artifacts" / "baselines"
 SESSIONS_DIR = REPO_ROOT / "artifacts" / "wsp_sessions"
 
-# Blog-style guardrails: refuse edits to embeddings / lm_head / final norm.
+# Blog / exp8-style guardrails: refuse edits to embeddings / lm_head / final norm.
 PROTECTED_PARAM_SUBSTRINGS = (
     "embed_tokens",
     "wte",
