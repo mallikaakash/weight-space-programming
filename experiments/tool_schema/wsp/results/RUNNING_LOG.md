@@ -42,3 +42,12 @@ _Awaiting first editor launch…_
 - edited summary present: `edited_test_latest.summary.json`
 - status: **finished** (exit 0)
 
+
+---
+
+## Run2 plan
+
+- Goal: hypothesis-driven edits targeting wrong-tool routing / arg drift / format leakage.
+- Avoid run1 blind top-magnitude scaling.
+- Session persistence is fixed (`working_state.pt` + `budget.json`).
+
