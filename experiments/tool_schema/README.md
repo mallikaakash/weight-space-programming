@@ -40,3 +40,16 @@ python3 experiments/tool_schema/test_score.py  # scorer unit tests
 Primary metric: **`strict_ok`** — parseable JSON object with correct `tool`, required argument keys, no hallucinated keys (`no_hallucinated_keys`: `arguments` has no keys beyond the gold set), types, and values.
 
 Also reported: `parse_ok`, `tool_ok`, `no_hallucinated_keys`, per-tier rates (`easy` / `medium` / `hard`).
+
+## WSP harness (prep)
+
+Weight store + guarded edits + train practice + metered forward passes:
+
+See [wsp/README.md](wsp/README.md).
+
+```bash
+python3 experiments/tool_schema/wsp/test_harness.py
+python3 experiments/tool_schema/wsp/cli.py smoke-edit --budget 5 --forward-n 3
+```
+
+Editor-agent WSP loop is **not** started here — next run.

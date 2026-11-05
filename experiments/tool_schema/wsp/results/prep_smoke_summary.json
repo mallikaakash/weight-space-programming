@@ -1,0 +1,11 @@
+{
+  "session_id": "prep-smoke-001",
+  "param_edited": "model.layers.0.mlp.gate_proj.weight",
+  "forward_used": 1,
+  "forward_total": 5,
+  "practice_n": 40,
+  "forward_summary_strict_ok": 1.0,
+  "forward_n": 3,
+  "reverted": true,
+  "note": "Live smoke on SmolLM2-360M-Instruct: epsilon edit, one metered forward on train practice, revert."
+}
