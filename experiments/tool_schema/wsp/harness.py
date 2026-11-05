@@ -80,6 +80,7 @@ class WSPHarness:
         self._persist_state(event="resume" if resumed else "init")
 
     def status(self) -> dict[str, Any]:
+        task = (self.practice[0].get("task") if self.practice else None) or "tool_schema"
         return {
             "session_id": self.session_id,
             "session_dir": str(self.session_dir),
@@ -93,6 +94,7 @@ class WSPHarness:
             "practice_n": len(self.practice),
             "practice_ids_head": [ex["id"] for ex in self.practice[:5]],
             "practice_source": "wsp/practice/train.jsonl",
+            "practice_task": task,
             "test_sealed": True,
         }
 

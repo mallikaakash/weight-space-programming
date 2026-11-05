@@ -180,3 +180,12 @@ More stacks on top of the confirmed edit: + k_proj kv-head1 x0.85 / + o_proj gro
 - Official probe: BFCL v4 `simple_python` AST via `bfcl_simple_eval.py` (limit 100 on CPU; not full leaderboard).
 - Wrapper: `wsp/run_editor_p100_bfcl.sh`.
 
+
+## BFCL-native pivot 2026-11-05T14:36:03Z
+
+- Practice = BFCL v4 simple_python train **300** (`practice/train.jsonl`)
+- Holdout = remaining **100** (`eval/sealed/test.jsonl`)
+- Forward metric = official AST (`strict_ok` alias)
+- Budget = 100; editor = Claude Opus 5.5 `--effort high`
+- Launcher: `wsp/run_editor_bfcl_native.sh`
+
