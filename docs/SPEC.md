@@ -114,6 +114,24 @@ Orchestrator flow: Cursor agent runs `scripts/claude-build.sh` (Claude Code subp
 
 ---
 
+### REQ-010: WSP harness package (prep only — no editor agent run)
+
+**Acceptance**
+
+- Add `experiments/tool_schema/wsp/` with weight store, practice loader (train only), metered forward service, session harness, restricted sandbox, CLI, README.
+- `WeightStore` supports `list_params`, `get_tensor`, `save_edit`, `revert_param` / `revert_all`, `diff_stats`, `export_state`.
+- Guardrails: refuse protected params (`embed_tokens`, `lm_head`, final `model.norm`); refuse `requires_grad` tensors; refuse whole-tensor scalar rescale; `torch.set_grad_enabled(False)` during sandbox exec.
+- Practice prompts load **train split only**; harness constructor rejects `practice_split != "train"`.
+- `ForwardService.forward_pass` consumes one budget unit and returns scored practice batch (`edited` or temporary `base`).
+- Sessions persist under `artifacts/wsp_sessions/<id>/` (`state.json`, events log).
+- `python3 experiments/tool_schema/wsp/test_harness.py` passes.
+- Live smoke (if model present): `cli.py smoke-edit` completes one edit + forward + revert.
+- Do **not** run an Opus/Claude editor weight-programming loop in this change.
+
+**Verification hint:** `wsp/README.md` exists; unit tests pass; optional smoke writes a session under `artifacts/wsp_sessions/`.
+
+---
+
 ## Rubric checklist (orchestrator)
 
 - [ ] **REQ-001:** Spec-driven workflow exists — orchestrator scripts, hooks, and docs in place.
@@ -124,6 +142,7 @@ Orchestrator flow: Cursor agent runs `scripts/claude-build.sh` (Claude Code subp
 - [ ] **REQ-007:** Stability re-runs on the test split — `results/stability.json`.
 - [ ] **REQ-008:** Failure spot-check report — `results/spotcheck.md`.
 - [ ] **REQ-009:** Refresh checked-in baseline on test split — summary + README.
+- [ ] **REQ-010:** WSP harness package (prep only — no editor agent run).
 
 ---
 

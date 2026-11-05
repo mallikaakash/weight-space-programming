@@ -17,6 +17,15 @@ Details: [experiments/tool_schema/README.md](experiments/tool_schema/README.md).
 
 Latest baseline summary: [experiments/tool_schema/results/base_latest.summary.json](experiments/tool_schema/results/base_latest.summary.json).
 
+## WSP harness (prep for next run)
+
+```bash
+python3 experiments/tool_schema/wsp/test_harness.py
+python3 experiments/tool_schema/wsp/cli.py smoke-edit --budget 5 --forward-n 3
+```
+
+Details: [experiments/tool_schema/wsp/README.md](experiments/tool_schema/wsp/README.md).
+
 ## Orchestrator (optional)
 
 1. Edit requirements in `docs/SPEC.md`.
