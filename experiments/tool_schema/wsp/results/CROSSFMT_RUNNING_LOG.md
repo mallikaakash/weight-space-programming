@@ -68,3 +68,8 @@ Eval design (`experiments/tool_schema/bfcl_category_eval.py`):
 ## BFCL cross-format bench finished 2026-11-06T06:43:55Z
 - exit_code: `0`
 
+
+## Tweet-thread handoff finished 2026-11-06T07:09:09Z
+- deliverable: `experiments/tool_schema/wsp/results/TWEET_THREAD_AAKASH.md`
+- exit_code: `0`
+- voice: @malliktwts / FAFO rewrite via Claude Opus high
