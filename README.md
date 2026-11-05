@@ -25,6 +25,20 @@ Earlier all-60 figure (~33% strict) is **not** comparable after holdout + halluc
 
 ---
 
+## First WSP editor run (Claude Code)
+
+Session `wsp-run1-20261105T081527Z`, budget 12 (≈6 metered train forwards used).
+
+| Eval | strict_ok | parse_ok | tool_ok |
+|------|-----------|----------|---------|
+| Test baseline | **20%** | 80% | 25% |
+| Test after edits | **20%** | 80% | 25% |
+| Train practice (base, n=40) | 40% | ~73% | ~58% |
+
+Sparse magnitude edits on late MLP/attn `o_proj`/`down_proj` did **not** move test `strict_ok`. Log: `experiments/tool_schema/wsp/results/RUNNING_LOG.md`. Summary: `edited_test_latest.summary.json`.
+
+---
+
 ## Repo layout
 
 | Path | Role |

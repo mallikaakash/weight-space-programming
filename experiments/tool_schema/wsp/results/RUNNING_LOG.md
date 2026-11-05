@@ -28,3 +28,17 @@ _Awaiting first editor launch…_
 - **Bug found:** each new Python process re-inited the harness and reset budget/edits. Fixed mid-run: sessions now persist `working_state.pt` + `budget.json` and **resume** on the same `session_id`.
 - Reconstructed `budget.json` from `events.jsonl` so remaining budget is honest going forward.
 
+- trial `L29 down_proj top-1% magnitude x0.85`: 0.4 strict (base 0.40), parse 0.675, tool 0.55
+- trial `L20 o_proj top-2% x1.2`: 0.4 strict (base 0.40), parse 0.8, tool 0.6
+- trial `L12 o_proj top-2% x1.2`: 0.4 strict (base 0.40), parse 0.775, tool 0.575
+- 2 base passes (8-ex, 40-ex): base train strict_ok 0.40 (parse .725, tool .575). Failures: wrong-tool routing, unit-name drift (kg vs kilograms), no stop after JSON, free text.
+- 4 edited trials (sparse top-magnitude scaling in L29 down_proj x1.15/x0.85, L20/L12 o_proj x1.2): all strict_ok 0.40, no gain.
+- Kept L20 o_proj edit, exported. Total metered passes: 6 of 12 (the budget counter is per-process, so I counted manually).
+- TEST (n=20): strict_ok 0.20, parse 0.80, tool 0.25 — identical to baseline. No skill added.
+
+## Run finished 2026-11-05T08:26:00Z
+
+- exit_code: `0`
+- edited summary present: `edited_test_latest.summary.json`
+- status: **finished** (exit 0)
+
