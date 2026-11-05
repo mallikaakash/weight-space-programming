@@ -64,3 +64,7 @@ Eval design (`experiments/tool_schema/bfcl_category_eval.py`):
 - Raw official decode (no `[...]` extraction) gives identical accuracies in every cell.
 - `--prompt-style bfcl` not run at full scale (smoke base 1/36 → all-floor comparison); documented.
 - Wrote `experiments/tool_schema/results/bfcl/CROSSFMT_BASE_VS_EDITED.md`, README "Cross-format probe" subsection. `edited_state.pt` untouched.
+
+## BFCL cross-format bench finished 2026-11-06T06:43:55Z
+- exit_code: `0`
+
