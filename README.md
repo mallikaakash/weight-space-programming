@@ -95,6 +95,11 @@ artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/
   edits.json        # edit ledger + changed_params (32 names)
 ```
 
+**Committed on GitHub (metadata only, no weights):**  
+`experiments/tool_schema/results/bfcl/wsp-bfcl-p100-20261105T143615Z/edits.json`
+
+That file is the harness edit ledger: `model_dir`, the final `changed_params` list (32 tensor names), and a chronological `edits[]` of every `save_edit` / `revert_all` during the session (`name`, `param`, `timestamp`, `numel`, `note`). It does **not** store weight values — you still need `edited_state.pt` or a packed delta to run the model.
+
 ### Recommended: publish a **delta** (~0.2GB), not the full 1.6GB
 
 Only 32 tensors differ from base `HuggingFaceTB/SmolLM2-360M-Instruct`. Pack them, host the pack, then rebuild a full `edited_state.pt` on any machine that already has the base model:
