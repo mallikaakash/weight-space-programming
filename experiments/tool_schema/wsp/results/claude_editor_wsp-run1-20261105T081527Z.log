@@ -1,0 +1,18 @@
+=== WSP editor start session=wsp-run1-20261105T081527Z budget=12 ===
+The edits added no skill: test `strict_ok` is **20%**, the same as the baseline (parse 80%, tool 25%).
+
+**Practice and edits**
+- On the 40 train examples the base model scores `strict_ok` 0.40 (parse 0.725, tool 0.575). Easy examples do much better than medium or hard.
+- The failures are wrong-tool routing, unit names drifting ("kg" instead of "kilograms"), output that doesn't stop after the JSON, and free-text answers.
+- I tried four sparse edits: scaling the top-magnitude entries of the layer 29 `down_proj` (×1.15 and ×0.85) and of the `o_proj` in layers 20 and 12 (×1.2). They were blind guesses, because I had no gradient to point me at a better edit.
+- All four left train `strict_ok` at 0.40. The layer 20 `o_proj` edit raised parse and tool slightly (0.80 and 0.60), so I kept it.
+
+**Budget:** I used 6 of the 12 forward passes. The harness budget counter resets in each new Python process, so I counted passes by hand. I stopped there because more blind sweeps looked unlikely to help.
+
+**Where things are:**
+- The exported session is in `artifacts/wsp_sessions/wsp-run1-20261105T081527Z/`.
+- The test summary is `experiments/tool_schema/wsp/results/edited_test_latest.summary.json`.
+- The run log is `experiments/tool_schema/wsp/results/RUNNING_LOG.md`.
+
+**What would need to change:** a targeted fix probably needs a known mechanism, such as a routing circuit or a per-tool output pattern, found by inspecting activations. Random magnitude scaling doesn't hit one.
+=== WSP editor finished exit=0 ===
