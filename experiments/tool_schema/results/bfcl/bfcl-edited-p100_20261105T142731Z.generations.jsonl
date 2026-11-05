@@ -1,0 +1,100 @@
+{"id": "simple_python_0", "completion": "[math.sqrt(base*base+height*height)]"}
+{"id": "simple_python_1", "completion": "[math.factorial(number=5)]"}
+{"id": "simple_python_2", "completion": "[math.hypot(4, 5)]"}
+{"id": "simple_python_3", "completion": "[algebra.quadratic_roots(a=1, b=-3, c=2)]"}
+{"id": "simple_python_4", "completion": "[solve_quadratic_equation(a=2, b=6, c=5)]"}
+{"id": "simple_python_5", "completion": "[solve_quadratic(a=3, b=-11, c=-4)]"}
+{"id": "simple_python_6", "completion": "[solve_quadratic(a=2, b=5, c=3)]"}
+{"id": "simple_python_7", "completion": "[math.pi * radius**2]"}
+{"id": "simple_python_8", "completion": "[geometry.area_circle(radius=10)]"}
+{"id": "simple_python_9", "completion": "[geometry.calculate_area_circle(radius=5)]"}
+{"id": "simple_python_10", "completion": "[math.sqrt(base**2 + height**2)]"}
+{"id": "simple_python_11", "completion": "[math.sqrt(base*height)]"}
+{"id": "simple_python_12", "completion": "[geometry.circumference(radius=3)]"}
+{"id": "simple_python_13", "completion": "[math.quad(x=1, x=3, method='trapezoidal')]"}
+{"id": "simple_python_14", "completion": "[math.derivative(3*x**2 + 2*x - 1)]"}
+{"id": "simple_python_15", "completion": "[simpson(start_x=-2, end_x=3, method='simpson')]"}
+{"id": "simple_python_16", "completion": "[calculus.derivative(2x^2, 1, 'x')]"}
+{"id": "simple_python_17", "completion": "[get_prime_factors(number=450, formatted=False)]"}
+{"id": "simple_python_18", "completion": "[number_analysis.prime_factors(number=123456)]"}
+{"id": "simple_python_19", "completion": "[math.gcd(num1=40, num2=50)]"}
+{"id": "simple_python_20", "completion": "[math.hcf(number1=36, number2=24)]"}
+{"id": "simple_python_21", "completion": "[number_theory.gcd(36, 48)]"}
+{"id": "simple_python_22", "completion": "[math.gcd(12, 15)]"}
+{"id": "simple_python_23", "completion": "[prime_factorize(number=60)]"}
+{"id": "simple_python_24", "completion": "[math.gcd(12, 18)]"}
+{"id": "simple_python_25", "completion": "[math.sqrt(2 * gravity * height)]"}
+{"id": "simple_python_26", "completion": "[calculate_velocity(distance=50, duration=2)]"}
+{"id": "simple_python_27", "completion": "[final_velocity(initial_velocity=10, acceleration=2, time=5)]"}
+{"id": "simple_python_28", "completion": "[calculate_displacement(initial_velocity=10, time=5, acceleration=9.8)]"}
+{"id": "simple_python_29", "completion": "[math.sqrt(2 * gravity * time)]"}
+{"id": "simple_python_30", "completion": "[kinematics.final_velocity_from_distance(acceleration=4, distance=300)]"}
+{"id": "simple_python_31", "completion": "[calculate_final_velocity(initial_velocity=0, acceleration=9.8, time=5)]"}
+{"id": "simple_python_32", "completion": "[calculate_final_speed(initial_velocity=100, height=100, gravity=9.8)]"}
+{"id": "simple_python_33", "completion": "[get_directions('Sydney', 'Melbourne', 'fastest')]"}
+{"id": "simple_python_34", "completion": "[travel_itinerary_generator('Tokyo', 7, 100, 'nature')]"}
+{"id": "simple_python_35", "completion": "[vegan_restaurant.find_nearby(location=\"New York\", operating_hours=24)]"}
+{"id": "simple_python_36", "completion": "[get_shortest_driving_distance(origin='New York City', destination='Washington D.C.', unit='km')]"}
+{"id": "simple_python_37", "completion": "[route.estimate_time(start_location='San Francisco', end_location='Los Angeles', stops=['Santa Barbara', 'Monterey'])]"}
+{"id": "simple_python_38", "completion": "[calculate_electrostatic_potential(charge1=1e-9, charge2=2e-9, distance=0.05)]"}
+{"id": "simple_python_39", "completion": "[calculate_electric_field(charge=2, distance=3)]"}
+{"id": "simple_python_40", "completion": "[math.magnetic_field(current=5, radius=4, permeability=12.57e10)]"}
+{"id": "simple_python_41", "completion": "[math.electromagnetic_force(charge1=5, charge2=7, distance=3, medium_permittivity=8.854e-12)]"}
+{"id": "simple_python_42", "completion": "[calculate_resonant_frequency(inductance=50e-6, capacitance=100e-6)]"}
+{"id": "simple_python_43", "completion": "[math.magnetic_field_strength(current=20, distance=10, permeability=12.57e-7)]"}
+{"id": "simple_python_44", "completion": "[calculate_electric_field_strength(charge=0.01, distance=4, medium='vacuum')]"}
+{"id": "simple_python_45", "completion": "[thermo.calculate_energy(mass=100, phase_transition='liquid', substance='water')]"}
+{"id": "simple_python_46", "completion": "[calculate_final_temperature(mass1=20, temperature1=30, mass2=15, temperature2=60, specific_heat_capacity=4.2)]"}
+{"id": "simple_python_47", "completion": "[get_boiling_melting_points('water', 5000)]"}
+{"id": "simple_python_48", "completion": "[calculate_density(mass=45, volume=15)]"}
+{"id": "simple_python_49", "completion": "[calc_absolute_pressure(atm_pressure=1, gauge_pressure=2)]"}
+{"id": "simple_python_50", "completion": "[entropy_change.calculate(substance='ice', mass=1, initial_temperature=0, final_temperature=100, pressure=1)]"}
+{"id": "simple_python_51", "completion": "[calculate_entropy_change(initial_temp=300, final_temp=400, heat_capacity=5)]"}
+{"id": "simple_python_52", "completion": "[calc_heat_capacity(temp=298, volume=10)]"}
+{"id": "simple_python_53", "completion": "[fetch_DNA_sequence(DNA_id='DNA123', format='fasta', upstream=0)]"}
+{"id": "simple_python_54", "completion": "[get_protein_sequence('BRCA1', 'human')]"}
+{"id": "simple_python_55", "completion": "[biology.get_cell_info(cell_type='human', detailed=True)]"}
+{"id": "simple_python_56", "completion": "[cellbio.get_proteins('plasma_membrane', include_description=True)]"}
+{"id": "simple_python_57", "completion": "[calculate_cell_density(optical_density=0.6, dilution=5, calibration_factor=1e9)]"}
+{"id": "simple_python_58", "completion": "[cell_biology.function_lookup('ATP synthase', 'mitochondria', True)]"}
+{"id": "simple_python_59", "completion": "[calculate_molecular_weight(compound='C6H12O6', to_unit='g/mol')]"}
+{"id": "simple_python_60", "completion": "[mutation_type.find(snp_id='rs6034464', species='Homo sapiens')]"}
+{"id": "simple_python_61", "completion": "[diabetes_prediction(weight=150, height=5, activity_level='light')]"}
+{"id": "simple_python_62", "completion": "[analyze_dna_sequence('AGTCGATCGAACGTACGTACG', 'AGTCCATCGAACGTACGTACG', 'substitution')]"}
+{"id": "simple_python_63", "completion": "[genetics.calculate_similarity(species1='human', species2='chimp', format='percentage')]"}
+{"id": "simple_python_64", "completion": "[calculate_genotype_frequency(allele_frequency=0.3, genotype='AA')]"}
+{"id": "simple_python_65", "completion": "[calculate_density(country='Brazil', year='2022', population=213000000, land_area=8500000)]"}
+{"id": "simple_python_66", "completion": "[ecosystem.precipitation_stats(location='Amazon rainforest', time_frame='last_six_months')]"}
+{"id": "simple_python_67", "completion": "[bird_identify(color='green', habitat='forest', size='small')]"}
+{"id": "simple_python_68", "completion": "[forest_growth_forecast(location='Yellowstone', years=5, include_human_impact=True)]"}
+{"id": "simple_python_69", "completion": "[ecosystem.get_turtle_population('Mississippi river', 2020)]"}
+{"id": "simple_python_70", "completion": "[calculate_vehicle_emission(vehicle_type='gas', miles_driven=1500, emission_factor=355.48)]"}
+{"id": "simple_python_71", "completion": "[generate_DNA_sequence(length=100, preferences=[G, C])]"}
+{"id": "simple_python_72", "completion": "[calculate_fitness(trait_values=[0.8, 0.7], trait_contributions=[0.4, 0.6])]"}
+{"id": "simple_python_73", "completion": "[population_projections(country='United States', years=20, growth_rate=1.2)]"}
+{"id": "simple_python_74", "completion": "[calculate_bacteria_evolution_rate(start_population=5000, duplication_frequency=1, duration=6, generation_time=20)]"}
+{"id": "simple_python_75", "completion": "[elephant_population_estimate(current_population=35000, growth_rate=0.015, years=5)]"}
+{"id": "simple_python_76", "completion": "[predict_evolution_rate(species='Homo Sapiens', years=50, model='Darwin')]"}
+{"id": "simple_python_77", "completion": "[restaurant.find_nearby(location=\"Los Angeles\", dietary_preference=[\"vegan\"])]"}
+{"id": "simple_python_78", "completion": "[average_temperature('Austin', 3, 'Celsius')]"}
+{"id": "simple_python_79", "completion": "[create_histogram(data=[85, 90, 88, 92, 86, 89, 91], bins=5)]"}
+{"id": "simple_python_80", "completion": "[find_restaurants(\"Manhattan\", \"Thai\", 5, [\"vegan\"])]"}
+{"id": "simple_python_81", "completion": "[map_routing.fastest_route(start_location='San Francisco', end_location='Los Angeles', avoid_tolls=False)]"}
+{"id": "simple_python_82", "completion": "[math.average(numbers)]"}
+{"id": "simple_python_83", "completion": "[calculate_distance(coord1=(33.4484, 112.0740), coord2=(34.0522, 118.2437), unit='miles')]"}
+{"id": "simple_python_84", "completion": "[calculate_bmi(weight=85, height=180)]"}
+{"id": "simple_python_85", "completion": "[geo_distance.calculate(start_location='Boston, MA', end_location='Washington, D.C.', units='miles')]"}
+{"id": "simple_python_86", "completion": "[city_distance.find_shortest(start_city='New York', end_city='Los Angeles', transportation='train', allow_transfer=True)]"}
+{"id": "simple_python_87", "completion": "[array_sort(list=[5, 3, 4, 1, 2])]"}
+{"id": "simple_python_88", "completion": "[calculate_BMI(weight_kg=70, height_m=1.75)]"}
+{"id": "simple_python_89", "completion": "[db_fetch_records(database_name='Bluebird High School', table_name='StudentDB', conditions={'subject': 'Science', 'grade': 90}, fetch_limit=0)]"}
+{"id": "simple_python_90", "completion": "[employee.fetch_data(company_name='ABC Ltd.', employee_id=345)]"}
+{"id": "simple_python_91", "completion": "[get_restaurant(cuisine='Sushi', location='Boston', condition='Opens on Sundays')]"}
+{"id": "simple_python_92", "completion": "[imdb.find_movies_by_actor(actor_name='Leonardo DiCaprio', year=2010, category='Drama')]"}
+{"id": "simple_python_93", "completion": "[get_theater_movie_releases('LA', 7, 'IMAX')]"}
+{"id": "simple_python_94", "completion": "[update_user_info(user_id=43523, update_info={'name': 'John Doe', 'email': 'johndoe@email.com'}, database='database_name')]"}
+{"id": "simple_python_95", "completion": "[math.factorial(number=5)]"}
+{"id": "simple_python_96", "completion": "[database.query('user', ['age > 25', 'job = \"engineer\"'], 'user')]"}
+{"id": "simple_python_97", "completion": "[math.factorial(number=5)]"}
+{"id": "simple_python_98", "completion": "[math.degrees(math.atan2(math.sin(math.radians(630)), math.cos(math.radians(630))))]"}
+{"id": "simple_python_99", "completion": "[plot_sine_wave(start_range=0, end_range=2 * math.pi, frequency=5, amplitude=1, phase_shift=0)]"}

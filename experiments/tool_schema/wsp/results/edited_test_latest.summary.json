@@ -29,22 +29,22 @@
   },
   "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
   "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
-  "tag": "wsp-p50-wsp-p50-20261105T083800Z",
+  "tag": "wsp-p100",
   "split": "test",
   "device": "cpu",
   "temperature": 0.0,
   "max_new_tokens": 128,
-  "elapsed_sec": 27.62,
-  "timestamp": "2026-11-05T10:00:38.923461+00:00",
-  "session_dir": "/workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z",
-  "edited_state": "/workspace/artifacts/wsp_sessions/wsp-p50-20261105T083800Z/export/edited_state.pt",
+  "elapsed_sec": 32.8,
+  "timestamp": "2026-11-05T14:24:58.833282+00:00",
+  "session_dir": "artifacts/wsp_sessions/wsp-p100-20261105T105200Z",
+  "edited_state": "artifacts/wsp_sessions/wsp-p100-20261105T105200Z/export/edited_state.pt",
   "baseline_test_strict_ok": 0.2,
   "sealed_test_path": "/workspace/experiments/tool_schema/eval/sealed/test.jsonl",
   "leakage_check": {
     "ok": true,
-    "n_forward_ids": 2000,
+    "n_forward_ids": 4000,
     "leaked_ids": [],
-    "forward_used": 50,
-    "forward_total": 50
+    "forward_used": 100,
+    "forward_total": 100
   }
 }

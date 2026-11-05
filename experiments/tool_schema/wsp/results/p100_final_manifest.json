@@ -1,0 +1,13 @@
+{
+  "session_id": "wsp-p100-20261105T105200Z",
+  "forward_used": 100,
+  "forward_total": 100,
+  "final_edit": "v_proj KV head1 rows 64:128 x0.55 on layers 16-17",
+  "practice_strict_ok_base": 0.4,
+  "practice_strict_ok_edited": 0.475,
+  "test_strict_ok_base": 0.2,
+  "test_strict_ok_edited": 0.25,
+  "bfcl_simple_python_ast_base_n100": 0.44,
+  "bfcl_simple_python_ast_edited_n100": 0.47,
+  "note": "Longer budget did not beat p50 practice score; BFCL transfer +3pp AST"
+}

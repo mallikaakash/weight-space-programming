@@ -1,0 +1,28 @@
+=== WSP long editor start session=wsp-p100-20261105T105200Z budget=100 ===
+Controls for heads 0, 2, 3 and 4 are still running; I'll resume when they finish. Until then, the results are:
+
+| Edit | strict_ok |
+|---|---|
+| Base | 0.400 |
+| L16+17, head 1 × 0.55 | 0.475 |
+| L16+17, head 0 × 0.55 | 0.375 |
+
+A completion notice will arrive when the background work finishes.
+
+The early-layer stacked scan (layers 6–13) is running in the background, and I'll be notified when it finishes. As of now, the best edit is still L16+17 KV-head-1 `v_proj` ×0.55 at strict_ok 0.475, and 28 passes are used. I won't touch the session until the scan completes.
+
+The 13-pass batch (blocks 24–31 and 8–15 attenuated, block 18–23 amplified) is still running in the background. I'm leaving the session alone until it completes, so measurements don't collide. When it finishes I'll check the results and decide the next family.
+Background tasks still running 10m after the last turn (shell "nohup sh -c 'python3 /tmp/blk.py 24 31 0.7 0,1,2,3,4; python"); stopping them. Set CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 to wait indefinitely.
+=== Unsealing holdout ===
+{
+  "restored": [
+    "/workspace/artifacts/baselines",
+    "/workspace/experiments/tool_schema/results",
+    "/workspace/experiments/tool_schema/eval/sealed/splits.json",
+    "/workspace/experiments/tool_schema/eval/sealed/dataset_full.jsonl",
+    "/workspace/experiments/tool_schema/eval/sealed/test.jsonl",
+    "/workspace/experiments/tool_schema/eval/dataset.jsonl"
+  ]
+}
+No export found; skipping eval_edited
+=== WSP long editor finished exit=0 ===

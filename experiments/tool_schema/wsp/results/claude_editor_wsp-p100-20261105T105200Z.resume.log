@@ -1,0 +1,9 @@
+The scan is still running in the background (about 10 single-pass variants). I'm waiting for it to exit before running anything else, since only one harness process may run at a time.
+
+Waiting for the scan5 batch to finish; I'll check results once it exits.
+
+Still running (no output yet since the model is loading and generating). Waiting for the monitor event.
+
+The final batch (paired confirm plus 12 inspect passes) is still running. I'll export and update the log once it exits.
+
+Still waiting on `fin.py`; nothing else to run until it exits.

@@ -220,3 +220,17 @@ More stacks on top of the confirmed edit: + k_proj kv-head1 x0.85 / + o_proj gro
 - used/remaining: `55 / 45`
 - status: **running**
 
+
+## p100 finished (orchestrator forced export) 2026-11-05T14:27Z
+
+Claude resumed after bg-wait abort; used **100/100** forwards. Stuck waiting on finished `fin.py`; orchestrator exported working state (L16–17 `v_proj` head1 ×0.55).
+
+### Results
+
+| Probe | Baseline | Edited |
+|-------|----------|--------|
+| Practice `strict_ok` (n=40) | 0.40 | **0.475** |
+| Our holdout test `strict_ok` (n=20) | 0.20 | **0.25** |
+| BFCL v4 simple_python AST (n=100) | 0.44 | **0.47** |
+
+Same final edit as p50; longer budget did not beat 0.475 on practice. Leakage check ok (0 test ids in forward log).

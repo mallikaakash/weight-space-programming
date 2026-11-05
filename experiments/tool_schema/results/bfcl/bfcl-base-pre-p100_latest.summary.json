@@ -1,0 +1,233 @@
+{
+  "n": 100,
+  "ast_accuracy": 0.44,
+  "n_correct": 44,
+  "category": "simple_python",
+  "scorer": "bfcl_eval.ast_checker",
+  "rows_head_failures": [
+    {
+      "id": "simple_python_0",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_triangle_area' not found in model output."
+      ],
+      "completion": "[math.sqrt(base*base+height*height)]",
+      "extracted": "[math.sqrt(base*base+height*height)]",
+      "decoded": [
+        {
+          "math.sqrt": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_2",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'x'."
+      ],
+      "completion": "[math.hypot(4, 5)]",
+      "extracted": "[math.hypot(4, 5)]",
+      "decoded": [
+        {
+          "math.hypot": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_5",
+      "valid": false,
+      "error": [
+        "Optional parameter 'root_type' not provided and not marked as optional."
+      ],
+      "completion": "[solve_quadratic(a=3, b=-11, c=-4)]",
+      "extracted": "[solve_quadratic(a=3, b=-11, c=-4)]",
+      "decoded": [
+        {
+          "solve_quadratic": {
+            "a": 3,
+            "b": -11,
+            "c": -4
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_7",
+      "valid": false,
+      "error": [
+        ""
+      ],
+      "completion": "[math.pi * radius**2]",
+      "extracted": "[math.pi * radius**2]",
+      "decoded": null
+    },
+    {
+      "id": "simple_python_10",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_area' not found in model output."
+      ],
+      "completion": "[math.sqrt(base**2 + height**2)]",
+      "extracted": "[math.sqrt(base**2 + height**2)]",
+      "decoded": [
+        {
+          "math.sqrt": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_11",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_triangle_area' not found in model output."
+      ],
+      "completion": "[math.sqrt(base*height)]",
+      "extracted": "[math.sqrt(base*height)]",
+      "decoded": [
+        {
+          "math.sqrt": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_13",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_area_under_curve' not found in model output."
+      ],
+      "completion": "[math.trapezoidal(start=1, end=3, method='trapezoidal')]",
+      "extracted": "[math.trapezoidal(start=1, end=3, method='trapezoidal')]",
+      "decoded": [
+        {
+          "math.trapezoidal": {
+            "start": 1,
+            "end": 3,
+            "method": "trapezoidal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_14",
+      "valid": false,
+      "error": [
+        "Function name 'calculate_derivative' not found in model output."
+      ],
+      "completion": "[math.derivative(3*x**2 + 2*x - 1)]",
+      "extracted": "[math.derivative(3*x**2 + 2*x - 1)]",
+      "decoded": [
+        {
+          "math.derivative": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_15",
+      "valid": false,
+      "error": [
+        "Function name 'integrate' not found in model output."
+      ],
+      "completion": "[simpson_integration(x=3, method='simpson')]",
+      "extracted": "[simpson_integration(x=3, method='simpson')]",
+      "decoded": [
+        {
+          "simpson_integration": {
+            "x": 3,
+            "method": "simpson"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_16",
+      "valid": false,
+      "error": [
+        "invalid decimal literal (<unknown>, line 1)"
+      ],
+      "completion": "[calculus.derivative(2x^2, 1, 'x')]",
+      "extracted": "[calculus.derivative(2x^2, 1, 'x')]",
+      "decoded": null
+    },
+    {
+      "id": "simple_python_17",
+      "valid": false,
+      "error": [
+        "Invalid value for parameter 'formatted': False. Expected one of [True, '']."
+      ],
+      "completion": "[get_prime_factors(number=450, formatted=False)]",
+      "extracted": "[get_prime_factors(number=450, formatted=False)]",
+      "decoded": [
+        {
+          "get_prime_factors": {
+            "number": 450,
+            "formatted": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_19",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'num1'."
+      ],
+      "completion": "[math.gcd(40, 50)]",
+      "extracted": "[math.gcd(40, 50)]",
+      "decoded": [
+        {
+          "math.gcd": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_20",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'number1'."
+      ],
+      "completion": "[math.hcf(36, 24)]",
+      "extracted": "[math.hcf(36, 24)]",
+      "decoded": [
+        {
+          "math.hcf": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_21",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'number1'."
+      ],
+      "completion": "[number_theory.gcd(36, 48)]",
+      "extracted": "[number_theory.gcd(36, 48)]",
+      "decoded": [
+        {
+          "number_theory.gcd": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_22",
+      "valid": false,
+      "error": [
+        "Missing required parameter: 'num1'."
+      ],
+      "completion": "[math.gcd(12, 15)]",
+      "extracted": "[math.gcd(12, 15)]",
+      "decoded": [
+        {
+          "math.gcd": {}
+        }
+      ]
+    }
+  ],
+  "tag": "bfcl-base-pre-p100",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 0,
+  "limit": 100,
+  "device": "cpu",
+  "timestamp": "2026-11-05T10:54:26.070540+00:00",
+  "note": "Official BFCL v4 simple_python AST category via bfcl-eval checker. Not full BFCL (no multiple/parallel/live/multi-turn)."
+}
