@@ -14,9 +14,12 @@ RESULTS_DIR="$ROOT/experiments/tool_schema/wsp/results"
 EDITOR_DIR="$ROOT/experiments/tool_schema/wsp/editor"
 LOG="$RESULTS_DIR/RUNNING_LOG.md"
 CLAUDE_LOG="$RESULTS_DIR/claude_editor_${SESSION_ID}.log"
-SEAL_DIR="${WSP_SEAL_DIR:-/tmp/wsp_seal_bfcl}"
+# Always use a BFCL-specific seal dir (ignore inherited WSP_SEAL_DIR from older runs).
+SEAL_DIR="${WSP_BFCL_SEAL_DIR:-/tmp/wsp_seal_bfcl}"
 CLAUDE_MODEL="${WSP_CLAUDE_MODEL:-claude-opus-5-5}"
 CLAUDE_EFFORT="${WSP_CLAUDE_EFFORT:-high}"
+# Ensure lock is on for this process tree before any child can race.
+export WSP_LOCK_TEST=0  # flipped to 1 after seal below
 
 mkdir -p "$RESULTS_DIR" "$ROOT/artifacts/wsp_sessions"
 
@@ -54,6 +57,8 @@ rm -rf "$SEAL_DIR"
 python3 "$ROOT/experiments/tool_schema/wsp/seal_for_run.py" seal --seal-dir "$SEAL_DIR"
 export WSP_LOCK_TEST=1
 export WSP_SEAL_DIR="$SEAL_DIR"
+# Re-export into a file Claude/tool shells can source if needed
+printf 'export WSP_LOCK_TEST=1\nexport WSP_SEAL_DIR=%q\n' "$SEAL_DIR" > "$RESULTS_DIR/wsp_lock.env"
 
 echo "=== Leakage audit ==="
 python3 "$ROOT/experiments/tool_schema/wsp/cli.py" audit
