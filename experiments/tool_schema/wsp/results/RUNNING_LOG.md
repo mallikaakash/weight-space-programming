@@ -180,3 +180,43 @@ More stacks on top of the confirmed edit: + k_proj kv-head1 x0.85 / + o_proj gro
 - Official probe: BFCL v4 `simple_python` AST via `bfcl_simple_eval.py` (limit 100 on CPU; not full leaderboard).
 - Wrapper: `wsp/run_editor_p100_bfcl.sh`.
 
+
+## Larger run plan (p100 + BFCL) 2026-11-05T10:52:14Z
+
+- session: `wsp-p100-20261105T105200Z`
+- budget: `100`
+- practice: sealed tool-schema train (40) — same as p50
+- official holdout probe: BFCL v4 `simple_python` AST, limit=`100` (orchestrator-only)
+- honesty: not full BFCL leaderboard; transfer probe from our JSON schema practice
+
+
+## Long run (exp8/p50) started 2026-11-05T10:54:29Z
+
+- session_id: `wsp-p100-20261105T105200Z`
+- budget: `100`
+- protocol: exp8-aligned (generate|inspect, which=both, use-all-budget)
+- seal_dir: `/tmp/wsp_seal`
+- WSP_LOCK_TEST: `1`
+- claude_log: `/workspace/experiments/tool_schema/wsp/results/claude_editor_wsp-p100-20261105T105200Z.log`
+- status: **running**
+
+
+## Long run finished 2026-11-05T13:00:14Z
+
+- exit_code: `0`
+- budget: **54/100** used
+- forward_log_entries: `54`
+- edited summary: `edited_test_latest.summary.json`
+- status: **finished** (exit 0)
+
+
+## p100+BFCL wrapper finished 2026-11-05T13:00:14Z
+- editor_exit: `0`
+- BFCL summaries under `experiments/tool_schema/results/bfcl/`
+
+
+## Resume started 2026-11-05T13:02:49Z
+- session_id: `wsp-p100-20261105T105200Z`
+- used/remaining: `55 / 45`
+- status: **running**
+
