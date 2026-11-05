@@ -173,3 +173,10 @@ More stacks on top of the confirmed edit: + k_proj kv-head1 x0.85 / + o_proj gro
 - KV head 1 rows `[64:128]` × **0.55**
 - Practice paired: strict_ok **0.40 → 0.475** (+3 / −0)
 
+
+## Next: larger run (budget 100) + BFCL simple_python probe
+
+- Practice remains sealed tool-schema train (40).
+- Official probe: BFCL v4 `simple_python` AST via `bfcl_simple_eval.py` (limit 100 on CPU; not full leaderboard).
+- Wrapper: `wsp/run_editor_p100_bfcl.sh`.
+

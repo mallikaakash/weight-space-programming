@@ -4,3 +4,6 @@ accelerate==1.6.0
 huggingface_hub==0.30.2
 safetensors==0.5.3
 tqdm==4.67.1
+# Optional: official BFCL simple_python AST probe (bfcl_simple_eval.py)
+bfcl-eval==2025.10.27.1
+soundfile==0.13.1
