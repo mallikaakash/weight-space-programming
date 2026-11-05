@@ -2,6 +2,7 @@
 """Unit tests for WSP harness guards (no full model generate required for most)."""
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -11,7 +12,9 @@ import torch
 EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(EXPERIMENT_ROOT))
 
-from wsp.paths_wsp import PROTECTED_PARAM_SUBSTRINGS  # noqa: E402
+from wsp.leakage_guard import audit_seal  # noqa: E402
+from wsp.paths_wsp import PRACTICE_TRAIN_PATH, PROTECTED_PARAM_SUBSTRINGS  # noqa: E402
+from wsp.practice import load_practice  # noqa: E402
 from wsp.sandbox import SandboxError, run_sandbox_script  # noqa: E402
 from wsp.weights import WeightStore  # noqa: E402
 
@@ -95,12 +98,60 @@ def test_sandbox_forbids_import():
         pass
 
 
+def test_practice_train_only():
+    assert PRACTICE_TRAIN_PATH.exists(), PRACTICE_TRAIN_PATH
+    rows = load_practice("train")
+    assert len(rows) == 40
+    assert all(r.get("split") in (None, "train") for r in rows)
+    report = audit_seal()
+    assert report["ok"], report["issues"]
+    assert report["overlap"] == []
+    assert report["train_n"] == 40
+    assert report["test_n"] == 20
+
+
+def test_forward_budget_aliases():
+    from wsp.forward import ForwardBudget, ForwardService
+
+    store = _fake_store()
+    practice = [
+        {
+            "id": "easy-01",
+            "split": "train",
+            "tier": "easy",
+            "system": "sys",
+            "user": "u",
+            "expected": {"tool": "t", "arguments": {}},
+        }
+    ]
+    # tools_by_name needs tools.json — skip full generate; just check which/mode validation
+    svc = ForwardService(store=store, practice=practice, budget=ForwardBudget(total=2))
+    try:
+        svc.forward_pass(mode="nope")
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
+    try:
+        svc.forward_pass(which="nope")
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
+    # Unknown practice id refused
+    try:
+        svc.forward_pass(example_ids=["test-leak-id"])
+        raise AssertionError("expected KeyError")
+    except KeyError as e:
+        assert "train only" in str(e).lower() or "unknown" in str(e).lower()
+
+
 def main() -> None:
     test_protected_params()
     test_save_edit_and_revert()
     test_refuse_protected_edit()
     test_refuse_whole_tensor_rescale()
     test_sandbox_forbids_import()
+    test_practice_train_only()
+    test_forward_budget_aliases()
     print("ok")
 
 

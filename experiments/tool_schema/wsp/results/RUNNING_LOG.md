@@ -51,3 +51,33 @@ _Awaiting first editor launch…_
 - Avoid run1 blind top-magnitude scaling.
 - Session persistence is fixed (`working_state.pt` + `budget.json`).
 
+
+## Run started 2026-11-05T08:32:02Z
+
+- session_id: `wsp-run2-20261105T083202Z`
+- budget: `15`
+- claude_log: `/workspace/experiments/tool_schema/wsp/results/claude_editor_wsp-run2-20261105T083202Z.log`
+- status: **running**
+
+
+### Run2 interrupted
+
+Stopped mid-run to harden protocol (test quarantine + exp8-aligned forward tool + budget-50 long run). Run2 had used 3/15 passes; one edit collapsed train strict_ok to 0.0.
+
+
+## Leakage audit (pre long-run) — 2026-11-05
+
+**Editor:** Claude Code uses the WSP harness (`WSPHarness` / `forward_pass` / `save_edit`). Cursor orchestrates seal → launch → unseal → `eval_edited`.
+
+| Check | Result |
+|-------|--------|
+| train ∩ test ids | empty (40 / 20) |
+| Harness practice source | `wsp/practice/train.jsonl` only |
+| Forward rejects non-train ids | yes |
+| Agent FS risk (pre-seal) | yes — full `dataset.jsonl` was readable |
+| Long-run quarantine | `seal_for_run.py` moves test to `/tmp/wsp_seal`, stubs live dataset to train-only, hides baseline result dumps |
+| `eval_edited` during lock | refused (`WSP_LOCK_TEST=1`) and refuses until budget exhausted |
+| Forward modes | `generate` / `inspect` (+ `which=both`) per exp8 |
+
+**Verdict:** harness API had no test leakage; agent-level leakage is sealed for the budget-50 run. Protocol matches exp8/p50c (use all passes; editor never sees holdout scores during the run).
+

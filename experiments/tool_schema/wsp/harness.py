@@ -34,7 +34,12 @@ class WSPHarness:
         self.session_dir.mkdir(parents=True, exist_ok=True)
 
         self.store = WeightStore.load(model_dir or MODEL_DIR)
+        # Always sealed train-only practice (exp8: none from the test sets).
         self.practice = load_practice("train")
+        practice_ids = {ex["id"] for ex in self.practice}
+        if any(ex.get("split") not in (None, "train") for ex in self.practice):
+            raise RuntimeError("Leakage: practice contains non-train rows")
+        self._practice_ids = practice_ids
 
         budget_path = self.session_dir / "budget.json"
         working_path = self.session_dir / "working_state.pt"
@@ -87,6 +92,8 @@ class WSPHarness:
             "practice_split": "train",
             "practice_n": len(self.practice),
             "practice_ids_head": [ex["id"] for ex in self.practice[:5]],
+            "practice_source": "wsp/practice/train.jsonl",
+            "test_sealed": True,
         }
 
     def list_params(self, substr: str | None = None) -> list[dict[str, Any]]:
