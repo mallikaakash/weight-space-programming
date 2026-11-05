@@ -1,8 +1,11 @@
 # WSP harness (exp8-aligned)
 
-Weight-space programming harness for **SmolLM2-360M-Instruct** on the tool-schema skill.
+Weight-space programming harness for **SmolLM2-360M-Instruct**.
 
-**Editor:** Claude Code (via `run_editor_long.sh`), matching Takehi Experiment 8 / `p50c` protocol.  
+**Headline skill:** BFCL v4 `simple_python` (300 practice / 100 sealed holdout).  
+Verified results, `current4` recipe, and **weight hosting** (delta pack/apply): see the root [`README.md`](../../../README.md).
+
+**Editor:** Claude Code (`run_editor_bfcl_native.sh` / resume), matching Takehi Experiment 8 / `p50c` protocol.  
 See [`PROTOCOL.md`](PROTOCOL.md) for the exact mapping and leakage audit.
 
 ## Layout
