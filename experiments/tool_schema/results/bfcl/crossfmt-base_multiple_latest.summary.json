@@ -1,0 +1,192 @@
+{
+  "category": "multiple",
+  "n": 200,
+  "n_correct": 58,
+  "ast_accuracy": 0.29,
+  "n_correct_raw": 58,
+  "ast_accuracy_raw": 0.29,
+  "error_types": {
+    "simple_function_checker:wrong_func_name": 56,
+    "simple_function_checker:missing_required": 34,
+    "ast_decoder:decoder_failed": 29,
+    "value_error:string": 10,
+    "value_error:others": 5,
+    "value_error:list/tuple": 4,
+    "simple_function_checker:missing_optional": 3,
+    "type_error:simple": 1
+  },
+  "tag": "crossfmt-base_multiple",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 0,
+  "limit": 200,
+  "prompt_style": "card",
+  "max_new_tokens": 128,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 361.2,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T05:26:50.425902+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "multiple_1",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[math.triangle_area_heron]",
+      "extracted": "[math.triangle_area_heron]",
+      "decoded": null
+    },
+    {
+      "id": "multiple_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[country_info.capital]",
+      "extracted": "[country_info.capital]",
+      "decoded": null
+    },
+    {
+      "id": "multiple_3",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[EuclideanDistance.calculate]",
+      "extracted": "[EuclideanDistance.calculate]",
+      "decoded": null
+    },
+    {
+      "id": "multiple_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'weather.get_by_coordinates_date' not found in model output."
+      ],
+      "completion": "[weather.get_forecast_by_coordinates(coordinates=(46.603354, 1.8883340), days_ahead=7)]",
+      "extracted": "[weather.get_forecast_by_coordinates(coordinates=(46.603354, 1.8883340), days_ahead=7)]",
+      "decoded": [
+        {
+          "weather.get_forecast_by_coordinates": {
+            "coordinates": [
+              46.603354,
+              1.888334
+            ],
+            "days_ahead": 7
+          }
+        }
+      ]
+    },
+    {
+      "id": "multiple_6",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[capacitance_calculator.calculate]",
+      "extracted": "[capacitance_calculator.calculate]",
+      "decoded": null
+    },
+    {
+      "id": "multiple_8",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[property_valuation.get]",
+      "extracted": "[property_valuation.get]",
+      "decoded": null
+    },
+    {
+      "id": "multiple_11",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[math.roots.quadratic]",
+      "extracted": "[math.roots.quadratic]",
+      "decoded": null
+    },
+    {
+      "id": "multiple_12",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'corporate_finance.calculate_YOY_growth_rate' not found in model output."
+      ],
+      "completion": "[financial_ratios.calculate_ROE(net_income=100000, shareholder_equity=100000)]",
+      "extracted": "[financial_ratios.calculate_ROE(net_income=100000, shareholder_equity=100000)]",
+      "decoded": [
+        {
+          "financial_ratios.calculate_ROE": {
+            "net_income": 100000,
+            "shareholder_equity": 100000
+          }
+        }
+      ]
+    },
+    {
+      "id": "multiple_14",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "type_error:simple",
+      "error": [
+        "Incorrect type for parameter 'depreciation_rate'. Expected type integer, got float. Parameter value: 0.03."
+      ],
+      "completion": "[finance.property_depreciation(initial_cost=200000, depreciation_rate=0.03, years=5)]",
+      "extracted": "[finance.property_depreciation(initial_cost=200000, depreciation_rate=0.03, years=5)]",
+      "decoded": [
+        {
+          "finance.property_depreciation": {
+            "initial_cost": 200000,
+            "depreciation_rate": 0.03,
+            "years": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "multiple_15",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:missing_optional",
+      "error": [
+        "Optional parameter 'month' not provided and not marked as optional."
+      ],
+      "completion": "[solarFarm.potential(coordinates=[43.653225, -79.383186], panelArea=80000)]",
+      "extracted": "[solarFarm.potential(coordinates=[43.653225, -79.383186], panelArea=80000)]",
+      "decoded": [
+        {
+          "solarFarm.potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "category": "simple_java",
+  "n": 100,
+  "n_correct": 8,
+  "ast_accuracy": 0.08,
+  "n_correct_raw": 8,
+  "ast_accuracy_raw": 0.08,
+  "error_types": {
+    "simple_function_checker:wrong_func_name": 49,
+    "ast_decoder:decoder_failed": 32,
+    "type_error:simple": 4,
+    "value_error:string": 3,
+    "value_error:others": 2,
+    "simple_function_checker:missing_required": 1,
+    "ast_decoder:decoder_wrong_output_format": 1
+  },
+  "tag": "crossfmt-edited_simple_java",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": "artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/edited_state.pt",
+  "offset": 0,
+  "limit": 100,
+  "prompt_style": "card",
+  "max_new_tokens": 128,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 237.2,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T06:10:31.228256+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "simple_java_0",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[GeometryPresentation.createPresentation]",
+      "extracted": "[GeometryPresentation.createPresentation]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_1",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'SQLCompletionAnalyzer.makeProposalsFromObject' not found in model output."
+      ],
+      "completion": "[Customers.makeProposalsFromObject(useShortName=true, params=HashMap(limit=50, schemaFilter=public))]",
+      "extracted": "[Customers.makeProposalsFromObject(useShortName=true, params=HashMap(limit=50, schemaFilter=public))]",
+      "decoded": [
+        {
+          "Customers.makeProposalsFromObject": {
+            "useShortName": "true",
+            "params": "HashMap(limit=50, schemaFilter=public)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[FireBirdUtils.getViewSourceWithHeader(monitor=dbMonitor, view=EmployeeView, source=SELECT * FROM Employee WHERE status = 'active')]",
+      "extracted": "[FireBirdUtils.getViewSourceWithHeader(monitor=dbMonitor, view=EmployeeView, source=SELECT * FROM Employee WHERE status = 'active')]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_3",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "value_error:string",
+      "error": [
+        "Invalid value for parameter 'monitor': 'monitor'. Expected one of ['dbMonitor']. Case insensitive."
+      ],
+      "completion": "[DB2Tablespace.resolveTablespaceReference(monitor=monitor, dataSource=dataSource, reference=reference)]",
+      "extracted": "[DB2Tablespace.resolveTablespaceReference(monitor=monitor, dataSource=dataSource, reference=reference)]",
+      "decoded": [
+        {
+          "DB2Tablespace.resolveTablespaceReference": {
+            "monitor": "monitor",
+            "dataSource": "dataSource",
+            "reference": "reference"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_4",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[DB2ViewBaseDepCache.prepareObjectsStatement]",
+      "extracted": "[DB2ViewBaseDepCache.prepareObjectsStatement]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'PlainTextPresentation.createPresentation' not found in model output."
+      ],
+      "completion": "[ReportBuilder.export(target=outputFile, overwrite=true)]",
+      "extracted": "[ReportBuilder.export(target=outputFile, overwrite=true)]",
+      "decoded": [
+        {
+          "ReportBuilder.export": {
+            "target": "outputFile",
+            "overwrite": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_6",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'SpreadsheetPresentation.refreshData' not found in model output."
+      ],
+      "completion": "[ReportBuilder.export(target=outputFile, overwrite=true)]",
+      "extracted": "[ReportBuilder.export(target=outputFile, overwrite=true)]",
+      "decoded": [
+        {
+          "ReportBuilder.export": {
+            "target": "outputFile",
+            "overwrite": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_7",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "value_error:string",
+      "error": [
+        "Invalid value for parameter 'destination': \"Path('/backup/data.txt')\". Expected one of [\"new Path('/backup/data.txt')\"]. Case insensitive."
+      ],
+      "completion": "[EFSNIOResource.copy(destination=Path('/backup/data.txt'), force=true, monitor=ProgressTracker)]",
+      "extracted": "[EFSNIOResource.copy(destination=Path('/backup/data.txt'), force=true, monitor=ProgressTracker)]",
+      "decoded": [
+        {
+          "EFSNIOResource.copy": {
+            "destination": "Path('/backup/data.txt')",
+            "force": "true",
+            "monitor": "ProgressTracker"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_8",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'EFSNIOFile.setContents' not found in model output."
+      ],
+      "completion": "[ReportBuilder.export(target=\"outputFile\", overwrite=true)]",
+      "extracted": "[ReportBuilder.export(target=\"outputFile\", overwrite=true)]",
+      "decoded": [
+        {
+          "ReportBuilder.export": {
+            "target": "outputFile",
+            "overwrite": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_9",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error: Multiple arguments with the same name are not supported."
+      ],
+      "completion": "[MultiPoint.writeMultiPoint(multiPoint, xyzmMode, buffer)]",
+      "extracted": "[MultiPoint.writeMultiPoint(multiPoint, xyzmMode, buffer)]",
+      "decoded": null
+    }
+  ]
+}
