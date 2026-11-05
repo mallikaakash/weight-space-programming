@@ -1,0 +1,56 @@
+{
+  "output_format": {
+    "type": "object",
+    "required": ["tool", "arguments"],
+    "properties": {
+      "tool": { "type": "string" },
+      "arguments": { "type": "object" }
+    }
+  },
+  "tools": [
+    {
+      "name": "get_weather",
+      "description": "Get the current weather for a city.",
+      "parameters": {
+        "city": { "type": "string", "required": true },
+        "unit": { "type": "string", "enum": ["c", "f"], "required": true }
+      }
+    },
+    {
+      "name": "create_event",
+      "description": "Create a calendar event.",
+      "parameters": {
+        "title": { "type": "string", "required": true },
+        "date": { "type": "string", "required": true, "description": "ISO date YYYY-MM-DD" },
+        "duration_min": { "type": "integer", "required": true }
+      }
+    },
+    {
+      "name": "search_files",
+      "description": "Search files under a path.",
+      "parameters": {
+        "query": { "type": "string", "required": true },
+        "path": { "type": "string", "required": true },
+        "max_results": { "type": "integer", "required": true }
+      }
+    },
+    {
+      "name": "send_email",
+      "description": "Send an email.",
+      "parameters": {
+        "to": { "type": "string", "required": true },
+        "subject": { "type": "string", "required": true },
+        "body": { "type": "string", "required": true }
+      }
+    },
+    {
+      "name": "convert_units",
+      "description": "Convert a numeric value between units.",
+      "parameters": {
+        "value": { "type": "number", "required": true },
+        "from_unit": { "type": "string", "required": true },
+        "to_unit": { "type": "string", "required": true }
+      }
+    }
+  ]
+}

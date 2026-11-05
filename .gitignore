@@ -9,3 +9,10 @@ artifacts/*
 !artifacts/.gitkeep
 .orchestrator/*
 !.orchestrator/.gitkeep
+
+# Local model weights / HF cache (do not commit)
+models/
+.cache/
+*.safetensors
+*.bin
+*.gguf
