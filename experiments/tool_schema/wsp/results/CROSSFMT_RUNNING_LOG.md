@@ -49,15 +49,15 @@ Eval design (`experiments/tool_schema/bfcl_category_eval.py`):
 
 ### 2026-11-06 — results + writeup
 
-| category | n | base | edited | delta | flips +/− |
-|---|---:|---:|---:|---:|---:|
-| simple_python (all) | 400 | 0.390 | 0.588 | +0.198 | +88/−9 |
-| ↳ holdout 300–399 | 100 | 0.330 | 0.500 | +0.170 | +19/−2 |
-| simple_java | 100 | 0.050 | 0.080 | +0.030 | +5/−2 |
-| simple_javascript | 50 | 0.000 | 0.020 | +0.020 | +1/−0 |
-| multiple | 200 | 0.290 | 0.395 | +0.105 | +26/−5 (p≈2e-4) |
-| parallel | 200 | 0.020 | 0.015 | −0.005 | +0/−1 |
-| parallel_multiple | 200 | 0.005 | 0.015 | +0.010 | +2/−0 |
+| category | n | base | edited | delta (abs) | relative % | flips +/− |
+|---|---:|---:|---:|---:|---:|---:|
+| simple_python (all) | 400 | 0.390 | 0.588 | +0.198 | +50.6% | +88/−9 |
+| ↳ holdout 300–399 | 100 | 0.330 | 0.500 | +0.170 | +51.5% | +19/−2 |
+| simple_java | 100 | 0.050 | 0.080 | +0.030 | +60.0% | +5/−2 |
+| simple_javascript | 50 | 0.000 | 0.020 | +0.020 | n/a (base 0) | +1/−0 |
+| multiple | 200 | 0.290 | 0.395 | +0.105 | +36.2% | +26/−5 (p≈2e-4) |
+| parallel | 200 | 0.020 | 0.015 | −0.005 | −25.0% | +0/−1 |
+| parallel_multiple | 200 | 0.005 | 0.015 | +0.010 | +200.0% | +2/−0 |
 
 - Mechanism check: fused paren openings go to ~0 in every Python-format category (multiple 36→0); `multiple` missing_required 34→9 → explains most of the `multiple` gain. `math.factorial` demo copying drops, but Java-demo copying rises 28→35 (Java wrong_func_name 40→49): small negative side-effect, masked by near-zero Java accuracy.
 - Parallel: `wrong_count` 171/200 for both on `parallel` — edits fix call syntax, not "emit several calls".

@@ -8,20 +8,21 @@ Session `wsp-bfcl-crossfmt-20261106T044445Z` · 2026-11-06 · **eval only** (no 
 
 ## Main table (full categories, no limit)
 
-| category | n | base AST acc | edited AST acc | delta | paired flips (+gain / −loss) | McNemar exact p |
-|---|---:|---:|---:|---:|---:|---:|
-| `simple_python` | 400 | 156/400 = 0.390 | 235/400 = 0.588 | +0.198 | +88 / −9 | 2e-17 |
-| ↳ `simple_python` practice 0–299 (**editor saw these**) | 300 | 123/300 = 0.410 | 185/300 = 0.617 | +0.207 | +69 / −7 | 6.4e-14 |
-| ↳ `simple_python` holdout 300–399 (sealed during editing) | 100 | 33/100 = 0.330 | 50/100 = 0.500 | +0.170 | +19 / −2 | 2.2e-4 |
-| `simple_java` | 100 | 5/100 = 0.050 | 8/100 = 0.080 | +0.030 | +5 / −2 | 0.45 |
-| `simple_javascript` | 50 | 0/50 = 0.000 | 1/50 = 0.020 | +0.020 | +1 / −0 | 1.0 |
-| `multiple` | 200 | 58/200 = 0.290 | 79/200 = 0.395 | **+0.105** | +26 / −5 | **1.9e-4** |
-| `parallel` | 200 | 4/200 = 0.020 | 3/200 = 0.015 | −0.005 | +0 / −1 | 1.0 |
-| `parallel_multiple` | 200 | 1/200 = 0.005 | 3/200 = 0.015 | +0.010 | +2 / −0 | 0.5 |
-| **pooled, excluding `simple_python`** | 750 | 68/750 = 0.091 | 94/750 = 0.125 | +0.035 | +34 / −8 | 6.9e-5 |
-| pooled, all six (includes edit-tuning practice items) | 1150 | 224/1150 = 0.195 | 329/1150 = 0.286 | +0.091 | | |
+| category | n | base AST acc | edited AST acc | delta (abs) | relative % | paired flips (+gain / −loss) | McNemar exact p |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `simple_python` | 400 | 156/400 = 0.390 | 235/400 = 0.588 | +0.198 | **+50.6%** | +88 / −9 | 2e-17 |
+| ↳ `simple_python` practice 0–299 (**editor saw these**) | 300 | 123/300 = 0.410 | 185/300 = 0.617 | +0.207 | +50.4% | +69 / −7 | 6.4e-14 |
+| ↳ `simple_python` holdout 300–399 (sealed during editing) | 100 | 33/100 = 0.330 | 50/100 = 0.500 | +0.170 | **+51.5%** | +19 / −2 | 2.2e-4 |
+| `simple_java` | 100 | 5/100 = 0.050 | 8/100 = 0.080 | +0.030 | +60.0% | +5 / −2 | 0.45 |
+| `simple_javascript` | 50 | 0/50 = 0.000 | 1/50 = 0.020 | +0.020 | n/a (base 0) | +1 / −0 | 1.0 |
+| `multiple` | 200 | 58/200 = 0.290 | 79/200 = 0.395 | **+0.105** | **+36.2%** | +26 / −5 | **1.9e-4** |
+| `parallel` | 200 | 4/200 = 0.020 | 3/200 = 0.015 | −0.005 | −25.0% | +0 / −1 | 1.0 |
+| `parallel_multiple` | 200 | 1/200 = 0.005 | 3/200 = 0.015 | +0.010 | +200.0% | +2 / −0 | 0.5 |
+| **pooled, excluding `simple_python`** | 750 | 68/750 = 0.091 | 94/750 = 0.125 | +0.035 | +38.2% | +34 / −8 | 6.9e-5 |
+| pooled, all six (includes edit-tuning practice items) | 1150 | 224/1150 = 0.195 | 329/1150 = 0.286 | +0.091 | +46.9% | | |
 
 - "AST acc" = official bfcl-eval per-entry AST verdict, scored after the repo's `[...]` extraction (the same protocol as the WSP holdout numbers). Scoring the untouched completion with the official decode gives **the same numbers in every cell** (`ast_accuracy_raw` in each summary).
+- **delta (abs)** = edited − base accuracy (percentage points as a fraction). **relative %** = `(edited − base) / base`, i.e. gain or loss relative to the base model's score; `n/a` when base is exactly 0. Near-floor categories (Java, JS, parallel*) can show large relative swings from tiny absolute moves — trust the absolute delta and McNemar p there.
 - Paired flips: items wrong for base and right for edited (+), and the reverse (−). The p-value is a two-sided exact binomial test on those flips (McNemar).
 - Reading the `simple_python` row: the full-category figure mixes 300 items the editor tuned on with the 100 sealed holdout items. **Only the holdout row is a clean generalization number for `simple_python`.**
 - **Reproduction check:** base and edited `simple_python` reproduce the documented WSP numbers exactly (practice 123 → 185, holdout 33 → 50). All 100 edited holdout completions are character-identical to the stored `bfcl-holdout-edited-*` generations, so the new CLI uses the same protocol.
