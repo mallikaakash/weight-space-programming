@@ -48,11 +48,14 @@ def arguments_match(expected: dict[str, Any], got: Any, tool_params: dict[str, A
     flags = {
         "args_is_object": isinstance(got, dict),
         "required_keys": False,
+        "no_hallucinated_keys": False,
         "types_ok": False,
         "values_ok": False,
     }
     if not isinstance(got, dict):
         return flags
+
+    flags["no_hallucinated_keys"] = set(got.keys()).issubset(expected.keys())
 
     req_keys = set(expected.keys())
     flags["required_keys"] = req_keys.issubset(got.keys())
@@ -109,6 +112,7 @@ def score_example(
         "tool_ok": False,
         "args_is_object": False,
         "required_keys": False,
+        "no_hallucinated_keys": False,
         "types_ok": False,
         "values_ok": False,
         "strict_ok": False,
@@ -130,6 +134,7 @@ def score_example(
         and result["tool_ok"]
         and result["args_is_object"]
         and result["required_keys"]
+        and result["no_hallucinated_keys"]
         and result["types_ok"]
         and result["values_ok"]
     )
@@ -160,6 +165,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "parse_ok": rate("parse_ok"),
         "tool_ok": rate("tool_ok"),
         "required_keys": rate("required_keys"),
+        "no_hallucinated_keys": rate("no_hallucinated_keys"),
         "types_ok": rate("types_ok"),
         "values_ok": rate("values_ok"),
         "strict_ok": rate("strict_ok"),

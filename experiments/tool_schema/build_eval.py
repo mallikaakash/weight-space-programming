@@ -28,10 +28,22 @@ Tools and argument fields:
 Call exactly one tool per reply."""
 
 
+# Frozen, RNG-free split: within each tier (20 items, 1-indexed i), items with
+# i % 3 == TEST_REMAINDER[tier] are test. easy -> 6 test, medium/hard -> 7 test
+# (20 test / 40 train overall).
+TEST_REMAINDER = {"easy": 0, "medium": 2, "hard": 2}
+
+
+def split_for(tier: str, i: int) -> str:
+    return "test" if i % 3 == TEST_REMAINDER[tier] else "train"
+
+
 def item(id_: str, user: str, tool: str, arguments: dict, tier: str) -> dict:
+    i = int(id_.rsplit("-", 1)[1])
     return {
         "id": id_,
         "tier": tier,
+        "split": split_for(tier, i),
         "system": TOOLS_DOC,
         "user": user,
         "expected": {"tool": tool, "arguments": arguments},
@@ -123,6 +135,9 @@ def main() -> None:
     with OUT.open("w", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    splits = {s: [r["id"] for r in rows if r["split"] == s] for s in ("train", "test")}
+    (OUT.parent / "splits.json").write_text(json.dumps(splits, indent=2) + "\n", encoding="utf-8")
+    print(f"Split: {len(splits['train'])} train / {len(splits['test'])} test")
     print(f"Wrote {len(rows)} examples -> {OUT}")
 
 

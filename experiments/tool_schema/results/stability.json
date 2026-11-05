@@ -1,0 +1,34 @@
+{
+  "split": "test",
+  "temperature": 0.0,
+  "runs": [
+    {
+      "tag": "stability-r1",
+      "n": 20,
+      "strict_ok": 0.2,
+      "parse_ok": 0.8,
+      "tool_ok": 0.25,
+      "no_hallucinated_keys": 0.4,
+      "timestamp": "2026-11-05T07:18:34.492509+00:00"
+    },
+    {
+      "tag": "stability-r2",
+      "n": 20,
+      "strict_ok": 0.2,
+      "parse_ok": 0.8,
+      "tool_ok": 0.25,
+      "no_hallucinated_keys": 0.4,
+      "timestamp": "2026-11-05T07:19:06.263175+00:00"
+    },
+    {
+      "tag": "stability-r3",
+      "n": 20,
+      "strict_ok": 0.2,
+      "parse_ok": 0.8,
+      "tool_ok": 0.25,
+      "no_hallucinated_keys": 0.4,
+      "timestamp": "2026-11-05T07:19:37.252121+00:00"
+    }
+  ],
+  "strict_ok_range": 0.0
+}
