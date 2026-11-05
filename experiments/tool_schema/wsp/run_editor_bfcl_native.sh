@@ -18,6 +18,8 @@ CLAUDE_LOG="$RESULTS_DIR/claude_editor_${SESSION_ID}.log"
 SEAL_DIR="${WSP_BFCL_SEAL_DIR:-/tmp/wsp_seal_bfcl}"
 CLAUDE_MODEL="${WSP_CLAUDE_MODEL:-claude-opus-5-5}"
 CLAUDE_EFFORT="${WSP_CLAUDE_EFFORT:-high}"
+# Avoid Claude Code aborting long metered forwards waiting on background shells.
+export CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS="${CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS:-0}"
 # Ensure lock is on for this process tree before any child can race.
 export WSP_LOCK_TEST=0  # flipped to 1 after seal below
 
@@ -118,12 +120,8 @@ SESSION_DIR="$ROOT/artifacts/wsp_sessions/$SESSION_ID"
   echo ""
   echo "- exit_code: \`$exit_code\`"
   if [[ -f "$SESSION_DIR/budget.json" ]]; then
-    python3 - "$SESSION_DIR/budget.json" <<'PY' >> "$LOG" || true
-import json, sys
-b = json.load(open(sys.argv[1]))
-print(f"- budget: **{b.get('used')}/{b.get('total')}** used")
-print(f"- forward_log_entries: `{len(b.get('log') or [])}`")
-PY
+    python3 -c 'import json,sys; b=json.load(open(sys.argv[1])); print("- budget: **{}/{}** used".format(b.get("used"), b.get("total"))); print("- forward_log_entries: `{}`".format(len(b.get("log") or [])))' \
+      "$SESSION_DIR/budget.json" || true
   fi
 } >> "$LOG"
 
