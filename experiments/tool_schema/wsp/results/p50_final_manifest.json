@@ -1,0 +1,51 @@
+{
+  "session_id": "wsp-p50-20261105T083800Z",
+  "changed_params": [
+    "model.layers.16.self_attn.v_proj.weight",
+    "model.layers.17.self_attn.v_proj.weight"
+  ],
+  "final_edit_description": "v_proj KV head1 rows 64:128 x0.55 on layers 16-17",
+  "practice_strict_ok_base": 0.4,
+  "practice_strict_ok_edited": 0.475,
+  "test_strict_ok_base": 0.2,
+  "test_strict_ok_edited": 0.25,
+  "forward_used": 50,
+  "forward_total": 50,
+  "final_named_edits": [
+    {
+      "name": "FINAL_v1damp_17",
+      "param": "model.layers.17.self_attn.v_proj.weight",
+      "timestamp": "2026-11-05T09:53:12.157122+00:00",
+      "numel": 307200,
+      "note": "final"
+    },
+    {
+      "name": "FINAL_v1damp_16",
+      "param": "model.layers.16.self_attn.v_proj.weight",
+      "timestamp": "2026-11-05T09:54:36.135763+00:00",
+      "numel": 307200,
+      "note": "final"
+    },
+    {
+      "name": "FINAL_v1damp_17",
+      "param": "model.layers.17.self_attn.v_proj.weight",
+      "timestamp": "2026-11-05T09:54:38.099392+00:00",
+      "numel": 307200,
+      "note": "final"
+    },
+    {
+      "name": "FINAL_v1damp_16",
+      "param": "model.layers.16.self_attn.v_proj.weight",
+      "timestamp": "2026-11-05T09:55:54.835339+00:00",
+      "numel": 307200,
+      "note": "final"
+    },
+    {
+      "name": "FINAL_v1damp_17",
+      "param": "model.layers.17.self_attn.v_proj.weight",
+      "timestamp": "2026-11-05T09:55:56.606702+00:00",
+      "numel": 307200,
+      "note": "final"
+    }
+  ]
+}

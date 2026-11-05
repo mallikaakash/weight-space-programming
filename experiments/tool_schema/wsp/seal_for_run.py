@@ -120,6 +120,14 @@ def unseal(seal_dir: Path) -> dict:
             shutil.move(str(src), str(dst))
             restored.append(str(dst))
 
+    # Always prefer restoring the pre-seal full dataset if the backup remains.
+    pre = seal_dir / "dataset.jsonl.pre_seal"
+    if pre.exists():
+        EVAL_PATH.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(pre, EVAL_PATH)
+        if str(EVAL_PATH) not in restored:
+            restored.append(str(EVAL_PATH))
+
     # Ensure sealed test is back for eval
     if not SEALED_TEST_PATH.exists():
         alt = seal_dir / "test.jsonl"

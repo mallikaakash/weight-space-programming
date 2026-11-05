@@ -93,11 +93,12 @@ SESSION_DIR="$ROOT/artifacts/wsp_sessions/$SESSION_ID"
   echo ""
   echo "- exit_code: \`$exit_code\`"
   if [[ -f "$SESSION_DIR/budget.json" ]]; then
-    echo "- budget.json:"
-    echo '```'
-    python3 -c "import json,sys;print(json.dumps(json.load(open(sys.argv[1])),indent=2)[:2000])" \
-      "$SESSION_DIR/budget.json" 2>/dev/null || true
-    echo '```'
+    python3 - "$SESSION_DIR/budget.json" <<'PY' >> "$LOG" || true
+import json, sys
+b = json.load(open(sys.argv[1]))
+print(f"- budget: **{b.get('used')}/{b.get('total')}** used")
+print(f"- forward_log_entries: `{len(b.get('log') or [])}`")
+PY
   fi
 } >> "$LOG"
 
