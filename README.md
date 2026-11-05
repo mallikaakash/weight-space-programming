@@ -94,6 +94,23 @@ On holdout, fused paren openings like `('` / `("` / `(['` went from **24 complet
 - Diary: `experiments/tool_schema/wsp/results/RUNNING_LOG.md`
 - Edit ledger (no tensors): `experiments/tool_schema/results/bfcl/wsp-bfcl-p100-20261105T143615Z/edits.json`
 
+### Cross-format probe (other BFCL categories)
+
+Does `current4` (tuned only on `simple_python` practice) carry over to other BFCL v4 **non-live AST** categories? We ran base vs edited on the full category sets, using the same prompt protocol and the official per-entry AST scorer. Eval only.
+
+| category | n | base | edited | delta |
+|---|---:|---:|---:|---:|
+| `simple_python` holdout (300–399) | 100 | 0.330 | 0.500 | +0.170 |
+| `simple_java` | 100 | 0.050 | 0.080 | +0.030 (n.s.) |
+| `simple_javascript` | 50 | 0.000 | 0.020 | +0.020 (n.s.) |
+| `multiple` | 200 | 0.290 | **0.395** | **+0.105** (+26/−5, p≈2e-4) |
+| `parallel` | 200 | 0.020 | 0.015 | −0.005 (n.s.) |
+| `parallel_multiple` | 200 | 0.005 | 0.015 | +0.010 (n.s.) |
+
+The fused-parenthesis fix transfers (it drives the `multiple` gain). Java, JS and parallel calling stay near the floor for both models, and no category regresses significantly. One small side-effect: copying of the Java prompt's demo rises (28 → 35 completions). Live, multi-turn, irrelevance, web_search, memory and format_sensitivity were skipped. **Not** a leaderboard result.
+
+Full table, paired flips, failure analysis and protocol: [`experiments/tool_schema/results/bfcl/CROSSFMT_BASE_VS_EDITED.md`](experiments/tool_schema/results/bfcl/CROSSFMT_BASE_VS_EDITED.md).
+
 ---
 
 ## What we changed in the model
