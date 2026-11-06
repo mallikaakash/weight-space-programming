@@ -1,0 +1,100 @@
+{"id": "simple_python_300", "completion": "[music.calculate_note_duration(440, 880, tempo=120)]"}
+{"id": "simple_python_301", "completion": "[get_third_chord('C', 'major')]"}
+{"id": "simple_python_302", "completion": "[batting_average(hits=180, at_bats=600)]"}
+{"id": "simple_python_303", "completion": "[soccer_stat.get_player_stats(player_name='Cristiano Ronaldo', season='2019-2020')]"}
+{"id": "simple_python_304", "completion": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]"}
+{"id": "simple_python_305", "completion": "[sports_stats.get_performance(player_name='Messi', tournament='La Liga 2020-2021', season='2020-2021')]"}
+{"id": "simple_python_306", "completion": "[average_batting_score(player_name='Virat Kohli', matches=10, match_format='T20')]"}
+{"id": "simple_python_307", "completion": "[game_result.get_winner(teams=['Lakers', 'Clippers'], date='2021-01-28', venue='home')]"}
+{"id": "simple_python_308", "completion": "[sports.match_schedule(team_name='Manchester United', num_matches=5, league='English Premier League')]"}
+{"id": "simple_python_309", "completion": "[nfl_data.player_record(player_name='Tom Brady', season_year=2020, team='All Stats')]"}
+{"id": "simple_python_310", "completion": "[get_career_stats(player_name='LeBron James', team='All-Star Game')]"}
+{"id": "simple_python_311", "completion": "[sports_db.find_athlete(name='Lebron James', team='NBA', sport='basketball')]"}
+{"id": "simple_python_312", "completion": "[player_statistic(player_name='Ronaldo', year=2021, team_name='Atletico Madrid')]"}
+{"id": "simple_python_313", "completion": "[celebrity_net_worth.get(name='Messi', currency='EUR')]"}
+{"id": "simple_python_314", "completion": "[sports_celebrity.get_major_achievements(celebrity_name='Lionel Messi', sports='football')]"}
+{"id": "simple_python_315", "completion": "[get_defense_ranking(season=2021, top=1)]"}
+{"id": "simple_python_316", "completion": "[get_sport_ranking('tennis', 'Williams', 'female')]"}
+{"id": "simple_python_317", "completion": "[get_team_rank(team_name='LA Lakers', league='NBA', season='2021', type='regular')]"}
+{"id": "simple_python_318", "completion": "[get_team_ranking('Germany', 2021, 'men')]"}
+{"id": "simple_python_319", "completion": "[manchester_united_pierce_league_2023]"}
+{"id": "simple_python_320", "completion": "[sports_ranking.get_team_position(team='Golden State Warriors', season='2022-2023')]"}
+{"id": "simple_python_321", "completion": "[sports_ranking('Barcelona', 'Lega Catalana', '2021')]"}
+{"id": "simple_python_322", "completion": "[sports_ranking.get_current(team='Liverpool', league='Premier League', season='2023-2024')]"}
+{"id": "simple_python_323", "completion": "[sports_ranking.get_top_player('women tennis', 'female')]"}
+{"id": "simple_python_324", "completion": "[team_score.get_latest(team=\"LA Lakers\", include_opponent=True)]"}
+{"id": "simple_python_325", "completion": "[sports.match_results(team1='Chicago Bulls', team2='Los Angeles Lakers', season='2022')]"}
+{"id": "simple_python_326", "completion": "[get_team_score('lakers', 'nba', False)]"}
+{"id": "simple_python_327", "completion": "[sports_team.get_schedule(team_name='Manchester United', num_of_games=6, league='Premier League', location='London')]"}
+{"id": "simple_python_328", "completion": "[boardgame.get_info(name='Ticket to Ride', parameters=['rating', 'player_count'], language='en')]"}
+{"id": "simple_python_329", "completion": "[monopoly_odds_calculator(number=7, dice_number=2, dice_faces=6)]"}
+{"id": "simple_python_330", "completion": "[catan_average_rating]"}
+{"id": "simple_python_331", "completion": "[chess.get_top_players(location='New York', minimum_rating=2300, number_of_players=10)]"}
+{"id": "simple_python_332", "completion": "[chess.rating(player_name='Magnus Carlsen', variant='classical')]"}
+{"id": "simple_python_333", "completion": "[get_weather_forecast(location='London', days=3, details=['high temperature', 'low temperature', 'humidity', 'precipitation'])]"}
+{"id": "simple_python_334", "completion": "[blackjack.check_winner(player_cards=[10, 10], dealer_cards=[10, 9], ace_value=1)]"}
+{"id": "simple_python_335", "completion": "[find_card_in_deck('Queen', 'Hearts', deck)]"}
+{"id": "simple_python_336", "completion": "[cards.shuffle_and_draw(num_cards=3)]"}
+{"id": "simple_python_337", "completion": "[poker_game_winner(['Alex', 'Sam', 'Robert', 'Steve'], ['A of spades', 'K of spades'], 'Texas Holdem')]"}
+{"id": "simple_python_338", "completion": "[card_game_probability.calculate(52, 13, 1)]"}
+{"id": "simple_python_339", "completion": "[poker_probability.full_house(deck_size=52, hand_size=5)]"}
+{"id": "simple_python_340", "completion": "[card_games.poker_determine_winner('John', ['8\u2665', '10\u2665', 'J\u2665', 'Q\u2665', 'K\u2665'], ['9\u2660', 'J\u2660', '10\u2660', 'Q\u2660', 'K\u2660'])]"}
+{"id": "simple_python_341", "completion": "[deck_of_cards.odds('spades', 'without_joker')]"}
+{"id": "simple_python_342", "completion": "[game_list.get_games(release_year=2019, multiplayer=True, ESRB_rating='Everyone')]"}
+{"id": "simple_python_343", "completion": "[game_stats.fetch_player_statistics('Zelda', 'Sam', 'Switch')]"}
+{"id": "simple_python_344", "completion": "[get_game_item_stats('Legend of Zelda: Breath of the Wild', 'Guardian Sword+', 'Power Rating')]"}
+{"id": "simple_python_345", "completion": "[game_valuation(game_name='Super Mario Bros. 1985', release_year=1985, condition='New')]"}
+{"id": "simple_python_346", "completion": "[get_collectables_in_season('Animal Crossing: New Horizons', 'Spring', 'all')]"}
+{"id": "simple_python_347", "completion": "[soccer.get_last_match(team_name='Liverpool F.C.', include_stats=True)]"}
+{"id": "simple_python_348", "completion": "[create_player_profile('StarPlayer', 'Mage', 5)]"}
+{"id": "simple_python_349", "completion": "[game_score.highest(game='Overwatch', platform='PC', region='Global')]"}
+{"id": "simple_python_350", "completion": "[get_highest_scoring_player('Valorant', '2022')]"}
+{"id": "simple_python_351", "completion": "[multiplayer_game_finder(platform='Windows 10', rating=4.5, genre='Action')]"}
+{"id": "simple_python_352", "completion": "[gamespot.getAverageUserScore('The Legend of Zelda: Breath of the Wild', 'Nintendo Switch')]"}
+{"id": "simple_python_353", "completion": "[find_recipes('gluten-free', 'dinner', ['potatoes', 'rice', 'beans'])]"}
+{"id": "simple_python_354", "completion": "[get_vegan_recipe(dish_type='soup', cooking_time=30)]"}
+{"id": "simple_python_355", "completion": "[recipe_info.get_calories(website='Foodnetwork.com', recipe='Beef Lasagna', optional_meal_time='Breakfast')]"}
+{"id": "simple_python_356", "completion": "[recipe_finder.find(2, 'vegan', 30)]"}
+{"id": "simple_python_357", "completion": "[get_recipe('chocolate cake', 'vegan')]"}
+{"id": "simple_python_358", "completion": "[recipe_search(diet=['gluten-free'], time_limit=30)]"}
+{"id": "simple_python_359", "completion": "[recipe_search('Vegetarian', ['Tomato sauce', 'Mozzarella cheese'], 2)]"}
+{"id": "simple_python_360", "completion": "[find_recipe(recipeName='pasta carbonara', maxCalories=500)]"}
+{"id": "simple_python_361", "completion": "[restaurant_finder('New York', 'Italian', 'Gluten-free')]"}
+{"id": "simple_python_362", "completion": "[get_best_sushi_places(\"Tokyo\", 5, 4.0)]"}
+{"id": "simple_python_363", "completion": "[restaurant_search.find_closest(location='Boston', cuisine='Sushi', amenities=['Wi-Fi'])]"}
+{"id": "simple_python_364", "completion": "[find_restaurant(location='Brooklyn', type='Italian', diet_option='Gluten-free')]"}
+{"id": "simple_python_365", "completion": "[cooking_conversion.convert]"}
+{"id": "simple_python_366", "completion": "[recipe.unit_conversion(value=2, from_unit='teaspoon', to_unit='tablespoon', precision=1)]"}
+{"id": "simple_python_367", "completion": "[find_recipe(dietary_restrictions='vegan', recipe_type='dessert', time=30)]"}
+{"id": "simple_python_368", "completion": "[calculate_cooking_time(weight_kg=1.5, cooking_method='roast', temp_celsius=180)]"}
+{"id": "simple_python_369", "completion": "[grocery_store.find_nearby(location=\"Houston, TX\", categories=[\"organic fruits and vegetables\"])]"}
+{"id": "simple_python_370", "completion": "[safeway.order(location='Palo Alto', items=['olive oil', 'rice'], quantity=[3, 5])]"}
+{"id": "simple_python_371", "completion": "[whole_foods.check_price(location='Los Angeles', items=['tomatoes', 'lettuce'])]"}
+{"id": "simple_python_372", "completion": "[whole_foods.find_top_brands(product='bananas', number=5, organic=True)]"}
+{"id": "simple_python_373", "completion": "[walmart.purchase(loc='San Jose', product_list=['apples', 'rice', '12 pack of bottled water'], pack_size=['12 pack'])]"}
+{"id": "simple_python_374", "completion": "[grocery_info.nutritional_info(store='Walmart', food='avocado', information=['protein', 'calories', 'carbs'])]"}
+{"id": "simple_python_375", "completion": "[walmart.check_price(items=[3, 2], quantities=[1, 2], store_location=\"all\")]"}
+{"id": "simple_python_376", "completion": "[time_zone_converter('London', 'UK', '24h')]"}
+{"id": "simple_python_377", "completion": "[get_current_time(city='Sydney', country='Australia')]"}
+{"id": "simple_python_378", "completion": "[timezone.convert(time='3pm', from_timezone='America/New_York', to_timezone='Europe/London')]"}
+{"id": "simple_python_379", "completion": "[get_current_time(location='Sydney', country='Australia')]"}
+{"id": "simple_python_380", "completion": "[book_single_room_at_pet_friendly_hotel_near_manhattan_for_3_nights_starting_from_march_10th_2023]"}
+{"id": "simple_python_381", "completion": "[hilton_hotel.check_availability(location='Paris', check_in_date='2023-04-04', check_out_date='2023-04-08', no_of_adults=1, hotel_chain='Hilton')]"}
+{"id": "simple_python_382", "completion": "[book_hotel(hotel_name='Hilton', location='Chicago', room_type='2', start_date='10th December 2022', nights=2)]"}
+{"id": "simple_python_383", "completion": "[book_room(hotel_name='The Plaza', room_type='double', num_nights=2)]"}
+{"id": "simple_python_384", "completion": "[hotel_booking.book(city='Paris', from_date='July 10', to_date='July 20', adults=2, children=1)]"}
+{"id": "simple_python_385", "completion": "[hotel_bookings.book_room(location='Los Angeles', room_type='king size', check_in_date='15-10-23', no_of_nights=2, no_of_rooms=1)]"}
+{"id": "simple_python_386", "completion": "[book_hotel_paradise(hotel_name='Hotel Paradise', location='Las Vegas', room_type='City View', start_date='May 12, 2022', stay_duration=3, view='Luxury Room')]"}
+{"id": "simple_python_387", "completion": "[book_hotel_room(hotel_name='Plaza Hotel', location='New York', start_date='2022-01-01', end_date='2022-01-31', rooms=3)]"}
+{"id": "simple_python_388", "completion": "[currency_exchange.convert(base_currency='USD', target_currency='CAD', amount=500)]"}
+{"id": "simple_python_389", "completion": "[currency_converter(base_currency='USD', target_currency='GBP', amount=200)]"}
+{"id": "simple_python_390", "completion": "[currency_conversion.convert(amount=150, from_currency='EUR', to_currency='CAD')]"}
+{"id": "simple_python_391", "completion": "[get_exchange_rate_with_fee(base_currency='GBP', target_currency='JPY', fee=0.02)]"}
+{"id": "simple_python_392", "completion": "[latest_exchange_rate('GBP', 'JPY', 1.0)]"}
+{"id": "simple_python_393", "completion": "[convert_currency(base_currency='JPY', target_currency='USD', amount=20000)]"}
+{"id": "simple_python_394", "completion": "[maps.get_distance_duration(start_location='Eiffel Tower', end_location='Louvre Museum', traffic=False)]"}
+{"id": "simple_python_395", "completion": "[parking_lot.find_nearest(location='Central Park', radius=2, type='public')]"}
+{"id": "simple_python_396", "completion": "[hospital.locate(location='Denver, CO', radius=5000, department='Pediatrics')]"}
+{"id": "simple_python_397", "completion": "[distance_calculator.calculate]"}
+{"id": "simple_python_398", "completion": "[get_museum_hours('Metropolitan Museum of Art', 'Saturday')]"}
+{"id": "simple_python_399", "completion": "[restaurant_search(location=\"New York City\", cuisine=\"Italian\", rating=4, accepts_credit_cards=True)]"}

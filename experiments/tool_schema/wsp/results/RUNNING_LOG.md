@@ -189,3 +189,170 @@ More stacks on top of the confirmed edit: + k_proj kv-head1 x0.85 / + o_proj gro
 - Budget = 100; editor = Claude Opus 5.5 `--effort high`
 - Launcher: `wsp/run_editor_bfcl_native.sh`
 
+
+## BFCL-native WSP run started 2026-11-05T14:39:01Z
+
+- session_id: `wsp-bfcl-p100-20261105T143615Z`
+- budget: `100`
+- practice: BFCL simple_python train **300**
+- holdout: BFCL simple_python test **100** (sealed)
+- metric: official AST (`strict_ok`)
+- editor model: `claude-opus-5-5` effort=`high`
+- seal_dir: `/tmp/wsp_seal`
+- WSP_LOCK_TEST: `1`
+- claude_log: `/workspace/experiments/tool_schema/wsp/results/claude_editor_wsp-bfcl-p100-20261105T143615Z.log`
+- status: **running**
+
+
+## Editor log — session wsp-bfcl-p100-20261105T143615Z (Opus 5.5)
+
+Plan: pass 1 = base generate on all 300 practice items (deterministic greedy → per-item base reference, so later `edited` passes are paired against it). Split practice into DEV (even ids, used to choose edits) and CONFIRM (odd ids, used only to validate a chosen edit). Lesson from p50 run: v_proj kv-head1 damp L16-17 helped homemade JSON; re-test here rather than assume.
+
+### Pass 1 — base taxonomy (n=300, greedy): strict_ok **0.41** (123/300), parse_ok 0.973
+| failure class (177) | n | example |
+|---|---|---|
+| positional args (first arg unnamed) | 75 | `[math.gcd(40, 50)]`, `[get_directions('Sydney', 'Melbourne', 'fastest')]` |
+| wrong/hallucinated function (incl. 16 `math.` prefix, expression calls) | 40 | `[math.sqrt(base*base+height*height)]` |
+| wrong value (units, sign, bool, location string) | 42 | `gravity=9.81` vs -9.81, `"New York"` vs `"New York, NY"` |
+| omitted optional-but-gold param / nested type (int vs float list) | ~20 | `numbers=[12, 15]` expected floats |
+| syntax error / prose | 8 | `[stats.t_test]` |
+Tokenization finding: 57 failures begin the arg list with a **merged paren-value token** (`('` 52, `(['`, `("`, `([`); only 10 positional failures are digit-after-`(`.
+Splits: DEV = even ids (150, base 61 ok), CONF = odd ids (150, base 62 ok); SCREEN = 91 dev items (41 positional fails + 20 other fails + 30 passes).
+
+### Hypotheses / edits
+| pass | edit | set | result |
+|---|---|---|---|
+| 2 | prior p50 lesson: v_proj kv-head1 x0.55 L16-17 | screen | 30→31 (+3/-2) noise → retired for BFCL |
+| 3 | project out raw d = g⊙E['('']−g⊙E['('] from o_proj+down_proj L20-31 (β=1) | screen | 30→16 (+7/-21): named args appear (`math.hcf(number1=36,...)`) but d ≈ −readout('(' , ',' , '[') → first token flips to ```` ```python ```` |
+| 4 | **same idea, protected-orthogonal**: subspace of 8 paren-family readouts (`('` `("` `(['` `([` `(["` `(-` `({` `((`) orthogonalized against readouts of 311 protected tokens (top-300 base-completion tokens + code/prose starters) → logits of protected tokens provably unchanged; project out of o_proj+down_proj L16-31, β=1 | screen | **30→54 (+27/-3)** |
+| 5 | same edit, validation | all 300 | **0.41→0.543 (123→163, +48/-8)**; DEV 61→85 (+28/-4); **CONF (untouched) 62→78 (+20/-4)** |
+Mechanism: late layers write the merged `('`-family token at the function-name position (positional start); removing that write forces `(` and the model then emits `name=`. Breaks are small value drifts (True→False, 1→1000).
+| 6 | family proj **β=2 (reflection)** L16-31 | DEV | 61→73; vs current 85→73 (+7/-19): overshoot, rejected |
+| 7 | family proj β=1 **L8-31** | DEV | 85 (+5/-5 swap vs current): mid layers add nothing |
+| 8 | family proj β=1 **L24-31** | DEV | 84 (+4/-5 vs current): effect lives in last 8 layers; L16-31 kept (validated) |
+After the edit, 0 completions use a paren-family token; residual positional = 9 digit-after-`(` (`math.gcd(12, 15)`). Remaining failures (137/300): value_err 64 (53 required-param semantic, 11 hallucinated optional), wrong_func 31 (renamed/hallucinated names, 9 `math.` prefix, system-example copy `[math.factorial(number=5)]`), missing_param 15, type 12, syntax 9.
+| 9-13 | + v_proj kv-group g ×1.3 L20-31 (g=0..4), hypothesis: amplify name-copying attention | DEV vs current 85 | 83 / 84 / 84 / 83 / 84 (each ~3-6 fixed / 4-7 broken) → closed. **Noise floor:** any small perturbation swaps ~8-12 of 150 items; |net| ≤ 4 on DEV is noise. |
+| 14 | + **bool readout shear** W←W+α·d̂ b̂ᵀW (o_proj+down L24-31, α=1); d=True−False readout, b=True+False readout, both orthogonalized vs 309 protected tokens | 37 bool-schema items vs current | **22→26 (+5/−1)**; dev 8→10, conf 14→16; changes = False→True flips (formatted, equal_variance, avoid_tolls, format_as_ratio, standardize). Kept (α not tuned). |
+| 15 | + programmed layer-0 neuron #1983: gate=up=k·u (protected-orthogonal '(' detector: '(' 1.38, family ≤0.72, protected tokens 0), down = −4·ŵ(digits) — hypothesis: suppress digit after '(' (`math.gcd(12, 15)`) | 9 digit-positional + 50 dev passes | 0/9 fixed, 7 broken (`math.density`, `math.sqrt(...)` hallucinations — '(' also occurs in system-prompt examples) → refuted/abandoned |
+| 16 | **current = family projection + bool shear**, full reference | all 300 | **167/300 = 0.557** (base 0.41; +51/−7 vs base); vs projection-only +7/−3; dev 85→87, conf 78→80; only 16 non-bool completions changed (net ≈0) |
+| 17-18 | + 8 strongest late OV-copy heads (static copy score; L31h14,L29h10,L31h10,L30h10,L31h2,L29h14,L26h5,L30h12) o_proj cols ×1.25 / ×1.6 | DEV vs current 87 | 87 (+2/−2) / 87 (+4/−4) → swap noise, closed |
+| 19 | + project out protected-orthogonal **`math` readout** (L16-31, β=1). Hypothesis: 11/20 `[math...` outputs are hallucinations copied from the system example `[math.factorial(number=5)]` (wrong_func diverges at FIRST name token in 32/34) | 20 math-start/math-gold items + 30 dev passes | 32→39 (+10/−3): hallucinations fixed, but true math.factorial → copies other system example; math.gcd → `[import math]` (too strong) |
+| 20 | same, **β=0.5** | same screen | **32→42 (+10/−0)**; all genuine math.* names preserved (gcd/hypot/factorial/pow/hcf) |
+| 21 | **current3 = family proj + bool shear + math proj β=0.5**, full | all 300 | **176/300 = 0.587** (base 0.41; +62/−9 vs base); vs current2 +11/−2; dev 87→91, conf 80→85; non-screen 250 items 135→134 (no side effects) |
+| 22-23 | family proj β=1.25 / β=0.75 (rest of current3 fixed) | DEV vs current3 91 | 90 (+1/−2) / 92 (+2/−1) → flat plateau around β=1; keep β=1 |
+| 24 | '(' detector neuron again, α=12, on top of current3 | 9 digit-pos + 50 guard | 0/9 changed at all, 3 broken → early-layer conditional write does not reach the decision; closed |
+| (no pass) | bias toward fewer optional params? 96 passes give optional params, 39 of them need them → would break more than fix; not tried |
+| 25 | multi-pair quote shear ('→" for 11 quote-token pairs, L24-31 α=1) to fix apostrophe syntax errors (211, 216) | 2 + 52 single-quote passes | **52→6**: openers flip to `"` but closers stay `'` (`to="john.doe@example.com'`) → quote style is context-coupled, closed |
+| 26-27 | bool shear α=0.5 / α=2 | 37 bool items vs current3 26 | 26 / 26, identical items → flat plateau, keep α=1 |
+| 28-29 | math proj β=0.35 / β=0.7 | math screen vs current3 42 | 42 / 42, identical items → flat plateau, keep β=0.5 |
+| 30-31 | localization: family proj on **o_proj only** / **down_proj only** (L16-31) | DEV vs current3 91 | o-only **77** (+3/−17) / down-only **93** (+3/−1, incl. digit-pos item 20 fixed) → the `('`-family token is written by late **MLPs** |
+| 32-33 | bool shear o_proj only / down_proj only | 37 bool vs 26 | 27 (+1/−0, fixes the one earlier break 137) / 26 → both carry it |
+| 34-35 | math proj o only / down only | math screen vs 42 | 41 / 41 (each loses item 14) → both needed |
+| 36 | minimal combo: family proj down-only + bool shear o-only + math both | all 300 | 181/300 (+11/−6 vs current3); conf 85→92, dev 91→89; bool 25 (o-only shear loses formatted=True) |
+| 37 | **current4 = family proj down_proj only (L16-31, β=1) + bool shear o+down (L24-31) + math proj o+down (L16-31, β=0.5)** | all 300 | **185/300 = 0.617** (base 0.41); dev 93 (reproduces pass-31 DEV 93), conf 92 (base 62), bool 26 |
+| 38-39 | current4 with family proj down-only restricted to L24-31 / β=1.5 | DEV vs current4 93 | 92 (+5/−6) / 89 (+1/−5) → keep L16-31 β=1 |
+| (no pass) | leading-space hypothesis for ` lawsuit`→`s`+`ue`: protected-orthogonal mean(R[' w']−R['w']) over 5739 pairs is dominated by capitalized sentence-start tokens; ` lawsuit` z=0.37 → not a targeted lever, dropped |
+| 40 | close→continue readout shear (`)]`→`,`, `')]`→`',`, `")]`→`",`), α=0.3, L24-31 | DEV vs current4 93 | 84 (+7/−16): fixes exactly the early-closers (90,110,156,160 now include data_field/location/details/info_type) but adds hallucinated params elsewhere → calibration already near-optimal; closed |
+| 41 | inspect (teacher-forced NLL of gold call), which=both, current4 | 100 items (50 dev + 50 conf) | mean NLL **0.254 → 0.230 (−9.4%)**, 78/100 items improve → edits raise gold likelihood broadly, not just a greedy-decoding artifact (contrast p50 edit: NLL worse) |
+
+## BFCL-native RESUME 2026-11-05T18:53:18Z
+- session_id: `wsp-bfcl-p100-20261105T143615Z`
+- seal_dir: `/tmp/wsp_seal`
+- model: `claude-opus-5-5` effort=`high`
+- CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS: `0`
+- status: **finished** (100/100, exported)
+
+| 42-48 | (pre-interrupt, reconstructed) **localization sweep**: zero o_proj cols of one KV group (3 q-heads) in 4-layer block, on top of current4 | abl_screen (87 items; ref current4 = 30 ok) | L20-23 g0..g4: 23/21/24/26/14 (−7..−16 net each; ~13-21 broken) → mid-late attention in L20-23 is **necessary** for every group (copying args/names); L24-27 g0: 32 (+5/−3), g1: 32 (+5/−3) → within swap noise. Sweep (L24 g2-4, L28 g0-4) **stopped**: ablation is not a constructive lever and noise floor is ±4. |
+| 49 | + q_proj rows ×1.25 (attention sharpening) on 7 mid-layer copy heads (L19h9, L22h3/h9/h11, L23h2/h3/h9; static OV-copy score) — hypothesis: more faithful name/arg copying | DEV vs current4 93 | **91** (+0/−2); only 9/150 completions changed → nearly inert; closed |
+| (no pass) | **new diagnosis: tokenizer space-boundary copy failure.** Prompt has `Function name: lawsuit_info` → first token `Ġlawsuit`; output after `[` needs no-space `law`+`su`+`it`. Items whose first name token cannot be reused verbatim ("boundary mismatch", 60/300): wrong_func **12/60 (20%)**, strict 45%; reusable first token (240): wrong_func 9/240 (3.8%), strict 66%. All 6 `lawsuit*`-initial names fail (`[sue_details`, `[lucas_search`). Scorer accepts `[ lawsuit_info(...)]` (checked offline with bfcl_score on gold row; BFCL also strips spaces in string compare). |
+| 50 | + project out protected-orthogonal **space-ness** readout s = mean(R['Ġw']−R['w']) over 4565 vocab lowercase word pairs (vocab-wide, not practice-derived), o+down L16-31, β=1 | space_screen (60 hazard + 40 dev-pass guard; ref 67) | 61 (+6/−12): fixes exactly as predicted (`[ lawsuit_info(`, `[ lawsuit.check_case(`, `[ lawsuit_details.find(`, `detailed_weather_forecast`), but 48/100 completions changed — value truncation, `[EMFI]` loop → overdosed |
+| 51 | space projection β=0.5 (o+down L16-31) | space_screen vs 67 | 66 (+2/−3; 20 changed): fixes 184 `[ lawsuit.check_case`, 233 `[ european_history...`; breaks = multi-word value truncation (`'ATP synthase'`→`'ATP'`, `'Yellowstone National Park'`→`'Yellowstone'`) → late layers write +space inside values and −space at name start; symmetric projection removes both → localize |
+| 52 | space proj o_proj only β=1 L16-31 | space_screen vs 67 | 64 (+1/−4): no name fixes, value truncation (58, 68) |
+| 53 | space proj down_proj only β=1 L16-31 | space_screen vs 67 | 60 (+6/−13): carries **all** name fixes (176,184 lawsuit, 185, 233, 299 `musical_scale`) and most damage (`[ sculpt_locator`, `[EMFI]`, value drift) |
+| 54 | space proj down only L24-31 β=1 | space_screen vs 67 | 63 (+7/−11): all name fixes (176,182,184,185,233,299,45) + same breaks |
+| 55 | space proj down only L16-23 β=1 | space_screen vs 67 | 67 (+0/−0, identical) → effect lives entirely in L24-31 MLPs |
+| 56 | space proj down only L28-31 β=1 | space_screen vs 67 | 64 (+6/−9; 43 changed): all name fixes; damage = **space after `_` inside names** (`calculate_ electric_field_strength`, `locate_ tallest_ mountains`), paraphrase competition once a space is allowed (`[ invest_stock_profit`, `[ hypothesize_test`); guard 6/40 broken |
+| 57 | space proj down only L24-27 β=1 | space_screen vs 67 | 64 (+0/−3): value truncation only (58,68,124) → L24-27 = "continue multi-word value" writes, L28-31 = "no space after `[`/`_`" writes |
+| 58 | space proj down only L28-31 β=0.5 | space_screen vs 67 | 66 (+3/−4: 176,184,233 fixed; 41,58,68,124 broken) → **space lever closed**: mechanism confirmed but "no space after `[`" is the same late-MLP signal as "no space after `_`"; not separable by a linear readout projection. Items 58/68/124 are fragile (break under most perturbations). |
+| (no pass) | "close call earlier" (inverse of pass 40)? Offline count on current4: 10 fails fixable by dropping an invented optional (`category='Drama'`, `location='global'`, `dividends=True`) vs **40 passing items whose gold needs a schema-optional param** the user mentioned → context-dependent; not tried |
+| (no pass) | other `(`-merged tokens (69 in vocab, e.g. `()`, `({'`, `([[`): base used only `('`53 `(['`2 `("`1 `([`1; current4 uses plain `(` in 300/300 → extending family = risk without measurable benefit; skipped |
+| 59 | robustness: family proj built with protected set k=150 (instead of 300) | DEV vs current4 93 | 91 (+1/−3, 20 changed, 0 family tokens) → effect stable |
+| 60 | family proj with k=600 | DEV vs 93 | 88 (+7/−12): over-protection weakens the edit (`('` returns in 3 completions, `math.hcf(36, 24)` positional again) → k=300 kept |
+| (no pass) | neuron-level separation of `[`-start vs `_`-continuation space suppression (L28-31 down cols by space-loading × gate·E['['] vs gate·E['_']): selectivities co-vary (generic punctuation reading) → no clean subset; space line closed |
+| (no pass) | string-value calibration on current4 failures: truncated 13 (5× city without state: `'Chicago'` vs `'Chicago, IL'`; `'M'` vs `'monthly'`) vs over-extended 4 (`'Louvre Museum in Paris'`); 52 passing multi-word string values at risk |
+| 61 | close-string→comma-in-string shear (`',`→`,`, `",`→`,`), α=0.3, L24-31 | DEV vs 93 | 91 (+3/−5; 27 changed): city/state completion works (`'New York, NY'`, `'Seattle, WA'`) but generic comma boost adds unit params (`radius=10, units='meters'`) and bare-identifier args (`math.hcf(number1, number2)`) → closed |
+| 62 | **component ablation**: current4 minus bool shear | all 300 vs current4 185 | **177** (+2/−10): dev 93→87, conf 92→90, bool items 26→22 → bool shear contributes ≈ +8 |
+| 63 | **component ablation**: current4 minus math projection | all 300 vs 185 | **169** (+0/−16); wrong_func 21→36 → math proj contributes ≈ +16 (system-example `math.factorial` copying returns) |
+| 64 | **component ablation**: current4 minus family projection | all 300 vs 185 | **141** (+7/−51): dev 93→68, conf 92→73 → family proj contributes ≈ +44 (main effect). Attribution: family +44, math +16, bool +8 (sum > +62 total → components interact positively) |
+| 65 | prior p50 lesson (v_proj kv-head1 ×0.55 L16-17) re-tested **on top of current4** | DEV vs 93 | 91 (+2/−4) → does not transfer to BFCL; retired (second time) |
+| 66 | `,`→`=` protected-orthogonal shear α=0.2 L24-31 (fix bare-identifier positional `(group1, group2, …)`) | DEV + 4 conf id-positional (154) vs 93 | 93 (+1/−1; only 12 changed): 19 `math.gcd(num1=40, num2=50)` fixed; 120/123 now `group1=array(3, 4, …)` (named, but value written as call) |
+| 67 | `,`→`=` shear α=0.4 | same 154 vs 93 | 94 (+3/−2; 22 changed): extra fixes (40,188) come from earlier call closing (lower `,`), which also drops needed optionals (132,172); list args become `group1=array(3, …)` because the model emits bare `=` instead of merged `=[` → noise-level |
+| 68 | `,`→{`=`, `=[`} shear α=0.3 (tokenizer: list values open with merged `=[`) | same 154 vs 93 | 95 (+5/−3): **targeted fixes** 120 `group1=[3, 4, 5, 6, 4]`, 119 `sample1=[22,…]`, 19 `math.gcd(num1=40, num2=50)`; breaks (74,132,172) = calls closed early because `,` logit drops |
+| 69 | **eq-boost, comma kept**: write dirs for `=`,`=[` orthogonal to protected AND to `,` readout; trigger = `,` readout; α=0.3 L24-31 o+down | same 154 vs 93 | 95 (+4/−2; 14 changed): 120,119,19 fixed + 158; early-closing breaks gone; new minor side effect: bare `=` beats merged `='` → unquoted strings (`case_number=XYZ123`, already-failing items); DEV-only +2/−2 |
+| 70 | eq-boost α=0.3 on full **CONF** (146/150 untouched by design) | CONF vs current4 92 | 93 (+3/−2): fixes 19, 119, 65; breaks 169 `docket_number=123456`, 255 `papal_name=Innocent3` = bare `=` outcompeting merged `='` (quote dropped); 147/299 now pick the right function name |
+| 71 | **eq-dual**: one write vector giving equal +1 logit to all 7 value openers (`=`,`=[`,`='`,`="`,`={`,`=-`,`=(`; dual basis), 0 to protected + `,`; trigger `,`; α=0.3 L24-31 | 154 vs 93 | 95 (+4/−2; only 9 changed): 120,119,19,158 fixed, quote-dropping gone; breaks 208, 212 (value drift); DEV-only +2/−2 |
+| 72 | eq-dual α=0.3 on full CONF | CONF vs 92 | 93 (+3/−2): 19, 65, 119 fixed; 169, 297 broken (value drift) → all-300 estimate ≈ +1 = not a clear paired gain; not adopted at α=0.3 |
+| 73 | eq-dual α=0.2 | **all 300** vs 185 | 187 (+4/−2): fixes 120, 119, 19 (targeted, reproduce at every dose/variant) + 65; breaks 208, 212 (fragile items, also broke under passes 59/61/69). On items not used to design it: DEV +1/−2, CONF\screen +1/−0 → **not a clear paired gain; documented, not adopted** |
+| 74 | amplify space-ness in late attention outputs (o_proj L24-31, ×2 along ŝ; MLPs untouched) | space_screen vs 67 | 67 (3 changed) → inert |
+| 75 | same, ×5 along ŝ | space_screen vs 67 | 66 (+2/−3; 26 changed): no name fixes (lawsuit items drift to `lucid_search`, `santa_calif_sue_search`) → attention-side space amplification refuted; **space-boundary class closed** |
+| 76-78 | **null-edit noise calibration** on top of current4: random protected-orthogonal direction projected out β=0.5 o+down L16-31 (seeds 1, 2; same geometry as math proj) and random protected-orthogonal shear α=1 L24-31 (same geometry as bool shear) | all 300 vs 185 | **185 (+1/−1, 8 changed) / 182 (+2/−5, 16 changed) / 180 (+1/−6, 18 changed)** → a random edit of this size costs ≈ −3 and never fixes >2. Component contributions (family +44, math +16, bool +8) are far outside the null range; eq-dual (+4/−2) is just above it. |
+| 79 | inspect (teacher-forced gold NLL), which=both, current4 | all 300 | **0.2733 → 0.2463 (−9.9%)**; improved on **250/300**; DEV 125/150, CONF 125/150 (identical) → gold likelihood rises broadly on held-aside items |
+| (rule, pre-registered) | adopt eq-dual α=0.2 only if gold NLL vs current4 falls on mean AND >60% items on BOTH dev and conf, and a same-size null edit does clearly worse (~50%) |
+| 80 | inspect gold NLL: eq-dual α=0.2 vs current4 | all 300 | 0.2463 → 0.2464; improved 123/300 (dev 59, conf 64) → **fails rule; eq-dual rejected** (its greedy +2 was boundary noise) |
+| 81 | NLL screen: family β=1.25 | all 300 vs current4 | 0.2463→0.2459; improved 145/300 (dev 63, conf 82) → flat |
+| 82 | NLL screen: math β=0.7 | all 300 | 0.2463→0.2465; improved 214/300 but mean worse (few items much worse) → fails |
+| 83 | NLL screen: bool α=2 | all 300 | 0.2463→0.2488 (worse); 188/300 → fails |
+| 84 | NLL screen: family L12-31 | all 300 | 0.2463→0.2463; 150/300 → flat |
+| 85 | NLL screen: family β=0.75 | all 300 | 0.2463→0.2481 (worse), 126/300 |
+| 86 | NLL screen: math β=0.35 | all 300 | 0.2463→0.2470 (worse), 75/300 |
+| 87 | NLL screen: bool α=0.5 | all 300 | 0.2463→0.2449, but only 108/300 improve → mixed; current4 at local NLL optimum on all three dose axes |
+| 88 | NLL screen: **null** random protected-orthogonal projection (seed 2, β=0.5) | all 300 | 0.2463→0.2452; improved **199/300** although its greedy accuracy is −3 (pass 77) → protected-orthogonal projections generically lower gold NLL (they drain rare-token mass; gold calls are mostly protected tokens). The pre-registered "majority improves" rule is therefore weak; current4's −9.9% (pass 79) is ~20× the null's −0.45% and stands, but its "250/300" is partly generic. |
+| 89-92 | single-layer space projection (down_proj only, β=1) L28 / L29 / L30 / L31 | space_screen vs 67 | 66 (1 changed) / 65 (3) / 67 (7) / **66 (+6/−7, 34 changed)** → the entire space-boundary effect lives in the **L31 MLP**: all 6 name fixes, but also 3 `_ ` artifacts + paraphrase breaks |
+| 93 | **neuron-level**: project ŝ out of only 5 L31 down cols with most negative space-loading (n1081, n2327, n1329, n2417, n791) | space_screen vs 67 | **68 (+1/−0; only 2 changed)**: `[ lawsuit.check_case(` fixed, no `_ ` artifacts |
+| 94 | neuron-level space proj, top-20 negative L31 cols | space_screen vs 67 | 68 (+2/−1; 9 changed): 184 + 233 `[ european_history…` fixed; 15 now `[integrate(` (value still wrong); 58 broken (fragile) |
+| (rule, pre-registered) | adopt a neuron-level variant only if on all 300: net ≥ +1 AND zero breaks outside the 100-item space_screen |
+| 95 | neuron-level space proj top-5 L31 | **all 300** vs 185 | **182 (+1/−4)**; conf 92→89; 15 completions changed outside the screen (`museo_working_hours.get`, `generate_law_contract(John='John', …)`) → fails rule; **rejected**; top-20 not run. Space-boundary failure remains open. |
+| 96 | **family-specificity control**: current4 with the family subspace replaced by a random 8-dim protected-orthogonal subspace (seed 11), down_proj L16-31 β=1 | all 300 | **154** (vs no-family 141, real family 185): dev 81, conf 73 → ≈ +13 of the family's +44 is a generic "drain rare-token mass" effect; ≈ +31 is specific to the merged-paren readouts |
+| 97 | family-specificity control, seed 12 | all 300 | **135** (below no-family 141). **Correction to pass 96:** `('`-family completions: no-family 54, seed-11 19, seed-12 57, real family 0 → seed 11 partially aligned with the family by chance. Accuracy tracks family-token suppression (141/54, 154/19, 135/57, 185/0); random subspaces give no reliable generic gain (−6…+13) → **family effect is specific** |
+| 98 | **math-specificity control**: math projection replaced by random protected-orthogonal 1-dim projection (β=0.5, o+down L16-31) | all 300 | **166** (no-math 169, real math 185); math_set 3/20 (real 13/20) → math effect is specific |
+| 99 | **bool-specificity control**: bool shear replaced by random protected-orthogonal shear (α=1, o+down L24-31) | all 300 | **179** (no-bool 177, real bool 185); bool items 22 (real 26) → bool effect is specific |
+| 100 | **final paired confirmation** `which="both"`, current4 | all 300 | **base 123 → edited 185 (0.410 → 0.617)**, +69/−7; DEV 61→93 (+36/−4), CONF 62→92 (+33/−3); completions byte-identical to pass 37 (deterministic) |
+
+## FINAL — session wsp-bfcl-p100-20261105T143615Z (100/100 passes, exported)
+
+**Exported edit = current4** (32 tensors: `o_proj` + `down_proj`, layers 16-31; no embed/lm_head/norm; verified export == fresh rebuild, max diff 0.0). All three parts are closed-form protected-orthogonal readout edits: they leave the logits of 311 protected tokens (top-300 base-completion tokens + code/prose starters) untouched, so only the targeted tokens move.
+1. **Merged-paren family projection** — down_proj L16-31, β=1: removes late-MLP writes along the readouts of `('`, `("`, `(['`, `([`, `(["`, `(-`, `({`, `((`. Mechanism: the model began positional arg lists with a merged paren+value token; blocking it forces `(` then `name=`. Contribution ≈ **+44**.
+2. **System-example `math` projection** — o+down L16-31, β=0.5: stops hallucinated `[math.factorial(number=5)]`/`math.*` copies of the system-prompt example while keeping genuine `math.gcd`/`math.hypot`. Contribution ≈ **+16**.
+3. **Bool shear** — o+down L24-31, α=1: when the residual reads "bool", tilt toward `True` (fixes under-set flags such as `equal_variance`, `avoid_tolls`). Contribution ≈ **+8**.
+
+**Evidence:** practice strict_ok (official BFCL AST) **0.410 → 0.617** on all 300; gain is the same on the held-aside CONF half (62→92), which was not used to design edits 1-3; gold-call NLL −9.9 %. Specificity controls replacing each part with a random edit of identical geometry: family 135-154 (vs 185; accuracy tracks `('`-suppression), math 166, bool 179; random edits added on top of current4 cost 0 to −5. Dose plateaus: family β 0.75-1.25, k_protect 150-300, bool α 0.5-2, math β 0.35-0.7 are all ≤ current4.
+
+**Tried and rejected after resume (passes 42-99):** kv-group ablations (diagnostic only); q-sharpening of copy heads (inert); space-boundary projection (mechanism confirmed — `[ lawsuit_info(` — but same L31-MLP signal also suppresses spaces after `_`; not separable by layer or by top-k neurons, all-300 182); string continuation / comma shears (comma is shared by "continue string" and "continue call"); `,`→`=`/`=[` eq-boost and eq-dual (targeted positional fixes 19/119/120 reproduce, but +4/−2 overall, flat NLL → not adopted); prior p50 v_proj lesson (does not transfer, twice).
+
+**Open failure classes (115/300 remain):** semantic value errors 56 (gold-idiosyncratic strings, units, percent vs fraction), tokenizer space-boundary function names (~12; e.g. all `lawsuit*` names), bare-identifier positional args (~6), schema-optional params needed/hallucinated (~19), int-vs-float list types (~3).
+
+**Expected holdout effect:** holdout = 100 sealed items from the same BFCL simple_python distribution. The two failure modes the edit fixes (merged-paren positional starts, system-example copies) are distribution-wide and the CONF half improved as much as the DEV half, so a similar ~+15-20 pt gain is plausible; it has wide uncertainty at n=100 (±~7 pt), and DEV/CONF were both used for some variant comparisons, so the practice number is mildly optimistic. Not scored here (sealed).
+
+## BFCL-native resume finished 2026-11-05T23:55:42Z
+- exit_code: `0`
+- edited_state: `/workspace/artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/edited_state.pt`
+- status: **finished** (exit 0)
+
+
+### Holdout test (post-unseal, editor never saw during run)
+
+Session `wsp-bfcl-p100-20261105T143615Z` — official BFCL v4 `simple_python` AST via `bfcl_eval.ast_checker`, offset=300, limit=100.
+
+| condition | n_correct / n | AST accuracy |
+|---|---|---|
+| base (pre-WSP) | **33 / 100** | **0.33** |
+| edited (`current4` export) | **50 / 100** | **0.50** |
+
+Paired: **+19 / −2** (net **+17**). Merged-paren family tokens in completions: base **24 → edited 0**.
+
+Artifacts:
+- base: `experiments/tool_schema/results/bfcl/bfcl-holdout-base-pre-wsp-bfcl-p100-20261105T143615Z_*`
+- edited: `experiments/tool_schema/results/bfcl/bfcl-holdout-edited-wsp-bfcl-p100-20261105T143615Z_*` (timestamp `20261105T235817Z`)
+- edited_state: `artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/edited_state.pt`
+
+Holdout gain (+17 pt) matches the pre-registered ~+15–20 pt expectation from practice CONF generalization.

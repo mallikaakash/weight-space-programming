@@ -1,0 +1,93 @@
+=== WSP BFCL resume start session=wsp-bfcl-p100-20261105T143615Z ===
+The run is finished: all 100 passes are used and the edit is exported. On the 300 practice items, BFCL AST accuracy went from **0.410 to 0.617** (123 → 185 correct, 69 fixed, 7 broken). I did not open or score the sealed 100-item holdout.
+
+The export is in `artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/` (`edited_state.pt` and `edits.json`). It changes 32 tensors: o_proj and down_proj in layers 16–31, nothing on the forbidden list. A fresh rebuild of the edit matches the export exactly.
+
+## What changed
+
+Each of the three edits shifts only the targeted tokens and leaves the scores of 311 common "protected" tokens untouched.
+
+| Edit | What it does | Gain on 300 items |
+|---|---|---|
+| Paren-token removal (down_proj, L16–31) | The model used to start argument lists with a merged token like `('` (e.g. `get_directions('Sydney', …)`). With that token blocked, it writes `(` and then `name=`. | about +44 |
+| `math` removal (half strength) | Stops the model copying the prompt's example `[math.factorial(number=5)]` into unrelated answers, while real `math.gcd`/`math.hypot` calls still work. | about +16 |
+| True/False tilt (L24–31) | Fixes flags the model left false, such as `equal_variance=True`. | about +8 |
+
+## Evidence
+
+- **Both halves improved equally.** I split practice into two halves of 150. One was used to design the edits and went 61 → 93; the other, held back for confirmation, went 62 → 92.
+- **The edits are specific, not just perturbation.** Replacing each edit with a random edit of the same shape scores 135–154 for the paren removal, 166 for `math` and 179 for True/False, all well below 185. Random edits added on top of the final version cost 0 to −5 items.
+- **The settings are at a local optimum.** Stronger or weaker settings of each part are no better.
+- **The correct answer became more likely overall.** Its average loss on all 300 items fell 9.9%. Random edits of this kind also lower it slightly, so that 9.9% is partly generic, but it is about 20 times what a random edit achieves.
+
+## What was tried after the resume and rejected
+
+- **Function names whose first word is split differently by the tokenizer** (e.g. `lawsuit_info` coming out as `sue_details`). This is the biggest structured failure left: 20% wrong-function rate on these items versus 4% elsewhere. I traced the cause to the last MLP layer (L31) and could produce `[ lawsuit_info(`. But the same signal also blocks the space after `_` inside names, and no layer or neuron subset separated the two (best full-set result 182). Not fixed.
+- **Positional arguments like `run_two_sample_ttest(group1, group2, …)`.** A targeted edit fixed these items reliably, but overall it was only +4/−2 with no likelihood gain, so I didn't adopt it.
+- **Others with no gain:** sharpening attention on copy heads, nudging string values or calls to continue, and the earlier v_proj edit from the previous run (it doesn't carry over to BFCL).
+
+## Expected holdout effect
+
+The two main fixes target failure patterns that occur throughout this BFCL category, and the held-back half improved as much as the design half. A gain of roughly 15–20 points on the holdout is plausible, with about ±7 points of uncertainty at 100 items. The practice figure is slightly optimistic because both halves were used in some comparisons between versions.
+
+115 of 300 practice items still fail, mostly wrong values (56), the tokenizer name problem (~12), optional-parameter mismatches (~19) and positional arguments (~6).
+
+Passes 42–48 were never written to `RUNNING_LOG.md` before the interruption, so I reconstructed and added them. The log now covers every hypothesis and result through pass 100, plus a final summary.
+=== Unsealing BFCL holdout ===
+{
+  "restored": [
+    "/workspace/artifacts/baselines",
+    "/workspace/experiments/tool_schema/results",
+    "/workspace/experiments/tool_schema/eval/dataset.jsonl",
+    "/workspace/experiments/tool_schema/eval/sealed/bfcl_test.jsonl",
+    "/workspace/experiments/tool_schema/eval/sealed/bfcl_splits.json",
+    "/workspace/experiments/tool_schema/eval/sealed/splits.json",
+    "/workspace/experiments/tool_schema/eval/sealed/dataset_full.jsonl",
+    "/workspace/experiments/tool_schema/eval/sealed/test.jsonl"
+  ]
+}
+=== BFCL holdout EDITED eval (offset=300, limit=100) ===
+Loading /workspace/models/SmolLM2-360M-Instruct on cpu (+edited=True)
+{
+  "n": 100,
+  "ast_accuracy": 0.5,
+  "n_correct": 50,
+  "category": "simple_python",
+  "scorer": "bfcl_eval.ast_checker",
+  "tag": "bfcl-holdout-edited-wsp-bfcl-p100-20261105T143615Z",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": "/workspace/artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/edited_state.pt",
+  "offset": 300,
+  "limit": 100,
+  "device": "cpu",
+  "timestamp": "2026-11-05T23:58:17.121783+00:00",
+  "note": "Official BFCL v4 simple_python AST category via bfcl-eval checker. Not full BFCL (no multiple/parallel/live/multi-turn)."
+}
+failures_head: [
+  {
+    "id": "simple_python_302",
+    "valid": false,
+    "error": [
+      "Function name 'calculate_batting_average' not found in model output."
+    ],
+    "completion": "[batting_average(hits=180, at_bats=600)]",
+    "extracted": "[batting_average(hits=180, at_bats=600)]",
+    "decoded": [
+      {
+        "batting_average": {
+          "hits": 180,
+          "at_bats": 600
+        }
+      }
+    ]
+  },
+  {
+    "id": "simple_python_304",
+    "valid": false,
+    "error": [
+      "Invalid value for parameter 'team': 'NBA'. Expected one of ['Los Angeles Lakers', 'LAL', 'Lakers']. Case insensitive."
+    ],
+    "completion": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]",
+    "extracted": "[player_stats.getLastGame(player_name='LeBron James', team='NBA')]",
+    "decoded
+=== WSP BFCL resume finished exit=0 ===
