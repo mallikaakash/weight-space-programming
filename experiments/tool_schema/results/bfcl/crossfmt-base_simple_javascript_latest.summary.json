@@ -1,0 +1,153 @@
+{
+  "category": "simple_javascript",
+  "n": 50,
+  "n_correct": 0,
+  "ast_accuracy": 0.0,
+  "n_correct_raw": 0,
+  "ast_accuracy_raw": 0.0,
+  "error_types": {
+    "ast_decoder:decoder_wrong_output_format": 35,
+    "ast_decoder:decoder_failed": 13,
+    "simple_function_checker:missing_required": 1,
+    "simple_function_checker:wrong_func_name": 1
+  },
+  "tag": "crossfmt-base_simple_javascript",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 0,
+  "limit": 50,
+  "prompt_style": "card",
+  "max_new_tokens": 128,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 496.2,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T05:20:49.180224+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "simple_javascript_0",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function validateUserInput(inputField, isComplete) {\n  if (isComplete) {\n    // Validate the input field\n    // ...\n  } else {\n    // Invalid input, display error message\n    // ...\n  }\n}",
+      "extracted": "function validateUserInput(inputField, isComplete) {\n  if (isComplete) {\n    // Validate the input field\n    // ...\n  } else {\n    // Invalid input, display error message\n    // ...\n  }\n}",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_1",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function getActiveDataEntries(listElement, attribute, value) {\n  return listElement.querySelectorAll(`[data-active=\"${attribute}\"]`).map(entry => entry.textContent);\n}",
+      "extracted": "[data-active=\"${attribute}\"]",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function extractLastTransactionId(filepath, status, encoding, processFunction) {\n  const lines = fs.readFileSync(filepath, encoding);\n  const processedLines = lines.map((line) => {\n    const match = line.match(/^(\\d+)/);\n    if (match) {\n      return match[1];\n    }\n    return null;\n  });\n  return processFunction(processedLines);\n}",
+      "extracted": "[1]",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_3",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function submitAtCoordinate(action, formId, coordinates) {\n  const form = document.getElementById(formId);\n  form.submit(action, coordinates);\n}",
+      "extracted": "function submitAtCoordinate(action, formId, coordinates) {\n  const form = document.getElementById(formId);\n  form.submit(action, coordinates);\n}",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_4",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error js parsing the source code."
+      ],
+      "completion": "function emailFormatValidator(email, domain) {\n  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;\n  if (!regex.test(email)) {\n    return false;\n  }\n  if (domain && domain.length > 0 && domain.length <= 253) {\n    return true;\n  }\n  return false;\n}",
+      "extracted": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]",
+      "decoded": null
+    },
+    {
+      "id": "simple_javascript_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "```javascript\nfunction manageReactState(store, context, hooks, initialStateObject, reducersMap, loggerMiddleware, useStateSelectorHook, useDispatchActionHook) {\n  return useStateSelectorHook(initialStateObject, reducersMap, loggerMiddleware, useStateSelectorHook, useDispatchActionHook);\n}\n```",
+      "extracted": "```javascript\nfunction manageReactState(store, context, hooks, initialStateObject, reducersMap, loggerMiddleware, useStateSelectorHook, useDispatchActionHook) {\n  return useStateSelectorHook(initialStateObject, reducersMap, loggerMiddleware, useStateSelectorHook, useDispatchActionHook);\n}\n```",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_6",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function mapTransitions(category, limit) {\n  return Array.from({ length: limit }, (_, i) => category + i);\n}",
+      "extracted": "function mapTransitions(category, limit) {\n  return Array.from({ length: limit }, (_, i) => category + i);\n}",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_7",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function getNextKeyValues(ctx, currentKey) {\n  const nestedObject = ctx.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.data",
+      "extracted": "function getNextKeyValues(ctx, currentKey) {\n  const nestedObject = ctx.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.dataAnalysisContext.data",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_8",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_wrong_output_format",
+      "error": [
+        "Did not output in the specified format. Note: the model_result is wrapped in a string to ensure json serializability."
+      ],
+      "completion": "function doesEmailInputExist(formElem, inputName) {\n  return formElem.getElementsByTagName('input')[0].value === inputName;\n}",
+      "extracted": "[0]",
+      "decoded": "None"
+    },
+    {
+      "id": "simple_javascript_9",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error js parsing the source code."
+      ],
+      "completion": "```javascript\nfunction validateApiResponse(responseData, expectedKey, processKeyFunction) {\n  if (processKeyFunction) {\n    processKeyFunction(responseData);\n  } else {\n    console.log(`Expected key: ${expectedKey}`);\n  }\n}\n\n// Example usage:\nvalidateApiResponse({\n  \"status\": 200,\n  \"data\": {\n    \"name\": \"John\",\n    \"age\": 30\n  }\n}, \"name\", (responseData) => {\n  console.log(`Response data: ${JSON.stringify",
+      "extracted": "```javascript\nfunction validateApiResponse(responseData, expectedKey, processKeyFunction) {\n  if (processKeyFunction) {\n    processKeyFunction(responseData);\n  } else {\n    console.log(`Expected key: ${expectedKey}`);\n  }\n}\n\n// Example usage:\nvalidateApiResponse({\n  \"status\": 200,\n  \"data\": {\n    \"name\": \"John\",\n    \"age\": 30\n  }\n}, \"name\", (responseData) => {\n  console.log(`Response data: ${JSON.stringify",
+      "decoded": null
+    }
+  ]
+}

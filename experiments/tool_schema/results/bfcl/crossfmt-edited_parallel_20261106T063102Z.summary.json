@@ -1,0 +1,213 @@
+{
+  "category": "parallel",
+  "n": 200,
+  "n_correct": 3,
+  "ast_accuracy": 0.015,
+  "n_correct_raw": 3,
+  "ast_accuracy_raw": 0.015,
+  "error_types": {
+    "parallel_function_checker_no_order:wrong_count": 171,
+    "ast_decoder:decoder_failed": 17,
+    "parallel_function_checker_no_order:cannot_find_match": 9
+  },
+  "tag": "crossfmt-edited_parallel",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": "artifacts/wsp_sessions/wsp-bfcl-p100-20261105T143615Z/export/edited_state.pt",
+  "offset": 0,
+  "limit": 200,
+  "prompt_style": "card",
+  "max_new_tokens": 256,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 378.4,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T06:31:02.761567+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "parallel_0",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[spotify.play(artist='Taylor Swift', duration=20, minutes=15)]",
+      "extracted": "[spotify.play(artist='Taylor Swift', duration=20, minutes=15)]",
+      "decoded": [
+        {
+          "spotify.play": {
+            "artist": "Taylor Swift",
+            "duration": 20,
+            "minutes": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_1",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[calculate_em_force(b_field=5, area=2, d_time=4)]",
+      "extracted": "[calculate_em_force(b_field=5, area=2, d_time=4)]",
+      "decoded": [
+        {
+          "calculate_em_force": {
+            "b_field": 5,
+            "area": 2,
+            "d_time": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[calculate_resistance(length=5, area=0.01, resistivity='copper')]",
+      "extracted": "[calculate_resistance(length=5, area=0.01, resistivity='copper')]",
+      "decoded": [
+        {
+          "calculate_resistance": {
+            "length": 5,
+            "area": 0.01,
+            "resistivity": "copper"
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_3",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[protein_info.get_sequence_and_3D(protein_name='human HbA1c', model_3d=True)]",
+      "extracted": "[protein_info.get_sequence_and_3D(protein_name='human HbA1c', model_3d=True)]",
+      "decoded": [
+        {
+          "protein_info.get_sequence_and_3D": {
+            "protein_name": "human HbA1c",
+            "model_3d": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_4",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[calculate_bmi(height=6, weight=80)]",
+      "extracted": "[calculate_bmi(height=6, weight=80)]",
+      "decoded": [
+        {
+          "calculate_bmi": {
+            "height": 6,
+            "weight": 80
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[streaming_services.shows_list_and_ratings, streaming_services.shows_list_and_ratings]",
+      "extracted": "[streaming_services.shows_list_and_ratings, streaming_services.shows_list_and_ratings]",
+      "decoded": null
+    },
+    {
+      "id": "parallel_6",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[calculate_sales_tax(purchase_amount=30.45, city='Chicago', state='Illinois')]",
+      "extracted": "[calculate_sales_tax(purchase_amount=30.45, city='Chicago', state='Illinois')]",
+      "decoded": [
+        {
+          "calculate_sales_tax": {
+            "purchase_amount": 30.45,
+            "city": "Chicago",
+            "state": "Illinois"
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_8",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[database_us_census.get_population(area='New York City, NY', type='city', year=2020)]",
+      "extracted": "[database_us_census.get_population(area='New York City, NY', type='city', year=2020)]",
+      "decoded": [
+        {
+          "database_us_census.get_population": {
+            "area": "New York City, NY",
+            "type": "city",
+            "year": 2020
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_9",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. invalid syntax (<unknown>, line 1)"
+      ],
+      "completion": "[find_movie_showing(location=\"San Diego, CA\", movie=\"Tenet\", time=[7:30, 5 pm])]",
+      "extracted": "[find_movie_showing(location=\"San Diego, CA\", movie=\"Tenet\", time=[7:30, 5 pm])]",
+      "decoded": null
+    },
+    {
+      "id": "parallel_10",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[math.pythagoras(a=3, b=4)]",
+      "extracted": "[math.pythagoras(a=3, b=4)]",
+      "decoded": [
+        {
+          "math.pythagoras": {
+            "a": 3,
+            "b": 4
+          }
+        }
+      ]
+    }
+  ]
+}

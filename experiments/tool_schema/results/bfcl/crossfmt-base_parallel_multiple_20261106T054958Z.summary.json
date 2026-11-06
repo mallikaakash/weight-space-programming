@@ -1,0 +1,210 @@
+{
+  "category": "parallel_multiple",
+  "n": 200,
+  "n_correct": 1,
+  "ast_accuracy": 0.005,
+  "n_correct_raw": 1,
+  "ast_accuracy_raw": 0.005,
+  "error_types": {
+    "parallel_function_checker_no_order:wrong_count": 99,
+    "ast_decoder:decoder_failed": 87,
+    "parallel_function_checker_no_order:cannot_find_match": 13
+  },
+  "tag": "crossfmt-base_parallel_multiple",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 0,
+  "limit": 200,
+  "prompt_style": "card",
+  "max_new_tokens": 256,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 970.7,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T05:49:58.350417+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "parallel_multiple_0",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:cannot_find_match",
+      "error": [
+        "Could not find a matching function among index [0, 1] of model output for index 0 of possible answers.",
+        "{'Model Result Index 0': {'sub_error': [\"Missing required parameter: 'lower_limit'.\"], 'sub_error_type': 'simple_function_checker:missing_required', 'model_output_item': {'math_toolkit.sum_of_multiples': {}}, 'possible_answer_item': {'math_toolkit.sum_of_multiples': {'lower_limit': [1], 'upper_limit",
+        "{'Model Result Index 1': {'sub_error': [\"Function name 'math_toolkit.sum_of_multiples' not found in model output.\"], 'sub_error_type': 'simple_function_checker:wrong_func_name', 'model_output_item': {'math_toolkit.product_of_primes': {}}, 'possible_answer_item': {'math_toolkit.sum_of_multiples': {'l"
+      ],
+      "completion": "[math_toolkit.sum_of_multiples(1000), math_toolkit.product_of_primes(5)]",
+      "extracted": "[math_toolkit.sum_of_multiples(1000), math_toolkit.product_of_primes(5)]",
+      "decoded": [
+        {
+          "math_toolkit.sum_of_multiples": {}
+        },
+        {
+          "math_toolkit.product_of_primes": {}
+        }
+      ]
+    },
+    {
+      "id": "parallel_multiple_1",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. invalid syntax (<unknown>, line 2)"
+      ],
+      "completion": "[calculate_rectangle_area(length=7, breadth=3)]\n[calculate_circle_area(radius=5)]",
+      "extracted": "[calculate_rectangle_area(length=7, breadth=3)]\n[calculate_circle_area(radius=5)]",
+      "decoded": null
+    },
+    {
+      "id": "parallel_multiple_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[circle.calculate_circumference(diameter=10), math.pi * (diameter/2)]",
+      "extracted": "[circle.calculate_circumference(diameter=10), math.pi * (diameter/2)]",
+      "decoded": null
+    },
+    {
+      "id": "parallel_multiple_3",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[get_rectangle_property(perimeter=14, area=15, property='length')]",
+      "extracted": "[get_rectangle_property(perimeter=14, area=15, property='length')]",
+      "decoded": [
+        {
+          "get_rectangle_property": {
+            "perimeter": 14,
+            "area": 15,
+            "property": "length"
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_multiple_4",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[math.factorial(number=5), math.factorial(number=7), calculate_triangle_area(base=6, height=3)]",
+      "extracted": "[math.factorial(number=5), math.factorial(number=7), calculate_triangle_area(base=6, height=3)]",
+      "decoded": [
+        {
+          "math.factorial": {
+            "number": 5
+          }
+        },
+        {
+          "math.factorial": {
+            "number": 7
+          }
+        },
+        {
+          "calculate_triangle_area": {
+            "base": 6,
+            "height": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_multiple_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:cannot_find_match",
+      "error": [
+        "Could not find a matching function among index [0, 1] of model output for index 0 of possible answers.",
+        "{'Model Result Index 0': {'sub_error': [\"Function name 'gcd' not found in model output.\"], 'sub_error_type': 'simple_function_checker:wrong_func_name', 'model_output_item': {'math.gcd': {}}, 'possible_answer_item': {'gcd': {'num1': [96], 'num2': [128]}}}}",
+        "{'Model Result Index 1': {'sub_error': [\"Function name 'gcd' not found in model output.\"], 'sub_error_type': 'simple_function_checker:wrong_func_name', 'model_output_item': {'math.lcm': {}}, 'possible_answer_item': {'gcd': {'num1': [96], 'num2': [128]}}}}"
+      ],
+      "completion": "[math.gcd(96, 128), math.lcm(15, 25)]",
+      "extracted": "[math.gcd(96, 128), math.lcm(15, 25)]",
+      "decoded": [
+        {
+          "math.gcd": {}
+        },
+        {
+          "math.lcm": {}
+        }
+      ]
+    },
+    {
+      "id": "parallel_multiple_6",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. invalid syntax (<unknown>, line 2)"
+      ],
+      "completion": "[count_items(collection=[50, 150])]\n[get_fibonacci_sequence(count=150)]",
+      "extracted": "[count_items(collection=[50, 150])]\n[get_fibonacci_sequence(count=150)]",
+      "decoded": null
+    },
+    {
+      "id": "parallel_multiple_7",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[physics.calculate_force(mass=1000, acceleration=5)]",
+      "extracted": "[physics.calculate_force(mass=1000, acceleration=5)]",
+      "decoded": [
+        {
+          "physics.calculate_force": {
+            "mass": 1000,
+            "acceleration": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_multiple_8",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "parallel_function_checker_no_order:wrong_count",
+      "error": [
+        "Wrong number of functions."
+      ],
+      "completion": "[kinematics.distance_traveled(initial_velocity=20, acceleration=5, time=6)]",
+      "extracted": "[kinematics.distance_traveled(initial_velocity=20, acceleration=5, time=6)]",
+      "decoded": [
+        {
+          "kinematics.distance_traveled": {
+            "initial_velocity": 20,
+            "acceleration": 5,
+            "time": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "parallel_multiple_9",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. invalid syntax (<unknown>, line 1)"
+      ],
+      "completion": "[flight_book(from='Seattle', to='Boston', airlines='American Airlines')]\n[other_function_name(from='Seattle', to='Boston', airlines='American Airlines')]",
+      "extracted": "[flight_book(from='Seattle', to='Boston', airlines='American Airlines')]\n[other_function_name(from='Seattle', to='Boston', airlines='American Airlines')]",
+      "decoded": null
+    }
+  ]
+}

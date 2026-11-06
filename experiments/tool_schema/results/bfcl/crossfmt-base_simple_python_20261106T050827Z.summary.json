@@ -1,0 +1,214 @@
+{
+  "category": "simple_python",
+  "n": 400,
+  "n_correct": 156,
+  "ast_accuracy": 0.39,
+  "n_correct_raw": 156,
+  "ast_accuracy_raw": 0.39,
+  "error_types": {
+    "simple_function_checker:missing_required": 94,
+    "simple_function_checker:wrong_func_name": 45,
+    "value_error:string": 42,
+    "value_error:others": 19,
+    "simple_function_checker:missing_optional": 14,
+    "ast_decoder:decoder_failed": 13,
+    "value_error:list/tuple": 10,
+    "type_error:nested": 5,
+    "type_error:simple": 1,
+    "value_error:dict_key": 1
+  },
+  "splits": {
+    "practice_0_299": {
+      "n": 300,
+      "n_correct": 123,
+      "ast_accuracy": 0.41
+    },
+    "holdout_300_399": {
+      "n": 100,
+      "n_correct": 33,
+      "ast_accuracy": 0.33
+    }
+  },
+  "tag": "crossfmt-base_simple_python",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 0,
+  "limit": 400,
+  "prompt_style": "card",
+  "max_new_tokens": 128,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 690.9,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T05:08:27.725858+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "simple_python_0",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'calculate_triangle_area' not found in model output."
+      ],
+      "completion": "[math.sqrt(base*base+height*height)]",
+      "extracted": "[math.sqrt(base*base+height*height)]",
+      "decoded": [
+        {
+          "math.sqrt": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:missing_required",
+      "error": [
+        "Missing required parameter: 'x'."
+      ],
+      "completion": "[math.hypot(4, 5)]",
+      "extracted": "[math.hypot(4, 5)]",
+      "decoded": [
+        {
+          "math.hypot": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:missing_optional",
+      "error": [
+        "Optional parameter 'root_type' not provided and not marked as optional."
+      ],
+      "completion": "[solve_quadratic(a=3, b=-11, c=-4)]",
+      "extracted": "[solve_quadratic(a=3, b=-11, c=-4)]",
+      "decoded": [
+        {
+          "solve_quadratic": {
+            "a": 3,
+            "b": -11,
+            "c": -4
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_7",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. "
+      ],
+      "completion": "[math.pi * radius**2]",
+      "extracted": "[math.pi * radius**2]",
+      "decoded": null
+    },
+    {
+      "id": "simple_python_10",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'calculate_area' not found in model output."
+      ],
+      "completion": "[math.sqrt(base**2 + height**2)]",
+      "extracted": "[math.sqrt(base**2 + height**2)]",
+      "decoded": [
+        {
+          "math.sqrt": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_11",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'calculate_triangle_area' not found in model output."
+      ],
+      "completion": "[math.sqrt(base*height)]",
+      "extracted": "[math.sqrt(base*height)]",
+      "decoded": [
+        {
+          "math.sqrt": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_13",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'calculate_area_under_curve' not found in model output."
+      ],
+      "completion": "[math.trapezoidal(start=1, end=3, method='trapezoidal')]",
+      "extracted": "[math.trapezoidal(start=1, end=3, method='trapezoidal')]",
+      "decoded": [
+        {
+          "math.trapezoidal": {
+            "start": 1,
+            "end": 3,
+            "method": "trapezoidal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_14",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'calculate_derivative' not found in model output."
+      ],
+      "completion": "[math.derivative(3*x**2 + 2*x - 1)]",
+      "extracted": "[math.derivative(3*x**2 + 2*x - 1)]",
+      "decoded": [
+        {
+          "math.derivative": {}
+        }
+      ]
+    },
+    {
+      "id": "simple_python_15",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'integrate' not found in model output."
+      ],
+      "completion": "[simpson_integration(x=3, method='simpson')]",
+      "extracted": "[simpson_integration(x=3, method='simpson')]",
+      "decoded": [
+        {
+          "simpson_integration": {
+            "x": 3,
+            "method": "simpson"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_python_16",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. invalid decimal literal (<unknown>, line 1)"
+      ],
+      "completion": "[calculus.derivative(2x^2, 1, 'x')]",
+      "extracted": "[calculus.derivative(2x^2, 1, 'x')]",
+      "decoded": null
+    }
+  ]
+}

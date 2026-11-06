@@ -1,0 +1,194 @@
+{
+  "category": "simple_java",
+  "n": 100,
+  "n_correct": 5,
+  "ast_accuracy": 0.05,
+  "n_correct_raw": 5,
+  "ast_accuracy_raw": 0.05,
+  "error_types": {
+    "ast_decoder:decoder_failed": 40,
+    "simple_function_checker:wrong_func_name": 40,
+    "value_error:string": 4,
+    "type_error:simple": 4,
+    "value_error:others": 3,
+    "simple_function_checker:missing_required": 2,
+    "ast_decoder:decoder_wrong_output_format": 2
+  },
+  "tag": "crossfmt-base_simple_java",
+  "model_dir": "/workspace/models/SmolLM2-360M-Instruct",
+  "edited_state": null,
+  "offset": 0,
+  "limit": 100,
+  "prompt_style": "card",
+  "max_new_tokens": 128,
+  "batch_size": 1,
+  "decoding": "greedy",
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "generation_seconds": 245.2,
+  "scorer": "bfcl_eval.eval_checker.eval_runner._evaluate_single_ast_entry (ast_checker)",
+  "checker_model_name": "meta-llama/Llama-3.1-8B-Instruct",
+  "bfcl_eval_version": "2025.10.27.1",
+  "timestamp": "2026-11-06T05:12:33.008239+00:00",
+  "note": "BFCL v4 non-live AST category scored with bfcl-eval's official per-entry AST path. ast_accuracy = after the repo's [..] extraction (WSP protocol); ast_accuracy_raw = official decode on the untouched completion. Not a BFCL leaderboard reproduction.",
+  "rows_head_failures": [
+    {
+      "id": "simple_java_0",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[GeometryPresentation.createPresentation]\n\nParameters:\n  - controller (any, required): The IResultSetController instance responsible for controlling the result set. This parameter can be of any type of Java object in string representation.\n  - parent (any, required): The Composite UI element where the GIS presentation will be displayed. This parameter can be of any type of Java object in string representation.\n\nUser request: Help me initialize the GIS geometry presentation in a user interface, providing a specific result set controller `mapController` and a composite UI element `mapArea` to display the GIS data?\n\nResponse:\n[",
+      "extracted": "[GeometryPresentation.createPresentation]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_1",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'SQLCompletionAnalyzer.makeProposalsFromObject' not found in model output."
+      ],
+      "completion": "[Customers.makeProposalsFromObject(useShortName=true, params=HashMap(limit=50, schemaFilter=\"public\"))]",
+      "extracted": "[Customers.makeProposalsFromObject(useShortName=true, params=HashMap(limit=50, schemaFilter=\"public\"))]",
+      "decoded": [
+        {
+          "Customers.makeProposalsFromObject": {
+            "useShortName": "true",
+            "params": "HashMap(limit=50, schemaFilter=\"public\")"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_2",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[FireBirdUtils.getViewSourceWithHeader]\n\nParameters:\n  - monitor (any, required): The DBRProgressMonitor to monitor the progress of the operation. This parameter can be of any type of Java object in string representation.\n  - view (any, required): The GenericTableBase object representing the view. This parameter can be of any type of Java object in string representation.\n  - source (String, required): The SQL source code of the view. This is Java String type parameter in string representation.\n\nMethod Name: getViewSourceWithHeader\n\nDescription: Generates the SQL script to create",
+      "extracted": "[FireBirdUtils.getViewSourceWithHeader]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_3",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "value_error:string",
+      "error": [
+        "Invalid value for parameter 'monitor': 'monitor'. Expected one of ['dbMonitor']. Case insensitive."
+      ],
+      "completion": "[DB2Tablespace.resolveTablespaceReference(monitor=monitor, dataSource=dataSource, reference=reference)]",
+      "extracted": "[DB2Tablespace.resolveTablespaceReference(monitor=monitor, dataSource=dataSource, reference=reference)]",
+      "decoded": [
+        {
+          "DB2Tablespace.resolveTablespaceReference": {
+            "monitor": "monitor",
+            "dataSource": "dataSource",
+            "reference": "reference"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_4",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[DB2ViewBaseDepCache.prepareObjectsStatement]",
+      "extracted": "[DB2ViewBaseDepCache.prepareObjectsStatement]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_5",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'PlainTextPresentation.createPresentation' not found in model output."
+      ],
+      "completion": "[ReportBuilder.export(target=\"report.txt\", overwrite=true)]",
+      "extracted": "[ReportBuilder.export(target=\"report.txt\", overwrite=true)]",
+      "decoded": [
+        {
+          "ReportBuilder.export": {
+            "target": "report.txt",
+            "overwrite": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_6",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'SpreadsheetPresentation.refreshData' not found in model output."
+      ],
+      "completion": "[ReportBuilder.export(target=outputFile, overwrite=true)]",
+      "extracted": "[ReportBuilder.export(target=outputFile, overwrite=true)]",
+      "decoded": [
+        {
+          "ReportBuilder.export": {
+            "target": "outputFile",
+            "overwrite": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_7",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.",
+      "extracted": "[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]\n\n[EFSNIOResource.copy]",
+      "decoded": null
+    },
+    {
+      "id": "simple_java_8",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "error": [
+        "Function name 'EFSNIOFile.setContents' not found in model output."
+      ],
+      "completion": "[FileSystemIOS.setContents(fileStream, force=false, keepHistory=false, progressMonitor=progressMonitor)]",
+      "extracted": "[FileSystemIOS.setContents(fileStream, force=false, keepHistory=false, progressMonitor=progressMonitor)]",
+      "decoded": [
+        {
+          "FileSystemIOS.setContents": {
+            "null": "fileStream",
+            "force": "false",
+            "keepHistory": "false",
+            "progressMonitor": "progressMonitor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simple_java_9",
+      "valid": false,
+      "valid_raw": false,
+      "error_type": "ast_decoder:decoder_failed",
+      "error": [
+        "Invalid syntax. Failed to decode AST. Error parsing java the source code."
+      ],
+      "completion": "[MultiPoint.writeMultiPoint(points=[Point(1,2), Point(3,4), Point(5,6), Point(7,8), Point(9,10), Point(10,11)])]",
+      "extracted": "[MultiPoint.writeMultiPoint(points=[Point(1,2), Point(3,4), Point(5,6), Point(7,8), Point(9,10), Point(10,11)])]",
+      "decoded": null
+    }
+  ]
+}
